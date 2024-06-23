@@ -38,9 +38,11 @@ const config = {
     },
     extend: {
       boxShadow: {
-        button: '0 4px 4px 0px rgba(0, 0, 0, 0.25)'
+        heavy: '0 4px 4px 0px rgba(0, 0, 0, 0.25)',
+        light: '0 0px 10px 0px rgba(0, 0, 0, 0.1)',
       },
       colors: {
+        white: "#FFFFFF",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
