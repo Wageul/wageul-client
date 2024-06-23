@@ -13,10 +13,10 @@
       --popover: 0 0% 100%;
       --popover-foreground: 222.2 84% 4.9%;
 
-      --primary-red: #EA0006;
+      --primary-red: 234, 0, 6;
       --primary-green: #249900;
       --primary-blue: #0047B0;
-      --primary-yellow: #F1CF31;
+      --primary-yellow: 241, 207, 49;
       --primary-foreground: #FFFFFF;
 
       --secondary: 210 40% 96.1%;
@@ -25,12 +25,12 @@
       --secondary-slate: #9AA9BE;
       --secondary-foreground: 222.2 47.4% 11.2%;
 
-      --grey-100: #F9F9F9;
-      --grey-200: #EDEDED;
-      --grey-300: #B8B8B8;
-      --grey-400: #575757;
-      --grey-500: #313131;
-      --grey-600: #000000;
+      --grey-1: #F9F9F9;
+      --grey-2: #EDEDED;
+      --grey-3: #B8B8B8;
+      --grey-4: #575757;
+      --grey-5: #313131;
+      --black: #000000;
 
       --muted: 210 40% 96.1%;
       --muted-foreground: 215.4 16.3% 46.9%;

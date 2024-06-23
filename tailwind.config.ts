@@ -1,13 +1,13 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -17,17 +17,29 @@ const config = {
         "2xl": "1400px",
       },
     },
+    fontSize: {
+      h2: "24px",
+      h3: "20px",
+      subtitle: "14px",
+      subtitle2: "12px",
+      body1: "18px",
+      body2: "16px",
+      caption: "10px",
+    },
     colors: {
       grey: {
-        "100": "var(--grey-100)",
-        "200": "var(--grey-200)",
-        "300": "var(--grey-300)",
-        "400": "var(--grey-400)",
-        "500": "var(--grey-500)",
-        "600": "var(--grey-600)",
+        "1": "var(--grey-1)",
+        "2": "var(--grey-2)",
+        "3": "var(--grey-3)",
+        "4": "var(--grey-4)",
+        "5": "var(--grey-5)",
       },
+      black: "var(--black)",
     },
     extend: {
+      boxShadow: {
+        button: '0 4px 4px 0px rgba(0, 0, 0, 0.25)'
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -36,11 +48,11 @@ const config = {
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
-          red: "var(--primary-red)",
+          red: "rgb(var(--primary-red), <alpha-value>)",
           blue: "var(--primary-blue)",
           green: "var(--primary-green)",
-          yellow: "var(--primary-yellow)",
-          foreground: "hsl(var(--primary-foreground))",
+          yellow: "rgb(var(--primary-yellow), <alpha-value>)",
+          foreground: "var(--primary-foreground)",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -92,6 +104,6 @@ const config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;
 
-export default config
+export default config;
