@@ -5,7 +5,7 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 export async function ProfileHeader() {
   return (
     <section className="flex flex-col items-center">
-      <Avatar className="mt-[16px] size-[73px]">
+      <Avatar className="size-[73px]">
         <AvatarImage src="https://github.com/shadcn.png" />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>

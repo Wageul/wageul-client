@@ -1,8 +1,52 @@
+import { Button } from "@/components/ui/wageulButton";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <div className="relative flex flex-col gap-2.5 items-center">
+      <div className="relative w-full h-[572px] rounded-[24px] overflow-hidden">
+        <div className="absolute w-[600px] h-[849px] top-[35%] left-1/2 transform -translate-x-1/2 -translate-y-[35%]">
+          <Image
+            src="/main.avif"
+            alt="main image"
+            layout="fill"
+            objectFit="cover"
+          />
+        </div>
+        <div className="absolute w-[216px] top-[44px] left-[20px] z-10 text-h1 text-primary-foreground font-extrabold">
+          <div>HELLO!</div>
+          <div>enjoy your trip to Korea</div>
+        </div>
+      </div>
+      <Button
+        variant={"white"}
+        size={"xl"}
+        className="text-body1 font-normal border border-primary-yellow py-2 flex gap-0.5"
+      >
+        <Image
+          src={"/web_light_rd_na.svg"}
+          width={39}
+          height={39}
+          alt="google"
+        />
+        <span>Sign in with google</span>
+      </Button>
+      <Link href={"/experience"}>
+        <Button
+          variant={"white"}
+          size={"xl"}
+          className="text-body1 font-normal"
+        >
+          No, I&apos;ll do it later
+        </Button>
+      </Link>
+    </div>
+  );
+}
+
+/**
+ *  <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
         <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
           Get started by editing&nbsp;
@@ -109,5 +153,5 @@ export default function Home() {
         </a>
       </div>
     </main>
-  );
-}
+ * 
+ */

@@ -18,6 +18,7 @@ const config = {
       },
     },
     fontSize: {
+      h1: "32px",
       h2: "24px",
       h3: "20px",
       subtitle: "14px",
