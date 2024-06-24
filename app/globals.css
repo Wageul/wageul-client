@@ -87,19 +87,3 @@
     @apply bg-background text-foreground;
   }
 }
-
-@layer utilities {
-  .clip-path-initial {
-    clip-path: inset(0);
-  }
-  @media (min-width: 320px) {
-    .clip-path-md {
-      clip-path: inset(0 20% 0 20%);
-    }
-  }
-  @media (min-width: 600px) {
-    .clip-path-lg {
-      clip-path: inset(0 10% 0 10%);
-    }
-  }
-}
