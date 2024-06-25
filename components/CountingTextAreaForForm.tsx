@@ -21,8 +21,7 @@ export default function CountingTextAreaForForm({
   return (
     <div className={`relative ${className}`}>
       <Textarea
-        placeholder="How was your trip with this friend?"
-        className="resize-none text-subtitle pb-[23px] rounded-[12px] focus-visible:ring-1 focus-visible:ring-primary-yellow focus-visible:ring-offset-0"
+        className="resize-none text-subtitle pb-[23px] rounded-[12px] focus-visible:ring-1 focus-visible:ring-primary-yellow focus-visible:ring-offset-0 min-h-[110px]"
         value={props.value}
         onChange={handleChange}
         maxLength={maxLength}

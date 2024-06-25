@@ -3,11 +3,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,9 +14,7 @@ import {
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/customSelect";
@@ -26,6 +22,10 @@ import { Input } from "@/components/ui/input";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CountingTextArea from "@/components/CountingTextArea";
 import CountingTextAreaForForm from "@/components/CountingTextAreaForForm";
+import { Button } from "@/components/ui/wageulButton";
+import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
+import { useState } from "react";
+import Image from "next/image";
 
 {
   /* <Avatar className="size-[40px]">
@@ -34,10 +34,25 @@ import CountingTextAreaForForm from "@/components/CountingTextAreaForForm";
 </Avatar> */
 }
 
+const ACCEPTED_FILE_TYPES = [
+  "image/jpg",
+  "image/jpeg",
+  "image/png",
+  "image/avif",
+  "image/gif",
+  "image/webp",
+];
+
 const formSchema = z.object({
+  profileImage: z
+    .instanceof(File, { message: "Image is required" })
+    .refine(
+      (file) => ACCEPTED_FILE_TYPES.includes(file.type),
+      "File must be an image."
+    ),
   name: z.string().min(2).max(50),
   nationality: z.string().min(2).max(50),
-  introduction: z.string().min(0).max(100),
+  introduction: z.string().min(50).max(100),
 });
 
 export default function Page({ params }: { params: { id: string } }) {
@@ -54,14 +69,76 @@ export default function Page({ params }: { params: { id: string } }) {
     console.log(values);
   }
 
+  const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+
+  const handleProfileImageChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    onChange: (...event: any[]) => void
+  ) => {
+    if (!e.target.files) return;
+    const file = e.target.files[0];
+    onChange(file);
+    if (file) {
+      let image = window.URL.createObjectURL(file);
+      setProfileImageUrl(image);
+    }
+  };
+
   return (
     <>
-      <div className="w-full text-center text-body1 font-semibold">
+      <div className="w-full text-center text-h3 font-semibold">
         Edit profile
       </div>
-      <div className="mt-[26px] mb-[28px]">image</div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-[20px]">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
+          <FormField
+            control={form.control}
+            name="profileImage"
+            render={({ field: { value, onChange, ...fieldProps } }) => (
+              <FormItem className="mt-[26px] mb-[28px]">
+                <div className="flex justify-center">
+                  <div className="size-[112px] bg-grey-2 rounded-full relative">
+                    {profileImageUrl && (
+                      <div className="size-[112px] rounded-full overflow-hidden relative">
+                        <Image
+                          src={profileImageUrl}
+                          fill={true}
+                          alt={"experience"}
+                          style={{ objectFit: "cover" }}
+                        />
+                      </div>
+                    )}
+                    <FormLabel
+                      htmlFor="profileImage"
+                      className="absolute right-1 -bottom-[14px] bg-background size-[42px] rounded-full p-[3px] hover:cursor-pointer"
+                    >
+                      <div className="flex justify-center items-center bg-primary-yellow rounded-full size-[36px]">
+                        <CameraAltOutlinedIcon
+                          fontSize="small"
+                          className="text-black"
+                        />
+                      </div>
+                    </FormLabel>
+                    <label htmlFor="profileImage"></label>
+                  </div>
+                </div>
+                <FormControl>
+                  <input
+                    {...fieldProps}
+                    type="file"
+                    id="profileImage"
+                    accept="image/*"
+                    onChange={(e) => {
+                      handleProfileImageChange(e, onChange);
+                    }}
+                    className="hidden"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="name"
@@ -88,7 +165,7 @@ export default function Page({ params }: { params: { id: string } }) {
             control={form.control}
             name="nationality"
             render={({ field }) => (
-              <FormItem className="space-y-[6px]">
+              <FormItem className="space-y-[6px] mt-[20px]">
                 <FormLabel className="text-body2 font-normal">
                   Nationality
                 </FormLabel>
@@ -142,20 +219,31 @@ export default function Page({ params }: { params: { id: string } }) {
             control={form.control}
             name="introduction"
             render={({ field }) => (
-              <FormItem className="space-y-[11px]">
-                <FormLabel className="text-h3 font-semibold">
+              <FormItem className="space-y-[11px] mt-[20px]">
+                <FormLabel className="text-body1 font-semibold">
                   Introduce yourself
                 </FormLabel>
                 <FormControl>
                   <div>
-                    <CountingTextAreaForForm {...field} />
+                    <CountingTextAreaForForm
+                      placeholder="Please enter your self-introduction. (You must enter at least 50 characters to join the experience.)"
+                      {...field}
+                    />
                   </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button variant={'destructive'} type="submit">Submit</Button>
+          <Button
+            variant={"primaryYellow"}
+            type={"submit"}
+            size={"lg"}
+            textStyle={"body1"}
+            className="mt-[32px] self-center"
+          >
+            complete
+          </Button>
         </form>
       </Form>
     </>
