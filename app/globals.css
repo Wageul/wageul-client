@@ -20,9 +20,11 @@
     --primary-foreground: #ffffff;
 
     --secondary: 210 40% 96.1%;
-    --secondary-pink: #f6e6e7;
-    --secondary-sand: #f7f1d6;
-    --secondary-slate: #9aa9be;
+    --secondary-red: #f6e6e7;
+    --secondary-yellow: #f7f1d6;
+    --secondary-blue: #9aa9be;
+    --secondary-green: #79dd5a;
+    --secondary-red2: #ff868d;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --grey-1: #f9f9f9;

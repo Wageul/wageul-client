@@ -39,8 +39,10 @@ const config = {
     },
     extend: {
       boxShadow: {
-        heavy: '0 4px 4px 0px rgba(0, 0, 0, 0.25)',
-        light: '0 0px 10px 0px rgba(0, 0, 0, 0.1)',
+        heavy: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+        light: '0px 0px 10px 0px rgba(0, 0, 0, 0.1)',
+        green: '0 0px 10px 0px rgba(36, 153, 0, 0.25)',
+        red: '0px 0px 10px 0px rgba(234, 0, 6, 0.25)',
       },
       colors: {
         white: "#FFFFFF",
@@ -59,9 +61,11 @@ const config = {
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
-          pink: "var(--secondary-pink)",
-          sand: "var(--secondary-sand)",
-          slate: "var(--secondary-slate)",
+          red: "var(--secondary-red)",
+          red2: "var(--secondary-red2)",
+          yellow: "var(--secondary-yellow)",
+          blue: "var(--secondary-blue)",
+          green: "var(--secondary-green)",
           foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
