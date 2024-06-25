@@ -1,124 +1,163 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import StarRoundedIcon from "@mui/icons-material/StarRounded";
-import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
-import { Button } from "@/components/ui/wageulButton";
-import CountingTextArea from "@/components/CountingTextArea";
-import { ProfileHeader } from "@/components/Profile";
+"use client";
 
-export default async function Page({ params }: { params: { id: string } }) {
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/customSelect";
+import { Input } from "@/components/ui/input";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import CountingTextArea from "@/components/CountingTextArea";
+import CountingTextAreaForForm from "@/components/CountingTextAreaForForm";
+
+{
+  /* <Avatar className="size-[40px]">
+<AvatarImage src="https://github.com/shadcn.png" />
+<AvatarFallback>CN</AvatarFallback>
+</Avatar> */
+}
+
+const formSchema = z.object({
+  name: z.string().min(2).max(50),
+  nationality: z.string().min(2).max(50),
+  introduction: z.string().min(0).max(100),
+});
+
+export default function Page({ params }: { params: { id: string } }) {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+  }
+
   return (
     <>
-      <ProfileHeader />
-      <div className="mt-[35px] flex justify-center">
-        <Button variant={"white"} size={"xl"}>
-          Edit profile
-        </Button>
+      <div className="w-full text-center text-body1 font-semibold">
+        Edit profile
       </div>
-      <section className="mt-[35px]">
-        <div className="pl-2 text-h3 font-semibold">About me</div>
-        <div className="mt-3 text-subtitle">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptas
-          illum asperiores veniam voluptates. Suscipit quas aut, minus eveniet
-          ut placeat mollitia adipisci et tenetur deserunt minima enim magni
-          labore cumque!
-        </div>
-        <div className="mt-[9px] flex gap-4">
-          <div className="text-body2 text-grey-4">Language</div>
-          <div className="text-body2">English, Korean</div>
-        </div>
-      </section>
-      <section className="mt-[30px]">
-        <div className="px-[27px] py-[23px] rounded-[16px] bg-grey-1">
-          <div className="text-body2 font-semibold">Create a review</div>
-          <div className="mt-[14px] flex justify-between items-center">
-            <div className="flex">
-              <StarRoundedIcon className="text-primary-yellow text-[40px] mx-[-2px]" />
-              <StarRoundedIcon className="text-primary-yellow text-[40px] mx-[-2px]" />
-              <StarRoundedIcon className="text-primary-yellow text-[40px] mx-[-2px]" />
-              <StarRoundedIcon className="text-primary-yellow text-[40px] mx-[-2px]" />
-              <StarRoundedIcon className="text-primary-yellow text-[40px] mx-[-2px]" />
-            </div>
-            <Button variant={"primaryBlue"} size={"sm"} className="text-[12px]">
-              Register
-            </Button>
-          </div>
-          <div className="mt-[16px] flex gap-[15px]">
-            <Avatar className="size-[40px]">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <CountingTextArea className="flex-grow" />
-          </div>
-        </div>
-      </section>
-      <section>
-        <div className="mt-[30px] pl-2 text-h3 font-semibold">Review</div>
-        <div className="mt-3 flex flex-col gap-2">
-          <div className="px-[16px] py-[14px] bg-grey-1 rounded-[16px]">
-            <div className="flex gap-2.5 items-center">
-              <Avatar className="size-[40px]">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <div className="text-body2">Kelly Clarkson</div>
-            </div>
-            <div className="mt-[12px] text-subtitle">
-              <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Deleniti harum doloremque magni, sapiente est nostrum
-                consequuntur libero delectus reiciendis quo, quod, quis
-                temporibus soluta ab rerum animi perspiciatis totam! Ab?
-              </p>
-            </div>
-            <div className="mt-[4px] text-subtitle2 text-grey-4 text-end">
-              2024.06.22
-            </div>
-          </div>
-          <div className="px-[16px] py-[14px] bg-grey-1 rounded-[16px]">
-            <div className="flex gap-2.5 items-center">
-              <Avatar className="size-[40px]">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <div className="text-body2">Kelly Clarkson</div>
-            </div>
-            <div className="mt-[12px] text-subtitle">
-              <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Deleniti harum doloremque magni, sapiente est nostrum
-                consequuntur libero delectus reiciendis quo, quod, quis
-                temporibus soluta ab rerum animi perspiciatis totam! Ab?
-              </p>
-            </div>
-            <div className="mt-[4px] text-subtitle2 text-grey-4 text-end">
-              2024.06.22
-            </div>
-          </div>
-          <div className="px-[16px] py-[14px] bg-grey-1 rounded-[16px]">
-            <div className="flex gap-2.5 items-center">
-              <Avatar className="size-[40px]">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <div className="text-body2">Kelly Clarkson</div>
-            </div>
-            <div className="mt-[12px] text-subtitle">
-              <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Deleniti harum doloremque magni, sapiente est nostrum
-                consequuntur libero delectus reiciendis quo, quod, quis
-                temporibus soluta ab rerum animi perspiciatis totam! Ab?
-              </p>
-            </div>
-            <div className="mt-[4px] text-subtitle2 text-grey-4 text-end">
-              2024.06.22
-            </div>
-          </div>
-        </div>
-      </section>
-      <section className="mt-[35px] flex justify-center">
-        <div className="text-primary-red">Leave Membership</div>
-      </section>
+      <div className="mt-[26px] mb-[28px]">image</div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-[20px]">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem className="space-y-[6px]">
+                <FormLabel className="text-body2 font-normal">Name</FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <EditOutlinedIcon
+                      className="absolute top-1/2 -translate-y-1/2 right-[22px]"
+                      fontSize="small"
+                    />
+                    <input
+                      className="flex h-10 w-full rounded-[10px] bg-background px-3 pl-2 pr-[46px] text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary-yellow focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 border border-grey-2"
+                      {...field}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="nationality"
+            render={({ field }) => (
+              <FormItem className="space-y-[6px]">
+                <FormLabel className="text-body2 font-normal">
+                  Nationality
+                </FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger className="focus:ring-primary-yellow focus:ring-offset-0 focus:ring-1 rounded-[12px]">
+                      <SelectValue placeholder="Select a verified email to display" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent className="rounded-[12px]">
+                    <SelectItem
+                      className="focus:bg-secondary-yellow text-body2 font-normal rounded-[12px]"
+                      value="m@example.com"
+                    >
+                      m@example.com
+                    </SelectItem>
+                    <SelectItem
+                      className="focus:bg-secondary-yellow text-body2 font-normal rounded-[12px]"
+                      value="m@google.com"
+                    >
+                      m@google.com
+                    </SelectItem>
+                    <SelectItem
+                      className="focus:bg-secondary-yellow text-body2 font-normal rounded-[12px]"
+                      value="m@support.com"
+                    >
+                      m@support.com
+                    </SelectItem>
+                    <SelectItem
+                      className="focus:bg-secondary-yellow text-body2 font-normal rounded-[12px]"
+                      value="m@support.com"
+                    >
+                      m@support.com
+                    </SelectItem>
+                    <SelectItem
+                      className="focus:bg-secondary-yellow text-body2 font-normal rounded-[12px]"
+                      value="m@support.com"
+                    >
+                      m@support.com
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="introduction"
+            render={({ field }) => (
+              <FormItem className="space-y-[11px]">
+                <FormLabel className="text-h3 font-semibold">
+                  Introduce yourself
+                </FormLabel>
+                <FormControl>
+                  <div>
+                    <CountingTextAreaForForm {...field} />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button variant={'destructive'} type="submit">Submit</Button>
+        </form>
+      </Form>
     </>
   );
 }
