@@ -3,6 +3,7 @@ import ExperienceCard from "@/components/ExperienceCard";
 import { Button } from "@/components/ui/wageulButton";
 import EastRoundedIcon from "@mui/icons-material/EastRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import BottomNav from "@/components/BottomNav";
 
 export default async function Page() {
   return (
@@ -15,7 +16,7 @@ export default async function Page() {
         <EastRoundedIcon fontSize="small" />
       </Button>
       <section className="pt-[57px]">
-        <div className="flex gap-2.5 px-[18px] py-[10px] w-[302px] rounded-full mx-auto shadow-light items-center">
+        <div className="flex gap-2.5 px-[18px] py-[10px] w-[302px] rounded-full mx-auto shadow-light items-center bg-background">
           <SearchRoundedIcon fontSize="small" />
           <input
             className="w-full outline-none placeholder-grey-3"
@@ -35,6 +36,7 @@ export default async function Page() {
           <ExperienceCard />
         </div>
       </section>
+      <BottomNav />
     </BackgroundLayout>
   );
 }

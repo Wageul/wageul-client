@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { VariantProps, cva } from "class-variance-authority";
 
-const layoutVariants = cva("pt-4 px-[20px] min-h-screen bg-grey-1", {
+const layoutVariants = cva("pt-4 pb-[83px] px-[20px] min-h-screen bg-grey-1", {
   variants: {
     background: {
       white: "bg-background",
