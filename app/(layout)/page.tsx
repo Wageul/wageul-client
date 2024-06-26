@@ -1,47 +1,50 @@
+import { BackgroundLayout } from "@/components/BackgroundLayout";
 import { Button } from "@/components/ui/wageulButton";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="relative flex flex-col gap-2.5 items-center">
-      <div className="relative w-full h-[572px] rounded-[24px] overflow-hidden">
-        <div className="absolute w-[600px] h-[849px] top-[35%] left-1/2 transform -translate-x-1/2 -translate-y-[35%]">
-          <Image
-            src="/main.avif"
-            alt="main image"
-            layout="fill"
-            objectFit="cover"
-          />
+    <BackgroundLayout>
+      <div className="relative flex flex-col gap-2.5 items-center">
+        <div className="relative w-full h-[572px] rounded-[24px] overflow-hidden">
+          <div className="absolute w-[600px] h-[849px] top-[35%] left-1/2 transform -translate-x-1/2 -translate-y-[35%]">
+            <Image
+              src="/main.avif"
+              alt="main image"
+              layout="fill"
+              objectFit="cover"
+            />
+          </div>
+          <div className="absolute w-[216px] top-[44px] left-[20px] z-10 text-h1 text-primary-foreground font-extrabold">
+            <div>HELLO!</div>
+            <div>enjoy your trip to Korea</div>
+          </div>
         </div>
-        <div className="absolute w-[216px] top-[44px] left-[20px] z-10 text-h1 text-primary-foreground font-extrabold">
-          <div>HELLO!</div>
-          <div>enjoy your trip to Korea</div>
-        </div>
-      </div>
-      <Button
-        variant={"white"}
-        size={"xl"}
-        className="text-body1 font-normal border border-primary-yellow py-2 flex gap-0.5"
-      >
-        <Image
-          src={"/web_light_rd_na.svg"}
-          width={39}
-          height={39}
-          alt="google"
-        />
-        <span>Sign in with google</span>
-      </Button>
-      <Link href={"/experience"}>
         <Button
           variant={"white"}
           size={"xl"}
-          className="text-body1 font-normal"
+          className="text-body1 font-normal border border-primary-yellow py-2 flex gap-0.5"
         >
-          No, I&apos;ll do it later
+          <Image
+            src={"/web_light_rd_na.svg"}
+            width={39}
+            height={39}
+            alt="google"
+          />
+          <span>Sign in with google</span>
         </Button>
-      </Link>
-    </div>
+        <Link href={"/experience"}>
+          <Button
+            variant={"white"}
+            size={"xl"}
+            className="text-body1 font-normal"
+          >
+            No, I&apos;ll do it later
+          </Button>
+        </Link>
+      </div>
+    </BackgroundLayout>
   );
 }
 

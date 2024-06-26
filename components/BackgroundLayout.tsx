@@ -17,7 +17,7 @@ interface DivProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof layoutVariants> {
   label?: string;
-  children?: React.ReactElement[];
+  children?: React.ReactElement | React.ReactElement[];
 }
 
 export function BackgroundLayout({ children, background }: DivProps) {
