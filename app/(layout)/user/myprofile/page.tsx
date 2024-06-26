@@ -1,14 +1,11 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import StarRoundedIcon from "@mui/icons-material/StarRounded";
-import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import { Button } from "@/components/ui/wageulButton";
-import CountingTextArea from "@/components/CountingTextArea";
 import { AboutMe, ProfileHeader, ReviewList } from "@/components/Profile";
 import Link from "next/link";
+import { BackgroundLayout } from "@/components/BackgroundLayout";
 
 export default async function Page({ params }: { params: { id: string } }) {
   return (
-    <>
+    <BackgroundLayout>
       <ProfileHeader />
       <div className="mt-[35px] flex justify-center">
         <Link href={'/user/myprofile/edit'}>
@@ -22,6 +19,6 @@ export default async function Page({ params }: { params: { id: string } }) {
       {/* <section className="mt-[35px] flex justify-center">
         <div className="text-primary-red">Leave Membership</div>
       </section> */}
-    </>
+    </BackgroundLayout>
   );
 }

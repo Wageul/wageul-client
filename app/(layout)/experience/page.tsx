@@ -1,3 +1,4 @@
+import { BackgroundLayout } from "@/components/BackgroundLayout";
 import ExperienceCard from "@/components/ExperienceCard";
 import { Button } from "@/components/ui/wageulButton";
 import EastRoundedIcon from "@mui/icons-material/EastRounded";
@@ -5,7 +6,7 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 
 export default async function Page() {
   return (
-    <>
+    <BackgroundLayout background={"grey"}>
       <Button
         variant={"white"}
         className="w-[302px] fixed left-1/2 transform -translate-x-1/2 px-[18px] py-[10px] flex justify-between text-primary-red font-normal z-10"
@@ -34,6 +35,6 @@ export default async function Page() {
           <ExperienceCard />
         </div>
       </section>
-    </>
+    </BackgroundLayout>
   );
 }

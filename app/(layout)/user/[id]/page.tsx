@@ -3,10 +3,11 @@ import StarRoundedIcon from "@mui/icons-material/StarRounded";
 import { Button } from "@/components/ui/wageulButton";
 import CountingTextArea from "@/components/CountingTextArea";
 import { AboutMe, ProfileHeader, ReviewList } from "@/components/Profile";
+import { BackgroundLayout } from "@/components/BackgroundLayout";
 
 export default async function Page({ params }: { params: { id: string } }) {
   return (
-    <>
+    <BackgroundLayout>
       <ProfileHeader />
       <AboutMe />
       <section className="mt-[30px]">
@@ -34,6 +35,6 @@ export default async function Page({ params }: { params: { id: string } }) {
         </div>
       </section>
       <ReviewList />
-    </>
+    </BackgroundLayout>
   );
 }

@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/wageulButton";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import { useState } from "react";
 import Image from "next/image";
+import { BackgroundLayout } from "@/components/BackgroundLayout";
 
 {
   /* <Avatar className="size-[40px]">
@@ -86,7 +87,7 @@ export default function Page({ params }: { params: { id: string } }) {
   };
 
   return (
-    <>
+    <BackgroundLayout>
       <div className="w-full text-center text-h3 font-semibold">
         Edit profile
       </div>
@@ -246,6 +247,6 @@ export default function Page({ params }: { params: { id: string } }) {
           </Button>
         </form>
       </Form>
-    </>
+    </BackgroundLayout>
   );
 }

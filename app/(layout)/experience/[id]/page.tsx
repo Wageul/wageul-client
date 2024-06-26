@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/carousel";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { BackgroundLayout } from "@/components/BackgroundLayout";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [api, setApi] = useState<CarouselApi>();
@@ -33,8 +34,7 @@ export default function Page({ params }: { params: { id: string } }) {
   }, [api]);
 
   return (
-    <div className="bg-grey-2">
-      {/* <div className="w-[320px] h-[309px] bg-grey-2"> */}
+    <BackgroundLayout background={'grey'}>
       <div>
         <Carousel setApi={setApi} className="relative w-full h-[309px]">
           <CarouselContent>
@@ -156,6 +156,6 @@ export default function Page({ params }: { params: { id: string } }) {
           </div>
         </div>
       </section>
-    </div>
+    </ BackgroundLayout>
   );
 }
