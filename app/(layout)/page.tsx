@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
+
   return (
     <BackgroundLayout>
       <div className="relative flex flex-col gap-2.5 items-center">
@@ -21,19 +22,21 @@ export default function Home() {
             <div>enjoy your trip to Korea</div>
           </div>
         </div>
-        <Button
-          variant={"white"}
-          size={"xl"}
-          className="text-body1 font-normal border border-primary-yellow py-2 flex gap-0.5"
-        >
-          <Image
-            src={"/web_light_rd_na.svg"}
-            width={39}
-            height={39}
-            alt="google"
-          />
-          <span>Sign in with google</span>
-        </Button>
+        <a href={`${process.env.API_URL}/login/oauth2/authorization/google`}>
+          <Button
+            variant={"white"}
+            size={"xl"}
+            className="text-body1 font-normal border border-primary-yellow py-2 flex gap-0.5"
+          >
+            <Image
+              src={"/web_light_rd_na.svg"}
+              width={39}
+              height={39}
+              alt="google"
+            />
+            <span>Sign in with google</span>
+          </Button>
+        </a>
         <Link href={"/experience"}>
           <Button
             variant={"white"}
