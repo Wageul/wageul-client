@@ -7,7 +7,7 @@ import { fetchExperience } from "@/lib/data";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const data = await fetchExperience(params.id);
-  console.log(data);
+  // console.log(data);
 
   return (
     <BackgroundLayout background={"grey"}>

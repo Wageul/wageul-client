@@ -6,7 +6,7 @@ import BottomNav from "@/components/BottomNav";
 
 export default async function Page({ params }: { params: { id: string } }) {
   return (
-    <BackgroundLayout>
+    <BackgroundLayout bottomNav={"yes"}>
       <ProfileHeader />
       <div className="mt-[35px] flex justify-center">
         <Link href={'/user/myprofile/edit'}>

@@ -9,15 +9,17 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        default: "bg-primary text-primary-foreground hover:brightness-[0.95]",
         primaryRed:
-          "bg-primary-red text-primary-foreground hover:bg-primary-red/90 shadow-light",
+          "bg-primary-red text-primary-foreground hover:brightness-[0.95] shadow-light",
         primaryBlue:
-          "bg-primary-blue text-primary-foreground hover:bg-primary-blue/90 shadow-light",
+          "bg-primary-blue text-primary-foreground hover:brightness-[0.95] shadow-light",
         primaryYellow:
-          "bg-primary-yellow text-primary-foreground hover:bg-primary-yellow/90 shadow-light",
+          "bg-primary-yellow text-primary-foreground hover:brightness-[0.95] shadow-light",
         white:
           "bg-background text-foreground shadow-light hover:brightness-[0.98]",
+        grey:
+          "bg-grey-2 text-foreground hover:brightness-[0.98] shadow-light"
       },
       size: {
         default: "h-10 px-4 py-2",

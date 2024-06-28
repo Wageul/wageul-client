@@ -6,8 +6,14 @@ export async function fetchExperience(id: string) {
   }
   try {
     console.log(apiUrl + `/api/experience/${id}`);
-    const response = await fetch(apiUrl + `/api/experience/${id}`);
-    const data = response.json();
+    const response = await fetch(apiUrl + `/api/experience/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+    });
+    const data = await response.json();
+    console.log(data);
     return data;
   } catch (err) {
     console.error("Server Error:", err);

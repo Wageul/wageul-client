@@ -1,15 +1,20 @@
 import { cn } from "@/lib/utils";
 import { VariantProps, cva } from "class-variance-authority";
 
-const layoutVariants = cva("pt-4 pb-[83px] px-[20px] min-h-screen bg-grey-1", {
+const layoutVariants = cva("pt-4 px-[20px] min-h-screen bg-grey-1", {
   variants: {
     background: {
       white: "bg-background",
       grey: "bg-grey-1",
     },
+    bottomNav: {
+      yes: "pb-[83px]",
+      no: "",
+    },
   },
   defaultVariants: {
     background: "white",
+    bottomNav: "no",
   },
 });
 
@@ -20,6 +25,14 @@ interface DivProps
   children?: React.ReactElement | React.ReactElement[];
 }
 
-export function BackgroundLayout({ children, background }: DivProps) {
-  return <div className={cn(layoutVariants({ background }))}>{children}</div>;
+export function BackgroundLayout({
+  children,
+  background,
+  bottomNav,
+}: DivProps) {
+  return (
+    <div className={cn(layoutVariants({ background, bottomNav }))}>
+      {children}
+    </div>
+  );
 }

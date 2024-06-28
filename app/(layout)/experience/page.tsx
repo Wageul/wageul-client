@@ -7,7 +7,7 @@ import BottomNav from "@/components/BottomNav";
 
 export default async function Page() {
   return (
-    <BackgroundLayout background={"grey"}>
+    <BackgroundLayout background={"grey"} bottomNav={"yes"}>
       <Button
         variant={"white"}
         className="w-[302px] fixed left-1/2 transform -translate-x-1/2 px-[18px] py-[10px] flex justify-between text-primary-red font-normal z-10"
