@@ -228,6 +228,7 @@ export default function Page({ params }: { params: { id: string } }) {
                   <div>
                     <CountingTextAreaForForm
                       placeholder="Please enter your self-introduction. (You must enter at least 50 characters to join the experience.)"
+                      variant="profile"
                       {...field}
                     />
                   </div>

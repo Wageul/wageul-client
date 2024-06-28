@@ -36,6 +36,7 @@ import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import Link from "next/link";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import CountingTextAreaForForm from "@/components/CountingTextAreaForForm";
 
 export default function Page() {
   const [step, setStep] = useState(1);
@@ -54,6 +55,7 @@ export default function Page() {
     date: z.date({ required_error: "A date is required." }),
     hour: z.string().min(2).max(50),
     minute: z.string().min(2).max(50),
+    detail: z.string().min(2).max(50),
     duration: z.string().min(2).max(50),
     expense: z.string().min(2).max(50),
     contact: z.string().min(2).max(50),
@@ -68,6 +70,7 @@ export default function Page() {
       location: "",
       hour: "",
       minute: "",
+      detail: "",
       duration: "",
       participants: "",
       language: "",
@@ -256,6 +259,23 @@ export default function Page() {
                       )}
                     />
                   </div>
+                  <FormField
+                    control={form.control}
+                    name="detail"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormControl>
+                          <CountingTextAreaForForm
+                            variant="experience"
+                            placeholder="Please write down a detailed description of the experience"
+                            {...field}
+                          />
+                        </FormControl>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
                 <div className="mt-[26px] space-y-[26px]">
                   <FormField
