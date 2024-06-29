@@ -71,7 +71,6 @@ export default function Page({ params }: { params: { id: string } }) {
   }
 
   const [profileImageUrl, setProfileImageUrl] = useState("");
-  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
 
   const handleProfileImageChange = (
     e: React.ChangeEvent<HTMLInputElement>,

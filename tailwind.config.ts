@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 const config = {
   darkMode: ["class"],
@@ -10,6 +11,10 @@ const config = {
   ],
   prefix: "",
   theme: {
+    screens: {
+      xs: "475px",
+      ...defaultTheme.screens,
+    },
     container: {
       center: true,
       padding: "2rem",
@@ -39,10 +44,10 @@ const config = {
     },
     extend: {
       boxShadow: {
-        heavy: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
-        light: '0px 0px 10px 0px rgba(0, 0, 0, 0.1)',
-        green: '0 0px 10px 0px rgba(36, 153, 0, 0.25)',
-        red: '0px 0px 10px 0px rgba(234, 0, 6, 0.25)',
+        heavy: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+        light: "0px 0px 10px 0px rgba(0, 0, 0, 0.1)",
+        green: "0 0px 10px 0px rgba(36, 153, 0, 0.25)",
+        red: "0px 0px 10px 0px rgba(234, 0, 6, 0.25)",
       },
       colors: {
         white: "#FFFFFF",

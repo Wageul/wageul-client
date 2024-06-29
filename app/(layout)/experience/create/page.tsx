@@ -3,9 +3,9 @@
 import { BackgroundLayout } from "@/components/BackgroundLayout";
 import { Button } from "@/components/ui/wageulButton";
 import { useState } from "react";
-import { z } from "zod";
+import { nullable, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -33,10 +33,47 @@ import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import AccessAlarmOutlinedIcon from "@mui/icons-material/AccessAlarmOutlined";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import Link from "next/link";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
+import { closestIndexTo, format } from "date-fns";
 import CountingTextAreaForForm from "@/components/CountingTextAreaForForm";
+import HorizontalScrollContainer from "@/components/HorizontalScrollContainer";
+import Image from "next/image";
+
+const MAX_IMG_NUM = 3;
+const ACCEPTED_FILE_TYPES = [
+  "image/jpg",
+  "image/jpeg",
+  "image/png",
+  "image/avif",
+  "image/gif",
+  "image/webp",
+];
+
+const formSchema = z.object({
+  title: z.string().min(2).max(50),
+  location: z.string().min(2).max(50),
+  date: z.date({ required_error: "A date is required." }),
+  hour: z.string().min(2).max(50),
+  minute: z.string().min(2).max(50),
+  detail: z.string().min(2).max(100),
+  duration: z.string().min(2).max(50),
+  expense: z.string().min(2).max(50),
+  contact: z.string().min(2).max(50),
+  participants: z.string().min(2).max(50),
+  language: z.string().min(2).max(50),
+  images: z.array(
+    z.object({
+      imgfile: z
+        .instanceof(File, { message: "Image is required" })
+        .refine(
+          (file) => ACCEPTED_FILE_TYPES.includes(file.type),
+          "File must be an image."
+        )
+        .nullable(),
+    })
+  ),
+});
 
 export default function Page() {
   const [step, setStep] = useState(1);
@@ -49,20 +86,6 @@ export default function Page() {
     setStep(step - 1);
   };
 
-  const formSchema = z.object({
-    title: z.string().min(2).max(50),
-    location: z.string().min(2).max(50),
-    date: z.date({ required_error: "A date is required." }),
-    hour: z.string().min(2).max(50),
-    minute: z.string().min(2).max(50),
-    detail: z.string().min(2).max(50),
-    duration: z.string().min(2).max(50),
-    expense: z.string().min(2).max(50),
-    contact: z.string().min(2).max(50),
-    participants: z.string().min(2).max(50),
-    language: z.string().min(2).max(50),
-  });
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -74,14 +97,54 @@ export default function Page() {
       duration: "",
       participants: "",
       language: "",
+      images: [{ imgfile: null }],
     },
   });
+
+  const imagesFieldsArray = useFieldArray({
+    control: form.control,
+    name: "images",
+  });
+
+  const {
+    fields: imageFilesFields,
+    append: appendImageFileField,
+    remove: removeImageFileField,
+  } = imagesFieldsArray;
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
+  const [imageList, setImageList] = useState<string[]>([]);
+
+  const appendImage = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    onChange: (...event: any[]) => void
+  ) => {
+    if (!e.target.files) return;
+    const file = e.target.files[0];
+    onChange(file);
+    if (file) {
+      appendImageFileField(
+        {
+          imgfile: null,
+        },
+        { shouldFocus: true }
+      );
+      let image = window.URL.createObjectURL(file);
+      setImageList([...imageList, image]);
+    }
+  };
+
+  const appendImage2 = () => {
+    setImageList([...imageList, "/main.avif"]);
+  };
+
+  const deleteImage = (deleteAt: number) => {
+    setImageList(imageList.filter((_, index) => index !== deleteAt));
+  };
 
   return (
     <BackgroundLayout>
@@ -276,6 +339,91 @@ export default function Page() {
                       </FormItem>
                     )}
                   />
+                  <HorizontalScrollContainer>
+                    {imageFilesFields.map(
+                      (item, index) =>
+                        index < 3 && (
+                          <div key={item.id}>
+                            <FormField
+                              control={form.control}
+                              name={`images.${index}.imgfile`}
+                              render={({
+                                field: { value, onChange, ...fieldProps },
+                              }) => (
+                                <FormItem>
+                                  {index + 1 < imageFilesFields.length && (
+                                    <div className="relative size-[120px] rounded-[16px] overflow-hidden border border-grey-2">
+                                      <Image
+                                        src={imageList[index]}
+                                        fill={true}
+                                        alt={"experience"}
+                                        style={{ objectFit: "cover" }}
+                                      />
+                                      <div
+                                        className="absolute flex justify-center items-center size-[20px] right-[7px] top-[7px] bg-grey-2 hover:cursor-pointer rounded-full"
+                                        onClick={() => {
+                                          removeImageFileField(index);
+                                          deleteImage(index);
+                                        }}
+                                      >
+                                        <CloseRoundedIcon className="text-subtitle" />
+                                      </div>
+                                    </div>
+                                  )}
+                                  {index + 1 === imageFilesFields.length && (
+                                    <FormLabel htmlFor={`imageFile${index}`}>
+                                      <div className="size-[120px] relative border border-grey-2 hover:cursor-pointer rounded-[16px] flex justify-center items-center">
+                                        <div className="flex flex-col items-center gap-[14px]">
+                                          <div className="relative size-[52px] bg-grey-1 rounded-full flex justify-center items-center">
+                                            <CameraAltOutlinedIcon
+                                              fontSize="medium"
+                                              className="text-black"
+                                              fontWeight={"bold"}
+                                            />
+                                            <div className="flex absolute -bottom-[2px] -right-[3px] size-[20px] justify-center items-center bg-primary-yellow rounded-full text-h3 text-background font-normal">
+                                              <span>+</span>
+                                            </div>
+                                          </div>
+                                          <div className="text-grey-3 text-body2">
+                                            {index + 1}/{MAX_IMG_NUM}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </FormLabel>
+                                  )}
+                                  <FormControl>
+                                    <input
+                                      {...fieldProps}
+                                      type="file"
+                                      id={`imageFile${index}`}
+                                      accept="image/*"
+                                      onChange={(e) => {
+                                        // appendImage(e);
+                                        appendImage(e, onChange);
+                                      }}
+                                      className="hidden"
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                        )
+                    )}
+                    {Array.from({
+                      length: MAX_IMG_NUM - imageFilesFields.length,
+                    }).map((_, index) => (
+                      <div
+                        key={index}
+                        className="size-[120px] flex justify-center items-center border border-grey-2 rounded-[16px]"
+                      >
+                        <div className="size-[20px] flex justify-center items-center bg-grey-2 rounded-full text-h3 text-background font-normal">
+                          <span>+</span>
+                        </div>
+                      </div>
+                    ))}
+                  </HorizontalScrollContainer>
                 </div>
                 <div className="mt-[26px] space-y-[26px]">
                   <FormField
