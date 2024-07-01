@@ -4,8 +4,22 @@ import { Button } from "@/components/ui/wageulButton";
 import EastRoundedIcon from "@mui/icons-material/EastRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import BottomNav from "@/components/BottomNav";
+import { fetchAllExperience, fetchUserDataByToken } from "@/lib/data";
+import { cookies } from "next/headers";
 
 export default async function Page() {
+  // const cookieStore = cookies();
+  // const hasToken = cookieStore.has("token");
+  // if(hasToken){
+  //   const userData = await fetchUserDataByToken(cookieStore.get('token')!.value);
+  //   console.log(userData);
+  // }else{
+  //   console.log('no token')
+  // }
+
+  const experienceList = await fetchAllExperience();
+  console.log(experienceList);
+
   return (
     <BackgroundLayout background={"grey"} bottomNav={"yes"}>
       <Button
@@ -27,13 +41,9 @@ export default async function Page() {
       <section className="mt-[35px]">
         <div className="text-h2 font-semibold">Latest</div>
         <div className="mt-[11px] flex flex-col gap-2.5">
-          <ExperienceCard />
-          <ExperienceCard />
-          <ExperienceCard />
-          <ExperienceCard />
-          <ExperienceCard />
-          <ExperienceCard />
-          <ExperienceCard />
+          {experienceList.map((data, index) => (
+            <ExperienceCard key={index} data={data} />
+          ))}
         </div>
       </section>
       <BottomNav />

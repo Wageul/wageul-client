@@ -3,11 +3,11 @@ import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BackgroundLayout } from "@/components/BackgroundLayout";
 import Carousel from "@/components/Carousel";
-import { fetchExperience } from "@/lib/data";
+import { fetchExperienceById } from "@/lib/data";
 import { formatDateString, formatDuration } from "@/lib/formatters";
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const data = await fetchExperience(params.id);
+  const data = await fetchExperienceById(params.id);
   // console.log(data);
 
   const {

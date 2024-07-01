@@ -1,8 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { formatDateString } from "@/lib/formatters";
+import { Experience } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ExperienceCard() {
+export default function ExperienceCard({ data }: { data: Experience }) {
+
+  const { dateInDotFormat, timeInFormat } = formatDateString(data.datetime);
+
   return (
     <Link href={"/experience/example"}>
       <div className="relative p-[15px] rounded-[20px] border border-grey-2 bg-background hover:brightness-[0.98]">
@@ -14,7 +19,7 @@ export default function ExperienceCard() {
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div className="text-body1">
-            Going to a cart bar like a Korean office work
+            {data.title}
           </div>
         </div>
         <div className="mt-[15px] text-subtitle flex gap-[17px]">
@@ -29,15 +34,15 @@ export default function ExperienceCard() {
           <div>
             <div className="flex gap-2">
               <div className="text-grey-4 w-[40px]">where</div>
-              <div>Seoul Gangnamgu</div>
+              <div>{data.location}</div>
             </div>
             <div className="flex gap-2">
               <div className="text-grey-4 w-[40px]">when</div>
-              <div>2024.06.21</div>
+              <div>{dateInDotFormat}</div>
             </div>
             <div className="flex gap-2">
               <div className="text-grey-4 w-[40px]">speak</div>
-              <div>English</div>
+              <div>{data.language}</div>
             </div>
             <div className="flex gap-2">
               <div className="text-grey-4 w-[40px]">who</div>
