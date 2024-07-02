@@ -8,14 +8,14 @@ import { fetchAllExperience, fetchUserDataByToken } from "@/lib/data";
 import { cookies } from "next/headers";
 
 export default async function Page() {
-  // const cookieStore = cookies();
-  // const hasToken = cookieStore.has("token");
-  // if(hasToken){
-  //   const userData = await fetchUserDataByToken(cookieStore.get('token')!.value);
-  //   console.log(userData);
-  // }else{
-  //   console.log('no token')
-  // }
+  const cookieStore = cookies();
+  const hasToken = cookieStore.has("token");
+  if(hasToken){
+    const userData = await fetchUserDataByToken(cookieStore.get('token')!.value);
+    console.log(userData);
+  }else{
+    console.log('no token')
+  }
 
   const experienceList = await fetchAllExperience();
   console.log(experienceList);

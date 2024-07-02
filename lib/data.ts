@@ -51,11 +51,11 @@ export async function fetchUserDataByToken(token: string) {
       },
       credentials: "include",
     });
-    // const data = await response.json();
+    const data = await response.json();
     console.log(response);
     return response;
   } catch (err) {
     console.error("Server Error:", err);
-    throw new Error("Failed to fetch the experience.");
+    throw new Error("Failed to fetch the user.");
   }
 }
