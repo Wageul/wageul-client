@@ -47,7 +47,7 @@ export async function fetchUserDataByToken(token: string) {
         Accept: "application/json",
         "Content-Type": "application/json",
         // Authorization: `Bearer ${token}`,
-        Authorization: token,
+        // Authorization: token,
       },
       credentials: "include",
     });
