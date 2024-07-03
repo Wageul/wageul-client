@@ -1,6 +1,6 @@
 import { Experience } from "./types";
 
-const apiUrl = process.env.API_URL;
+const apiUrl = process.env.API_URL3;
 
 export async function fetchExperienceById(id: string) {
   if (!apiUrl) {
@@ -25,7 +25,7 @@ export async function fetchAllExperience() {
   try {
     const response = await fetch(apiUrl + "/experience");
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     return data as Experience[];
   } catch (err) {
     console.error("Server Error:", err);
@@ -38,24 +38,32 @@ export async function fetchUserDataByToken(token: string) {
     throw new Error("API URL is not defined");
   }
   try {
-    console.log("token:", token);
+    // console.log("token:", token);
     const url = apiUrl + "/user";
-    console.log(url);
+    console.log('url:', url);
     const response = await fetch(url, {
-      method: 'GET',
+      method: "GET",
+      credentials: "include",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Cookie: `token=${token}`,
         // Authorization: `Bearer ${token}`,
         // Authorization: token,
       },
-      credentials: "include",
     });
     const data = await response.json();
-    console.log(response);
-    return response;
+    console.log(data);
+    return data;
   } catch (err) {
     console.error("Server Error:", err);
     throw new Error("Failed to fetch the user.");
   }
+}
+
+export async function fetchUserFromRouteHandler() {
+  const response = await fetch("http://localhost:3000/api/user");
+  const data = await response.json();
+
+  return data;
 }

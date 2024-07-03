@@ -23,3 +23,15 @@ export interface Experience {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface User {
+  id: number;
+  email: string;
+  profileImg: string | null;
+  name: string;
+  username: string;
+  nationality: string | null;
+  introduce: string | null;
+  createdAt: string;
+  updatedAt: string;
+}

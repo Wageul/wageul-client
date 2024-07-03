@@ -1,26 +1,45 @@
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatDateString } from "@/lib/formatters";
 import { Experience } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
+import BookmarkBorderRoundedIcon from "@mui/icons-material/BookmarkBorderRounded";
 
-export default function ExperienceCard({ data }: { data: Experience }) {
-
+export default function ExperienceCard({
+  data,
+  loggedIn,
+}: {
+  data: Experience;
+  loggedIn: boolean;
+}) {
   const { dateInDotFormat, timeInFormat } = formatDateString(data.datetime);
 
   return (
-    <Link href={"/experience/example"}>
+    <Link href={"/experience/"+data.id}>
       <div className="relative p-[15px] rounded-[20px] border border-grey-2 bg-background hover:brightness-[0.98]">
         <div className="absolute size-[20px] -top-[5px] left-0 bg-secondary-green rounded-full shadow-green"></div>
         {/* <div className="absolute size-[20px] -top-[5px] left-0 bg-primary-red rounded-full shadow-red"></div> */}
-        <div className="flex gap-2.5 items-center">
-          <Avatar className="size-[32px]">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <div className="text-body1">
-            {data.title}
+        <div className="flex justify-between">
+          <div className="flex gap-2.5 items-center">
+            <Avatar className="size-[32px]">
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <div className="text-body1">{data.title}</div>
           </div>
+          {loggedIn && (
+            <button
+              className="hover:cursor-pointer hover:text-primary-red flex justify-center items-center"
+              onClick={(e) => {
+                e.preventDefault();
+                // bookmark mutation logics come here
+              }}
+            >
+              <BookmarkBorderRoundedIcon />
+            </button>
+          )}
         </div>
         <div className="mt-[15px] text-subtitle flex gap-[17px]">
           <div className="rounded-[12px] overflow-hidden relative w-[95px] h-[93px]">

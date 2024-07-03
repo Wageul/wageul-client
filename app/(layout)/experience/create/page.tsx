@@ -35,7 +35,7 @@ import AccessAlarmOutlinedIcon from "@mui/icons-material/AccessAlarmOutlined";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import Link from "next/link";
-import { closestIndexTo, format } from "date-fns";
+import { format } from "date-fns";
 import CountingTextAreaForForm from "@/components/CountingTextAreaForForm";
 import HorizontalScrollContainer from "@/components/HorizontalScrollContainer";
 import Image from "next/image";
@@ -136,10 +136,6 @@ export default function Page() {
       let image = window.URL.createObjectURL(file);
       setImageList([...imageList, image]);
     }
-  };
-
-  const appendImage2 = () => {
-    setImageList([...imageList, "/main.avif"]);
   };
 
   const deleteImage = (deleteAt: number) => {
@@ -440,7 +436,7 @@ export default function Page() {
                         >
                           <FormControl>
                             <SelectTrigger className="focus:ring-primary-red focus:ring-offset-0 focus:ring-1 rounded-2.5 pl-[24px] pr-[12px] py-[12px] h-[44px]">
-                              <SelectValue placeholder="Select a verified email to display" />
+                              <SelectValue placeholder="Select a duration" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="rounded-2.5">
@@ -494,7 +490,7 @@ export default function Page() {
                         >
                           <FormControl>
                             <SelectTrigger className="focus:ring-primary-red focus:ring-offset-0 focus:ring-1 rounded-2.5 pl-[24px] pr-[12px] py-[12px] h-[44px]">
-                              <SelectValue placeholder="Select a verified email to display" />
+                              <SelectValue placeholder="Select an expense" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="rounded-2.5">
