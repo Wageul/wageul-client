@@ -29,6 +29,7 @@ const buttonVariants = cva(
         xl: "w-[317px] py-[10.5px]",
       },
       textStyle: {
+        subtitle2: "text-[12px]",
         default: "text-[16px]",
         body1: "text-[18px]"
       },

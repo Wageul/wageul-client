@@ -7,11 +7,14 @@ export async function fetchExperienceById(id: string) {
     throw new Error("API URL is not defined");
   }
   try {
-    console.log(apiUrl + `/experience/${id}`);
-    const response = await fetch(apiUrl + `/experience/${id}`);
+    const url = apiUrl + `/experience/${id}`;
+    console.log(url);
+    const response = await fetch(url, {
+      method: "GET",
+    });
     const data = await response.json();
     console.log(data);
-    return data;
+    return data as Experience;
   } catch (err) {
     console.error("Server Error:", err);
     throw new Error("Failed to fetch the experience.");
@@ -25,7 +28,7 @@ export async function fetchAllExperience() {
   try {
     const response = await fetch(apiUrl + "/experience");
     const data = await response.json();
-    // console.log(data);
+    console.log(data);
     return data as Experience[];
   } catch (err) {
     console.error("Server Error:", err);
@@ -40,7 +43,7 @@ export async function fetchUserDataByToken(token: string) {
   try {
     // console.log("token:", token);
     const url = apiUrl + "/user";
-    console.log('url:', url);
+    console.log("url:", url);
     const response = await fetch(url, {
       method: "GET",
       credentials: "include",
@@ -52,6 +55,7 @@ export async function fetchUserDataByToken(token: string) {
         // Authorization: token,
       },
     });
+    console.log("status code:", response.status);
     const data = await response.json();
     console.log(data);
     return data;
