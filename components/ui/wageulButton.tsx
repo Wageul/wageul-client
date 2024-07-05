@@ -27,6 +27,7 @@ const buttonVariants = cva(
         lg: "px-[23px] py-[13px]",
         icon: "h-10 w-10",
         xl: "w-[317px] py-[10.5px]",
+        dialog: "w-[273px] py-[10px] px-[44.5px]"
       },
       textStyle: {
         subtitle2: "text-[12px]",

@@ -4,29 +4,13 @@ import { Button } from "@/components/ui/wageulButton";
 import EastRoundedIcon from "@mui/icons-material/EastRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import BottomNav from "@/components/BottomNav";
-import { fetchAllExperience, fetchUserDataByToken } from "@/lib/data";
-import { cookies } from "next/headers";
-import { User } from "@/lib/types";
+import { authenticateUserAndGetData, fetchAllExperience, fetchUserDataByToken } from "@/lib/data";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Link from "next/link";
 
 export default async function Page() {
-  const cookieStore = cookies();
-  const hasToken = cookieStore.has("token");
-  let loggedIn = false;
-  let userData: User | null = null;
-  if (hasToken) {
-    console.log("has token:", cookieStore.get("token")!.value);
-    userData = await fetchUserDataByToken(cookieStore.get("token")!.value);
-    // 토큰이 있는데 일치하지 않는 경우(만료된 경우?) 처리 논의 필요
-    // 안내 메시지와 함께 로그인 화면으로 다시 보내야 할듯.
-    loggedIn = true;
-  } else {
-    console.log("no token");
-  }
-
+  const { loggedIn, data: userData } = await authenticateUserAndGetData();
   const experienceListData = await fetchAllExperience();
-  // console.log(experienceListData);
 
   return (
     <BackgroundLayout
@@ -46,9 +30,9 @@ export default async function Page() {
         <></>
       )}
       <section className={loggedIn ? "pt-[17px]" : "pt-[57px]"}>
-        {loggedIn && (
+        {(loggedIn && userData) && (
           <div className="text-h2 font-semibold text-center mb-[17px]">
-            <span className="text-primary-red">HELLO</span>, {userData!.name}!
+            <span className="text-primary-red">HELLO</span>, {userData.name}!
           </div>
         )}
         <div className="flex gap-2.5 px-[18px] py-[10px] w-[302px] rounded-full mx-auto shadow-light items-center bg-background">
@@ -78,7 +62,7 @@ export default async function Page() {
       ) : (
         <></>
       )}
-      <BottomNav />
+      <BottomNav loggedIn={loggedIn}/>
     </BackgroundLayout>
   );
 }

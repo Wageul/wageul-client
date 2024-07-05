@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { User } from "./types";
 
-const apiUrl = process.env.API_URL3;
+const apiUrl = process.env.DEPLOYED_API_URL;
 
 export async function updateProfile(values: User) {
   const url = apiUrl + `/user/${2}`;

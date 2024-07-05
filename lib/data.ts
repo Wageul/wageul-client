@@ -1,6 +1,8 @@
-import { Experience } from "./types";
+import { cookies } from "next/headers";
+import { Experience, User } from "./types";
 
-const apiUrl = process.env.API_URL3;
+const apiUrl = process.env.DEPLOYED_API_URL;
+const TOKEN_INVALID_CODE = 401;
 
 export async function fetchExperienceById(id: string) {
   if (!apiUrl) {
@@ -33,6 +35,39 @@ export async function fetchAllExperience() {
   } catch (err) {
     console.error("Server Error:", err);
     throw new Error("Failed to fetch the experience.");
+  }
+}
+
+export async function authenticateUserAndGetData() {
+  if (!cookies().has("token")) {
+    return { loggedIn: false, data: null };
+  }
+
+  try {
+    // console.log("token:", token);
+    const url = apiUrl + "/user";
+    console.log("url:", url);
+    const response = await fetch(url, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Cookie: `token=${cookies().get("token")!.value}`,
+      },
+    });
+
+    console.log("status code:", response.status);
+    if (response.status === TOKEN_INVALID_CODE) {
+      return { loggedIn: false, data: null };
+    }
+
+    const data = await response.json();
+    console.log("data from authenticateUserAndGetData", data);
+    return { loggedIn: true, data: data as User };
+  } catch (err) {
+    console.error("Server Error:", err);
+    throw new Error("Failed to fetch the user.");
   }
 }
 
