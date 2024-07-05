@@ -27,6 +27,9 @@ import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import { useState } from "react";
 import Image from "next/image";
 import { BackgroundLayout } from "@/components/BackgroundLayout";
+import { updateProfile } from "@/lib/actions";
+import { countryList } from "@/lib/selectionData";
+// import { cookies } from "next/headers";
 
 {
   /* <Avatar className="size-[40px]">
@@ -44,7 +47,7 @@ const ACCEPTED_FILE_TYPES = [
   "image/webp",
 ];
 
-const formSchema = z.object({
+export const ProfileFormSchema = z.object({
   profileImage: z
     .instanceof(File, { message: "Image is required" })
     .refine(
@@ -57,17 +60,19 @@ const formSchema = z.object({
 });
 
 export default function Page({ params }: { params: { id: string } }) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  // const userId = await fetchUserDataByToken()
+  const form = useForm<z.infer<typeof ProfileFormSchema>>({
+    resolver: zodResolver(ProfileFormSchema),
     defaultValues: {
       name: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof ProfileFormSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    await updateProfile(JSON.parse(JSON.stringify(values)));
+    console.log("passed value to onSubmit", values);
   }
 
   const [profileImageUrl, setProfileImageUrl] = useState("");
@@ -175,40 +180,19 @@ export default function Page({ params }: { params: { id: string } }) {
                 >
                   <FormControl>
                     <SelectTrigger className="focus:ring-primary-yellow focus:ring-offset-0 focus:ring-1 rounded-[12px]">
-                      <SelectValue placeholder="Select a verified email to display" />
+                      <SelectValue placeholder="Select a country" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent className="rounded-[12px]">
-                    <SelectItem
-                      className="focus:bg-secondary-yellow text-body2 font-normal rounded-[12px]"
-                      value="m@example.com"
-                    >
-                      m@example.com
-                    </SelectItem>
-                    <SelectItem
-                      className="focus:bg-secondary-yellow text-body2 font-normal rounded-[12px]"
-                      value="m@google.com"
-                    >
-                      m@google.com
-                    </SelectItem>
-                    <SelectItem
-                      className="focus:bg-secondary-yellow text-body2 font-normal rounded-[12px]"
-                      value="m@support.com"
-                    >
-                      m@support.com
-                    </SelectItem>
-                    <SelectItem
-                      className="focus:bg-secondary-yellow text-body2 font-normal rounded-[12px]"
-                      value="m@support.com"
-                    >
-                      m@support.com
-                    </SelectItem>
-                    <SelectItem
-                      className="focus:bg-secondary-yellow text-body2 font-normal rounded-[12px]"
-                      value="m@support.com"
-                    >
-                      m@support.com
-                    </SelectItem>
+                    {countryList.map((country, index) => (
+                      <SelectItem
+                        key={index}
+                        className="focus:bg-secondary-yellow text-body2 font-normal rounded-[12px]"
+                        value={country}
+                      >
+                        {country}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
