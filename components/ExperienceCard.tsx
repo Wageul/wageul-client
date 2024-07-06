@@ -27,7 +27,7 @@ export default function ExperienceCard({
               <AvatarImage src="https://github.com/shadcn.png" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-            <div className="text-body1">{data.title}</div>
+            <div className="text-body1 [overflow-wrap:anywhere]">{data.title}</div>
           </div>
           {loggedIn && (
             <button
