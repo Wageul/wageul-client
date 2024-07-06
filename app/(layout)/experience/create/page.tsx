@@ -43,21 +43,22 @@ import { ACCEPTED_FILE_TYPES, CreateExperienceRequestBody } from "@/lib/types";
 import { createExperience, uploadExperienceImages } from "@/lib/actions";
 import { expenseList, languageList } from "@/lib/selectionData";
 import { formatDateTime } from "@/lib/formatters";
+import { useRouter } from "next/navigation";
 
 const MAX_IMG_NUM = 3;
 
 const formSchema = z.object({
-  title: z.string().min(2).max(50),
-  location: z.string().min(2).max(50),
+  title: z.string().min(1).max(100),
+  location: z.string().min(1).max(100),
   date: z.date({ required_error: "A date is required." }),
-  hour: z.string().min(2).max(50),
-  minute: z.string().min(2).max(50),
-  detail: z.string().min(2).max(100),
+  hour: z.string().min(1).max(50),
+  minute: z.string().min(1).max(50),
+  detail: z.string().min(1).max(100),
   duration: z.string(),
   expense: z.coerce.number(),
-  contact: z.string().min(2).max(50),
+  contact: z.string().min(1).max(1000),
   participants: z.coerce.number(),
-  language: z.string().min(2).max(50),
+  language: z.string().min(1).max(100),
   images: z.array(
     z.object({
       imgfile: z
@@ -71,15 +72,60 @@ const formSchema = z.object({
   ),
 });
 
+const getMaxLengths = (schema: z.ZodObject<any>): Record<string, number | undefined> => {
+  const shape = schema.shape;
+  const maxLengths: Record<string, number | undefined> = {};
+
+  for (const key in shape) {
+    const field = shape[key];
+    const checks = field._def.checks || [];
+
+    const maxCheck = checks.find((check: any) => check.kind === 'max');
+    maxLengths[key] = maxCheck?.value;
+  }
+
+  return maxLengths;
+};
+
 export default function Page({ params }: { params: { id: string } }) {
   const [step, setStep] = useState(1);
-
   const handleNextStep = () => {
     setStep(step + 1);
   };
-
   const handlePreviousStep = () => {
     setStep(step - 1);
+  };
+
+  const [confirmationIsVisible, setConfirmationIsVisible] = useState(false);
+  const [confirmationAnimationClass, setConfirmationAnimationClass] =
+    useState("");
+  const handleConfirmationShow = () => {
+    setConfirmationIsVisible(true);
+    setConfirmationAnimationClass("animate-in fade-in-0");
+  };
+
+  const handleConfirmationHide = () => {
+    setConfirmationAnimationClass("animate-out fade-out-0");
+    setTimeout(() => {
+      setConfirmationIsVisible(false);
+    }, 150); // Match the animation-duration
+  };
+
+  const [submitAlertIsVisible, setSubmitAlertIsVisible] = useState(false);
+  const [submitAlertAnimationClass, setSubmitAlertAnimationClass] =
+    useState("");
+  const handleSubmitAlertShow = () => {
+    setSubmitAlertIsVisible(true);
+    setSubmitAlertAnimationClass("animate-in fade-in-0");
+  };
+
+  const router = useRouter();
+
+  const handleSubmitAlertHide = () => {
+    setSubmitAlertAnimationClass("animate-out fade-out-0");
+    setTimeout(() => {
+      setSubmitAlertIsVisible(false);
+    }, 150); // Match the animation-duration
   };
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -97,6 +143,12 @@ export default function Page({ params }: { params: { id: string } }) {
     },
   });
 
+
+  
+  const maxLengths = getMaxLengths(formSchema);
+
+  const { isValid, isSubmitting, isSubmitted } = form.formState;
+
   const imagesFieldsArray = useFieldArray({
     control: form.control,
     name: "images",
@@ -111,6 +163,12 @@ export default function Page({ params }: { params: { id: string } }) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    console.log("form", form);
+    console.log("formState", form.formState.isValid);
+
+    // make register button disabled
+
+    // return;
     console.log(values);
     let dateTime = formatDateTime(values.date, values.hour, values.minute);
     let createExperienceRequestBody: CreateExperienceRequestBody = {
@@ -125,15 +183,20 @@ export default function Page({ params }: { params: { id: string } }) {
       language: values.language,
     };
     console.log(createExperienceRequestBody);
-    const createdExperience = await createExperience(JSON.parse(JSON.stringify(createExperienceRequestBody)));
+    const createdExperience = await createExperience(
+      JSON.parse(JSON.stringify(createExperienceRequestBody))
+    );
     console.log(createdExperience);
     const formData = new FormData();
     if (values.images) {
       formData.append("files[0]", values.images[0].imgfile!);
     }
     formData.append("experienceId", createdExperience.id);
-    console.log(formData.get("files[0]"))
+    console.log(formData.get("files[0]"));
     const uploadedImages = await uploadExperienceImages(formData);
+    console.log(uploadedImages);
+    // make register button enabled
+    handleSubmitAlertShow();
   }
   const [imageList, setImageList] = useState<string[]>([]);
 
@@ -190,6 +253,7 @@ export default function Page({ params }: { params: { id: string } }) {
                             <input
                               className="w-full outline-none placeholder-grey-3 text-body2"
                               placeholder="Please enter a title."
+                              maxLength={maxLengths.title}
                               {...field}
                             />
                           </div>
@@ -209,6 +273,7 @@ export default function Page({ params }: { params: { id: string } }) {
                             <input
                               className="w-full outline-none placeholder-grey-3 text-body2"
                               placeholder="Please enter a location."
+                              maxLength={maxLengths.location}
                               {...field}
                             />
                           </div>
@@ -525,6 +590,7 @@ export default function Page({ params }: { params: { id: string } }) {
                           <input
                             className="w-full px-6 py-[9px] rounded-[10px] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary-red focus-visible:ring-offset-0 placeholder-grey-3 text-body2 border border-grey-2 "
                             placeholder="Please leave your contact."
+                            maxLength={maxLengths.contact}
                             {...field}
                           />
                         </FormControl>
@@ -624,6 +690,7 @@ export default function Page({ params }: { params: { id: string } }) {
                   />
                   <div className="absolute px-[20px] pb-[36px] bottom-0 flex justify-between w-full max-w-[600px] left-1/2 -translate-x-1/2">
                     <Button
+                      type="button"
                       variant={"grey"}
                       size={"lg"}
                       textStyle={"body1"}
@@ -633,15 +700,94 @@ export default function Page({ params }: { params: { id: string } }) {
                     </Button>
                     <Button
                       variant={"primaryBlue"}
-                      type={"submit"}
                       size={"lg"}
                       textStyle={"body1"}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleConfirmationShow();
+                      }}
                       // className="mt-[32px] self-center"
                     >
                       Register
                     </Button>
                   </div>
                 </div>
+                {confirmationIsVisible && (
+                  <div
+                    className={`fixed inset-0 z-50 bg-foreground/30 ${confirmationAnimationClass}`}
+                  >
+                    <div className="fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%] w-[275px] rounded-[20px] flex flex-col bg-background overflow-hidden break-words">
+                      {isValid ? (
+                        <>
+                          <div className="px-[24.5px] py-[35px] text-body1 font-semibold text-center">
+                            Should I register for the experience? The registered
+                            information cannot be modified.
+                          </div>
+                          <div className="flex divide-x divide-grey-3">
+                            <button
+                              className="h-[50px] bg-grey-2 flex-1 text-subtitle text-center"
+                              type="button"
+                              onClick={(e) => {
+                                handleConfirmationHide();
+                              }}
+                            >
+                              NO
+                            </button>
+                            <button
+                              className="h-[50px] bg-grey-2 flex-1 text-subtitle text-center"
+                              type="submit"
+                              onClick={() => {
+                                handleConfirmationHide();
+                              }}
+                            >
+                              YES
+                            </button>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="px-[24.5px] py-[35px] text-body1 font-semibold text-center">
+                            Not all information had been entered.
+                          </div>
+                          <div className="flex divide-x divide-grey-3">
+                            <button
+                              className="h-[50px] bg-grey-2 flex-1 text-subtitle text-center"
+                              type="button"
+                              onClick={() => {
+                                handleConfirmationHide();
+                              }}
+                            >
+                              OK
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
+                {submitAlertIsVisible && (
+                  <div
+                    className={`fixed inset-0 z-50 bg-foreground/30 ${submitAlertAnimationClass}`}
+                  >
+                    <div className="fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%] w-[275px] rounded-[20px] flex flex-col bg-background overflow-hidden break-words">
+                      <div className="px-[24.5px] py-[35px] text-body1 font-semibold text-center">
+                        Submitted!
+                      </div>
+                      <div className="flex divide-x divide-grey-3">
+                        <button
+                          className="h-[50px] bg-grey-2 flex-1 text-subtitle text-center"
+                          type="button"
+                          onClick={() => {
+                            handleSubmitAlertHide();
+                            router.push("/experience");
+                          }}
+                        >
+                          OK
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </>
             )}
           </form>
