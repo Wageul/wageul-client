@@ -77,8 +77,8 @@ export default async function Page({ params }: { params: { id: string } }) {
         <></>
       )}
       <Carousel />
-      <section className="mt-2.5 break-words">
-        <div className="px-[8px] py-[16px] bg-background rounded-[16px] text-h2 text-center">
+      <section className="mt-2.5">
+        <div className="px-[22px] py-[16px] bg-background rounded-[16px] text-h2 text-center  [overflow-wrap:anywhere]">
           {title}
         </div>
         <div className="px-[22px] py-[21px] bg-background rounded-[16px] space-y-2.5">
@@ -183,7 +183,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
             <div className="flex gap-[14px]">
               <div className="text-grey-4">Contact</div>
-              <div>{contact}</div>
+              <div className="[overflow-wrap:anywhere]">{contact}</div>
             </div>
           </div>
         </div>
