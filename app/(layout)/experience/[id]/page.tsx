@@ -7,7 +7,7 @@ import { fetchExperienceById } from "@/lib/data";
 import { formatDateString, formatDuration } from "@/lib/formatters";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import BookmarkBorderRoundedIcon from "@mui/icons-material/BookmarkBorderRounded";
-import BookmarkRoundedIcon from '@mui/icons-material/BookmarkRounded';
+import BookmarkRoundedIcon from "@mui/icons-material/BookmarkRounded";
 import { Button } from "@/components/ui/wageulButton";
 import Link from "next/link";
 
@@ -77,7 +77,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         <></>
       )}
       <Carousel />
-      <section className="mt-2.5">
+      <section className="mt-2.5 break-words">
         <div className="px-[8px] py-[16px] bg-background rounded-[16px] text-h2 text-center">
           {title}
         </div>
@@ -99,7 +99,9 @@ export default async function Page({ params }: { params: { id: string } }) {
         </div>
         <div className="px-[22px] py-[21px] bg-background rounded-[16px]">
           <div className="text-body1">Detail</div>
-          <div className="mt-[12px] text-subtitle">{content}</div>
+          <div className="mt-[12px] text-subtitle">
+            <span>{content}</span>
+          </div>
           <div className="mt-[13px]">
             <div className="text-body2 flex gap-[14px]">
               <div className="text-grey-4">Duration</div>

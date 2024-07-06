@@ -22,9 +22,7 @@ export const formatDateString = (dateString: string) => {
     period = "pm";
   }
 
-  const timeInFormat = `${timeIn12! && timeIn12 < 10 && "0"}${timeIn12!}:${
-    minute && minute < 10 && "0"
-  }${minute} ${period!}`;
+  const timeInFormat = `${String(timeIn12!).padStart(2, '0')}:${String(minute).padStart(2, '0')} ${period!}`
 
   return { dateInDotFormat, timeInFormat };
 };
@@ -34,11 +32,11 @@ export const formatDuration = (durationString: string) => {
   return Number(durationString.slice(0, 2));
 };
 
-// input and output example: (Date, "14", "20") => "2024-05-01T14:20:00" 
+// input and output example: (Date, "14", "20") => "2024-05-01T14:20:00"
 export const formatDateTime = (date: Date, hour: string, minute: string) => {
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
 
   return `${year}-${month}-${day}T${hour}:${minute}`;
-}
+};
