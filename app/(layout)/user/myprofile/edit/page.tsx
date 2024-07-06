@@ -29,6 +29,8 @@ import Image from "next/image";
 import { BackgroundLayout } from "@/components/BackgroundLayout";
 import { updateProfile } from "@/lib/actions";
 import { countryList } from "@/lib/selectionData";
+import { ACCEPTED_FILE_TYPES } from "@/lib/types";
+
 // import { cookies } from "next/headers";
 
 {
@@ -38,15 +40,6 @@ import { countryList } from "@/lib/selectionData";
 </Avatar> */
 }
 
-const ACCEPTED_FILE_TYPES = [
-  "image/jpg",
-  "image/jpeg",
-  "image/png",
-  "image/avif",
-  "image/gif",
-  "image/webp",
-];
-
 export const ProfileFormSchema = z.object({
   profileImage: z
     .instanceof(File, { message: "Image is required" })
@@ -55,7 +48,7 @@ export const ProfileFormSchema = z.object({
       "File must be an image."
     ),
   name: z.string().min(2).max(50),
-  nationality: z.string().min(2).max(50),
+  nationality: z.string().min(2).max(1000),
   introduction: z.string().min(50).max(100),
 });
 

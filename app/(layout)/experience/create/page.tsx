@@ -39,16 +39,12 @@ import { format } from "date-fns";
 import CountingTextAreaForForm from "@/components/CountingTextAreaForForm";
 import HorizontalScrollContainer from "@/components/HorizontalScrollContainer";
 import Image from "next/image";
+import { ACCEPTED_FILE_TYPES, CreateExperienceRequestBody } from "@/lib/types";
+import { createExperience, uploadExperienceImages } from "@/lib/actions";
+import { expenseList, languageList } from "@/lib/selectionData";
+import { formatDateTime } from "@/lib/formatters";
 
 const MAX_IMG_NUM = 3;
-const ACCEPTED_FILE_TYPES = [
-  "image/jpg",
-  "image/jpeg",
-  "image/png",
-  "image/avif",
-  "image/gif",
-  "image/webp",
-];
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),
@@ -57,10 +53,10 @@ const formSchema = z.object({
   hour: z.string().min(2).max(50),
   minute: z.string().min(2).max(50),
   detail: z.string().min(2).max(100),
-  duration: z.string().min(2).max(50),
-  expense: z.string().min(2).max(50),
+  duration: z.string(),
+  expense: z.coerce.number(),
   contact: z.string().min(2).max(50),
-  participants: z.string().min(2).max(50),
+  participants: z.coerce.number(),
   language: z.string().min(2).max(50),
   images: z.array(
     z.object({
@@ -75,7 +71,7 @@ const formSchema = z.object({
   ),
 });
 
-export default function Page() {
+export default function Page({ params }: { params: { id: string } }) {
   const [step, setStep] = useState(1);
 
   const handleNextStep = () => {
@@ -95,7 +91,7 @@ export default function Page() {
       minute: "",
       detail: "",
       duration: "",
-      participants: "",
+      participants: 2,
       language: "",
       images: [{ imgfile: null }],
     },
@@ -112,10 +108,32 @@ export default function Page() {
     remove: removeImageFileField,
   } = imagesFieldsArray;
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+    let dateTime = formatDateTime(values.date, values.hour, values.minute);
+    let createExperienceRequestBody: CreateExperienceRequestBody = {
+      title: values.title,
+      location: values.location,
+      datetime: dateTime,
+      content: values.detail,
+      duration: "0" + values.duration + ":00",
+      cost: values.expense,
+      contact: values.contact,
+      limitMember: values.participants,
+      language: values.language,
+    };
+    console.log(createExperienceRequestBody);
+    const createdExperience = await createExperience(JSON.parse(JSON.stringify(createExperienceRequestBody)));
+    console.log(createdExperience);
+    const formData = new FormData();
+    if (values.images) {
+      formData.append("files[0]", values.images[0].imgfile!);
+    }
+    formData.append("experienceId", createdExperience.id);
+    console.log(formData.get("files[0]"))
+    const uploadedImages = await uploadExperienceImages(formData);
   }
   const [imageList, setImageList] = useState<string[]>([]);
 
@@ -266,18 +284,22 @@ export default function Page() {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent className="rounded-2.5">
-                              <SelectItem
-                                className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                                value="m@example.com"
-                              >
-                                m@example.com
-                              </SelectItem>
-                              <SelectItem
-                                className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                                value="m@google.com"
-                              >
-                                m@google.com
-                              </SelectItem>
+                              {Array.from({
+                                length: 24,
+                              }).map((_, index) => {
+                                const hourValue = `${
+                                  index < 10 ? "0" : ""
+                                }${index}`;
+                                return (
+                                  <SelectItem
+                                    key={index}
+                                    className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
+                                    value={hourValue}
+                                  >
+                                    {hourValue}
+                                  </SelectItem>
+                                );
+                              })}
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -299,18 +321,17 @@ export default function Page() {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent className="rounded-2.5">
-                              <SelectItem
-                                className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                                value="m@example.com"
-                              >
-                                m@example.com
-                              </SelectItem>
-                              <SelectItem
-                                className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                                value="m@google.com"
-                              >
-                                m@google.com
-                              </SelectItem>
+                              {Array.from({
+                                length: 6,
+                              }).map((_, index) => (
+                                <SelectItem
+                                  key={index}
+                                  className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
+                                  value={String(index) + "0"}
+                                >
+                                  {index}0
+                                </SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -440,36 +461,19 @@ export default function Page() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="rounded-2.5">
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="m@example.com"
-                            >
-                              m@example.com
-                            </SelectItem>
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="m@google.com"
-                            >
-                              m@google.com
-                            </SelectItem>
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="m@support.com"
-                            >
-                              m@support.com
-                            </SelectItem>
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="khhan@connect.ust.hk"
-                            >
-                              khhan@connect.ust.hk
-                            </SelectItem>
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="khhan@kis.ac"
-                            >
-                              khhan@kis.ac
-                            </SelectItem>
+                            {Array.from({
+                              length: 6,
+                            }).map((_, index) => (
+                              <SelectItem
+                                key={index}
+                                className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
+                                value={String(index + 1)}
+                              >
+                                {index + 1} hour
+                                {index > 0 && "s"}
+                                {index === 5 && "+"}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -486,7 +490,7 @@ export default function Page() {
                         </FormLabel>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          defaultValue={String(field.value)}
                         >
                           <FormControl>
                             <SelectTrigger className="focus:ring-primary-red focus:ring-offset-0 focus:ring-1 rounded-2.5 pl-[24px] pr-[12px] py-[12px] h-[44px]">
@@ -494,36 +498,15 @@ export default function Page() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="rounded-2.5">
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="m@example.com"
-                            >
-                              m@example.com
-                            </SelectItem>
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="m@google.com"
-                            >
-                              m@google.com
-                            </SelectItem>
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="m@support.com"
-                            >
-                              m@support.com
-                            </SelectItem>
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="khhan@connect.ust.hk"
-                            >
-                              khhan@connect.ust.hk
-                            </SelectItem>
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="khhan@kis.ac"
-                            >
-                              khhan@kis.ac
-                            </SelectItem>
+                            {expenseList.map((value, index) => (
+                              <SelectItem
+                                key={index}
+                                className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
+                                value={String(value)}
+                              >
+                                {new Intl.NumberFormat().format(value)} won
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -578,7 +561,7 @@ export default function Page() {
                         </FormLabel>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          defaultValue={String(field.value)}
                         >
                           <FormControl>
                             <SelectTrigger className="focus:ring-primary-red focus:ring-offset-0 focus:ring-1 rounded-2.5 pl-[24px] pr-[12px] py-[12px] h-[44px]">
@@ -586,36 +569,18 @@ export default function Page() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="rounded-2.5">
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="m@example.com"
-                            >
-                              m@example.com
-                            </SelectItem>
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="m@google.com"
-                            >
-                              m@google.com
-                            </SelectItem>
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="m@support.com"
-                            >
-                              m@support.com
-                            </SelectItem>
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="khhan@connect.ust.hk"
-                            >
-                              khhan@connect.ust.hk
-                            </SelectItem>
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="khhan@kis.ac"
-                            >
-                              khhan@kis.ac
-                            </SelectItem>
+                            {Array.from({
+                              length: 9,
+                            }).map((_, index) => (
+                              <SelectItem
+                                key={index}
+                                className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
+                                value={String(index + 2)}
+                              >
+                                {index + 2}
+                                {index + 2 === 10 && "+"}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -640,36 +605,17 @@ export default function Page() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="rounded-2.5">
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="m@example.com"
-                            >
-                              m@example.com
-                            </SelectItem>
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="m@google.com"
-                            >
-                              m@google.com
-                            </SelectItem>
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="m@support.com"
-                            >
-                              m@support.com
-                            </SelectItem>
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="khhan@connect.ust.hk"
-                            >
-                              khhan@connect.ust.hk
-                            </SelectItem>
-                            <SelectItem
-                              className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
-                              value="khhan@kis.ac"
-                            >
-                              khhan@kis.ac
-                            </SelectItem>
+                            {languageList.map((value, index) => {
+                              return (
+                                <SelectItem
+                                  key={index}
+                                  className="focus:bg-secondary-red text-body2 font-normal rounded-2.5"
+                                  value={value}
+                                >
+                                  {value}
+                                </SelectItem>
+                              );
+                            })}
                           </SelectContent>
                         </Select>
                         <FormMessage />

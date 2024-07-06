@@ -24,6 +24,18 @@ export interface Experience {
   updatedAt: string;
 }
 
+export interface CreateExperienceRequestBody {
+  title: string;
+  location: string;
+  datetime: string;
+  content: string;
+  duration: string;
+  cost: number;
+  contact: string;
+  limitMember: number;
+  language: string;
+}
+
 export interface User {
   id: number;
   email: string;
@@ -35,3 +47,12 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
+
+export const ACCEPTED_FILE_TYPES = [
+  "image/jpg",
+  "image/jpeg",
+  "image/png",
+  "image/avif",
+  "image/gif",
+  "image/webp",
+];

@@ -33,3 +33,12 @@ export const formatDateString = (dateString: string) => {
 export const formatDuration = (durationString: string) => {
   return Number(durationString.slice(0, 2));
 };
+
+// input and output example: (Date, "14", "20") => "2024-05-01T14:20:00" 
+export const formatDateTime = (date: Date, hour: string, minute: string) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}T${hour}:${minute}`;
+}
