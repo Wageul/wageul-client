@@ -189,7 +189,10 @@ export default function Page({ params }: { params: { id: string } }) {
     console.log(createdExperience);
     const formData = new FormData();
     if (values.images) {
-      formData.append("files[0]", values.images[0].imgfile!);
+      values.images.forEach((image, index) => {
+        if(index === 3) return;
+        formData.append(`files[${index}]`, image.imgfile!);
+      })
     }
     formData.append("experienceId", createdExperience.id);
     console.log(formData.get("files[0]"));
