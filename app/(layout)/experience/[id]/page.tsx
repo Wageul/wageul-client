@@ -12,7 +12,7 @@ import BookmarkRoundedIcon from "@mui/icons-material/BookmarkRounded";
 import { Button } from "@/components/ui/wageulButton";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Experience, Participant, User } from "@/lib/types";
+import { Bookmark, Experience, Participant, User } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import {
   AlertDialog,
@@ -26,7 +26,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/custom-login-dialog";
 import Image from "next/image";
-import { deleteExperience } from "@/lib/actions";
+import { addBookmark, deleteBookmark, deleteExperience } from "@/lib/actions";
 
 const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
@@ -38,6 +38,8 @@ export default function Page({ params }: { params: { id: string } }) {
     data: null | User;
   }>({ loggedIn: false, data: null });
   const [participantsData, setParticipantsData] = useState<Participant[]>();
+  const [bookmarked, setBookmarked] = useState(false);
+  const [bookmarkLoading, setBookmarkLoading] = useState(false);
   const [joined, setJoined] = useState(false);
   const [refetchParticipants, setRefetchParticipants] = useState(0);
 
@@ -61,6 +63,31 @@ export default function Page({ params }: { params: { id: string } }) {
       }
     })();
   }, [params.id]);
+
+  useEffect(() => {
+    (async () => {
+      if (!apiUrl) {
+        throw new Error("API URL is not defined");
+      }
+      try {
+        const url = apiUrl + "/bookmark";
+        console.log(url);
+        const response = await fetch(url, {
+          method: "GET",
+          credentials: "include",
+        });
+        const data: Bookmark[] = await response.json();
+        console.log("bookmarkdata", data);
+        const bookmarkExists = data.some(
+          (item) => item.experience.id === Number(params.id)
+        );
+        setBookmarked(bookmarkExists);
+      } catch (err) {
+        console.error("Server Error:", err);
+        throw new Error("Failed to fetch the bookmark.");
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -150,19 +177,19 @@ export default function Page({ params }: { params: { id: string } }) {
   const handleJoin = async () => {
     // "use server";
     // join 여부에 따라 다른 동작
-    if(!joined) {
+    if (!joined) {
       // await join
-      setRefetchParticipants(prev => prev+1);
-      setDialogState('join-alert');
+      setRefetchParticipants((prev) => prev + 1);
+      setDialogState("join-alert");
       handleDialogShow();
-    }else{
+    } else {
       // await leave
-      setRefetchParticipants(prev => prev+1);
-      setDialogState('leave-alert');
+      setRefetchParticipants((prev) => prev + 1);
+      setDialogState("leave-alert");
       handleDialogShow();
     }
     console.log("submit");
-  }
+  };
 
   const onDecline = async () => {
     // "use server";
@@ -172,8 +199,18 @@ export default function Page({ params }: { params: { id: string } }) {
   };
 
   const onBookmark = async () => {
-    // "use server";
-    // bookmark
+    if (bookmarkLoading) return;
+    console.log("onBookmark");
+
+    setBookmarkLoading(true);
+    if (!bookmarked) {
+      await addBookmark(params.id);
+      setBookmarked(true);
+    } else {
+      await deleteBookmark(params.id);
+      setBookmarked(false);
+    }
+    setBookmarkLoading(false);
   };
 
   if (experienceData) {
@@ -199,9 +236,9 @@ export default function Page({ params }: { params: { id: string } }) {
 
     const handleDelete = async () => {
       await deleteExperience(params.id);
-      setDialogState('delete-alert');
+      setDialogState("delete-alert");
       handleDialogShow();
-    }
+    };
 
     const dialogs = {
       "delete-confirmation": {
@@ -284,8 +321,11 @@ export default function Page({ params }: { params: { id: string } }) {
                 className="text-background hover:text-primary-red flex justify-center items-center"
                 type="submit"
               >
-                <BookmarkBorderRoundedIcon fontSize="large" />
-                {/* <BookmarkRoundedIcon fontSize="large" /> */}
+                {bookmarked ? (
+                  <BookmarkRoundedIcon fontSize="large" />
+                ) : (
+                  <BookmarkBorderRoundedIcon fontSize="large" />
+                )}
               </button>
             </form>
           </div>
@@ -418,9 +458,7 @@ export default function Page({ params }: { params: { id: string } }) {
               </Button>
             )}
           </div>
-          <div
-            className="fixed left-1/2 -translate-x-1/2 bottom-0 max-w-[600px] w-full"
-          >
+          <div className="fixed left-1/2 -translate-x-1/2 bottom-0 max-w-[600px] w-full">
             {!currentUserIsTheHost &&
               (joined ? (
                 <Button

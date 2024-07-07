@@ -62,3 +62,10 @@ export interface Participant {
   profileImg: null | string;
   name: string;
 };
+
+export interface Bookmark {
+  createdAt: string;
+  experience: {
+    id: number;
+  }
+}

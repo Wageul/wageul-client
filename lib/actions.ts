@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { CreateExperienceRequestBody, Experience, User } from "./types";
 import { revalidateTag } from "next/cache";
 
-const apiUrl = process.env.LOCAL_API_URL + "/api";
+const apiUrl = process.env.DEPLOYED_API_URL + "/api";
 
 export async function updateProfile(values: User) {
   console.log("profile action input", values);
@@ -80,5 +80,37 @@ export async function deleteExperience(experienceId: string) {
   });
   console.log("delete experience status", response.status);
   revalidateTag("experience-list");
+  return;
+}
+
+export async function addBookmark(experienceId: string) {
+  console.log("experienceId", experienceId);
+  const url = apiUrl + "/bookmark";
+  console.log(url);
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      Cookie: `token=${cookies().get("token")?.value}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ experienceId: Number(experienceId) }),
+  });
+  console.log("add bookmark status", response.status);
+  revalidateTag("bookmark");
+  return;
+}
+
+export async function deleteBookmark(experienceId: string) {
+  console.log("experienceId", experienceId);
+  const url = apiUrl + `/bookmark/${experienceId}`;
+  console.log(url);
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      Cookie: `token=${cookies().get("token")?.value}`,
+    }
+  });
+  console.log("delete bookmark status", response.status);
+  revalidateTag("bookmark");
   return;
 }
