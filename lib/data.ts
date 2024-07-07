@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { Experience, User } from "./types";
+import { Bookmark, Experience, User } from "./types";
 
 const apiUrl = process.env.DEPLOYED_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
@@ -99,5 +99,34 @@ export async function fetchUserDataByToken(token: string) {
   } catch (err) {
     console.error("Server Error:", err);
     throw new Error("Failed to fetch the user.");
+  }
+}
+
+export async function fetchBookmarks() {
+  if (!cookies().has("token")) {
+    console.log('no token');
+    return;
+  }
+
+  try {
+    // console.log("token:", token);
+    const url = apiUrl + "/bookmark";
+    console.log("url:", url);
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Cookie: `token=${cookies().get("token")!.value}`,
+      },
+    });
+
+    console.log("bookmark status code:", response.status);
+    const data = await response.json();
+    console.log("data from fetchBookmarks", data);
+    return data as Bookmark[];
+  } catch (err) {
+    console.error("Server Error:", err);
+    throw new Error("Failed to fetch the bookmarks.");
   }
 }

@@ -6,18 +6,40 @@ import { Experience } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
 import BookmarkBorderRoundedIcon from "@mui/icons-material/BookmarkBorderRounded";
+import BookmarkRoundedIcon from "@mui/icons-material/BookmarkRounded";
+import { addBookmark, deleteBookmark } from "@/lib/actions";
+import { useState } from "react";
 
 export default function ExperienceCard({
   data,
   loggedIn,
+  initialBookmark,
 }: {
   data: Experience;
   loggedIn: boolean;
+  initialBookmark?: boolean;
 }) {
   const { dateInDotFormat, timeInFormat } = formatDateString(data.datetime);
+  const [bookmarkLoading, setBookmarkLoading] = useState(false);
+  const [bookmarked, setBookmarked] = useState(initialBookmark);
+
+  const onBookmark = async () => {
+    if (bookmarkLoading) return;
+    console.log("onBookmark");
+
+    setBookmarkLoading(true);
+    if (!bookmarked) {
+      await addBookmark(String(data.id));
+      setBookmarked(true);
+    } else {
+      await deleteBookmark(String(data.id));
+      setBookmarked(false);
+    }
+    setBookmarkLoading(false);
+  };
 
   return (
-    <Link href={"/experience/"+data.id}>
+    <Link href={"/experience/" + data.id}>
       <div className="relative p-[15px] rounded-[20px] border border-grey-2 bg-background hover:brightness-[0.98]">
         <div className="absolute size-[20px] -top-[5px] left-0 bg-secondary-green rounded-full shadow-green"></div>
         {/* <div className="absolute size-[20px] -top-[5px] left-0 bg-primary-red rounded-full shadow-red"></div> */}
@@ -27,17 +49,23 @@ export default function ExperienceCard({
               <AvatarImage src="https://github.com/shadcn.png" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-            <div className="text-body1 [overflow-wrap:anywhere]">{data.title}</div>
+            <div className="text-body1 [overflow-wrap:anywhere]">
+              {data.title}
+            </div>
           </div>
           {loggedIn && (
             <button
               className="hover:cursor-pointer hover:text-primary-red flex justify-center items-center"
               onClick={(e) => {
                 e.preventDefault();
-                // bookmark mutation logics come here
+                onBookmark();
               }}
             >
-              <BookmarkBorderRoundedIcon />
+              {bookmarked ? (
+                <BookmarkRoundedIcon />
+              ) : (
+                <BookmarkBorderRoundedIcon />
+              )}
             </button>
           )}
         </div>

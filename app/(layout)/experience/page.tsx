@@ -4,13 +4,19 @@ import { Button } from "@/components/ui/wageulButton";
 import EastRoundedIcon from "@mui/icons-material/EastRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import BottomNav from "@/components/BottomNav";
-import { authenticateUserAndGetData, fetchAllExperience, fetchUserDataByToken } from "@/lib/data";
+import {
+  authenticateUserAndGetData,
+  fetchAllExperience,
+  fetchBookmarks,
+  fetchUserDataByToken,
+} from "@/lib/data";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Link from "next/link";
 
 export default async function Page() {
   const { loggedIn, data: userData } = await authenticateUserAndGetData();
   const experienceListData = await fetchAllExperience();
+  const bookmarks = await fetchBookmarks();
 
   return (
     <BackgroundLayout
@@ -30,7 +36,7 @@ export default async function Page() {
         <></>
       )}
       <section className={loggedIn ? "pt-[17px]" : "pt-[57px]"}>
-        {(loggedIn && userData) && (
+        {loggedIn && userData && (
           <div className="text-h2 font-semibold text-center mb-[17px]">
             <span className="text-primary-red">HELLO</span>, {userData.name}!
           </div>
@@ -46,9 +52,12 @@ export default async function Page() {
       <section className="mt-[35px]">
         <div className="text-h2 font-semibold">Latest</div>
         <div className="mt-[11px] flex flex-col gap-2.5">
-          {experienceListData.map((data, index) => (
-            <ExperienceCard key={index} data={data} loggedIn={loggedIn} />
-          ))}
+          {experienceListData.map((data, index) => {
+            const bookmarked = bookmarks?.some((bookmark) => bookmark.experience.id === data.id);
+            return (
+              <ExperienceCard key={index} data={data} loggedIn={loggedIn} initialBookmark={bookmarked}/>
+            );
+          })}
         </div>
       </section>
       {loggedIn ? (
@@ -62,7 +71,7 @@ export default async function Page() {
       ) : (
         <></>
       )}
-      <BottomNav loggedIn={loggedIn}/>
+      <BottomNav loggedIn={loggedIn} />
     </BackgroundLayout>
   );
 }

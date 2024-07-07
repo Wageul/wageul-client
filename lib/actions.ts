@@ -76,7 +76,6 @@ export async function deleteExperience(experienceId: string) {
     headers: {
       Cookie: `token=${cookies().get("token")?.value}`,
     },
-    body: experienceId,
   });
   console.log("delete experience status", response.status);
   revalidateTag("experience-list");
