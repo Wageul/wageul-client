@@ -13,14 +13,14 @@ export default function MyExperienceCard({
   variants: "bookmark" | "scheduled";
 }) {
   const {
-    experience: { title, location, language, datetime },
+    experience: { title, location, language, datetime, id },
   } = cardData;
 
   const { dateInDotFormat } = formatDateString(datetime);
   const daysDifference = dMinus(dateInDotFormat);
 
   return (
-    <Link href={"/experience"}>
+    <Link href={`/experience/${id}`}>
       <div className="relative px-[11px] py-[14px] rounded-[16px] border overflow-hidden">
         <div className="z-0">
           <Image
