@@ -56,3 +56,9 @@ export const ACCEPTED_FILE_TYPES = [
   "image/gif",
   "image/webp",
 ];
+
+export interface Participant {
+  id: number;
+  profileImg: null | string;
+  name: string;
+};

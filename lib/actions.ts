@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { CreateExperienceRequestBody, Experience, User } from "./types";
 
-const apiUrl = process.env.DEPLOYED_API_URL;
+const apiUrl = process.env.DEPLOYED_API_URL+'/api';
 
 export async function updateProfile(values: User) {
   console.log("profile action input", values);
