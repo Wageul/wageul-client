@@ -33,7 +33,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     currentUserIsTheHost = userData.id === writer.id ? true : false;
   }
 
-  
+
   let joined = false;
   
   const { dateInDotFormat, timeInFormat } = formatDateString(datetime);
@@ -103,7 +103,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         </div>
         <div className="px-[22px] py-[21px] bg-background rounded-[16px]">
           <div className="text-body1">Detail</div>
-          <div className="mt-[12px] text-subtitle">
+          <div className="mt-[12px] text-subtitle [overflow-wrap:anywhere]">
             <span>{content}</span>
           </div>
           <div className="mt-[13px]">
