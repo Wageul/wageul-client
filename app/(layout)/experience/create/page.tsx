@@ -72,7 +72,9 @@ const formSchema = z.object({
   ),
 });
 
-const getMaxLengths = (schema: z.ZodObject<any>): Record<string, number | undefined> => {
+const getMaxLengths = (
+  schema: z.ZodObject<any>
+): Record<string, number | undefined> => {
   const shape = schema.shape;
   const maxLengths: Record<string, number | undefined> = {};
 
@@ -80,7 +82,7 @@ const getMaxLengths = (schema: z.ZodObject<any>): Record<string, number | undefi
     const field = shape[key];
     const checks = field._def.checks || [];
 
-    const maxCheck = checks.find((check: any) => check.kind === 'max');
+    const maxCheck = checks.find((check: any) => check.kind === "max");
     maxLengths[key] = maxCheck?.value;
   }
 
@@ -143,8 +145,6 @@ export default function Page({ params }: { params: { id: string } }) {
     },
   });
 
-
-  
   const maxLengths = getMaxLengths(formSchema);
 
   const { isValid, isSubmitting, isSubmitted } = form.formState;
@@ -190,9 +190,11 @@ export default function Page({ params }: { params: { id: string } }) {
     const formData = new FormData();
     if (values.images) {
       values.images.forEach((image, index) => {
-        if(index === 3) return;
+        if (image.imgfile === null) {
+          return;
+        }
         formData.append(`files[${index}]`, image.imgfile!);
-      })
+      });
     }
     formData.append("experienceId", createdExperience.id);
     console.log(formData.get("files[0]"));

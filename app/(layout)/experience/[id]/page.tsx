@@ -26,6 +26,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/custom-login-dialog";
 import Image from "next/image";
+import { deleteExperience } from "@/lib/actions";
 
 const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
@@ -196,6 +197,12 @@ export default function Page({ params }: { params: { id: string } }) {
     const { dateInDotFormat, timeInFormat } = formatDateString(datetime);
     const durationInHours = formatDuration(duration);
 
+    const handleDelete = async () => {
+      await deleteExperience(params.id);
+      setDialogState('delete-alert');
+      handleDialogShow();
+    }
+
     const dialogs = {
       "delete-confirmation": {
         content: (attendant?: string) =>
@@ -206,11 +213,11 @@ export default function Page({ params }: { params: { id: string } }) {
           handleDialogHide();
         },
         buttonContent2: "YES",
-        handler2: () => {
+        handler2: async () => {
           // submit deletion (should include setDialog to alert)
           // and
-          // router.push("/experience");
           handleDialogHide();
+          await handleDelete();
         },
       },
       "delete-alert": {
@@ -219,6 +226,7 @@ export default function Page({ params }: { params: { id: string } }) {
         buttonContent1: "OK",
         handler1: () => {
           handleDialogHide();
+          router.push("/experience");
         },
         buttonContent2: "",
         handler2: () => {},

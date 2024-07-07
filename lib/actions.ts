@@ -2,13 +2,14 @@
 
 import { cookies } from "next/headers";
 import { CreateExperienceRequestBody, Experience, User } from "./types";
+import { revalidateTag } from "next/cache";
 
-const apiUrl = process.env.DEPLOYED_API_URL+'/api';
+const apiUrl = process.env.LOCAL_API_URL + "/api";
 
 export async function updateProfile(values: User) {
   console.log("profile action input", values);
   console.log(JSON.stringify(values));
-  
+
   const url = apiUrl + `/user/${2}`;
   console.log(url);
   const response = await fetch(url, {
@@ -41,6 +42,7 @@ export async function createExperience(values: CreateExperienceRequestBody) {
   });
   console.log("status", response.status);
   const data = await response.json();
+  revalidateTag("experience-list");
   return data;
 }
 
@@ -60,6 +62,23 @@ export async function uploadExperienceImages(values: FormData) {
   });
   console.log("status", response.status);
   const data = await response.json();
-  console.log('upload response', data);
+  console.log("upload response", data);
   return data;
+}
+
+export async function deleteExperience(experienceId: string) {
+  console.log("experienceId", experienceId);
+
+  const url = apiUrl + `/experience/${experienceId}`;
+  console.log(url);
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      Cookie: `token=${cookies().get("token")?.value}`,
+    },
+    body: experienceId,
+  });
+  console.log("delete experience status", response.status);
+  revalidateTag("experience-list");
+  return;
 }

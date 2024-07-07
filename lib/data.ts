@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { Experience, User } from "./types";
 
-const apiUrl = process.env.DEPLOYED_API_URL + '/api';
+const apiUrl = process.env.DEPLOYED_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
 
 export async function fetchExperienceById(id: string) {
@@ -15,7 +15,7 @@ export async function fetchExperienceById(id: string) {
       method: "GET",
     });
     const data = await response.json();
-    console.log(data);
+    console.log("data from fetchExperienceById", data);
     return data as Experience;
   } catch (err) {
     console.error("Server Error:", err);
@@ -28,9 +28,11 @@ export async function fetchAllExperience() {
     throw new Error("API URL is not defined");
   }
   try {
-    const response = await fetch(apiUrl + "/experience");
+    const response = await fetch(apiUrl + "/experience", {
+      next: { tags: ["experience-list"] },
+    });
     const data = await response.json();
-    console.log(data);
+    console.log("data from fetchAllExperience", data);
     return data as Experience[];
   } catch (err) {
     console.error("Server Error:", err);
