@@ -99,10 +99,3 @@ export async function fetchUserDataByToken(token: string) {
     throw new Error("Failed to fetch the user.");
   }
 }
-
-export async function fetchUserFromRouteHandler() {
-  const response = await fetch("http://localhost:3000/api/user");
-  const data = await response.json();
-
-  return data;
-}
