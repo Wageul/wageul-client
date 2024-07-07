@@ -1,12 +1,24 @@
 import Link from "next/link";
 import Image from "next/image";
 import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
+import { Bookmark } from "@/lib/types";
+import { dMinus, formatDateString } from "@/lib/formatters";
 
 export default function MyExperienceCard({
+  cardData,
   variants,
 }: {
+  cardData: Bookmark;
+  // cardData: Bookmark | Scheduled?;
   variants: "bookmark" | "scheduled";
 }) {
+  const {
+    experience: { title, location, language, datetime },
+  } = cardData;
+
+  const { dateInDotFormat } = formatDateString(datetime);
+  const daysDifference = dMinus(dateInDotFormat);
+
   return (
     <Link href={"/experience"}>
       <div className="relative px-[11px] py-[14px] rounded-[16px] border overflow-hidden">
@@ -35,7 +47,10 @@ export default function MyExperienceCard({
                   : "text-primary-blue")
               }
             >
-              D-21
+              D
+              {daysDifference >= 0
+                ? `-${daysDifference}`
+                : `+${Math.abs(daysDifference)}`}
             </span>
           </div>
           {variants === "bookmark" && (
@@ -46,11 +61,13 @@ export default function MyExperienceCard({
           )}
         </div>
         <div className="relative mt-[32px] z-10 text-background">
-          <div className="text-body1 font-semibold">
-            Going to a cart bar like a Korean office work
-          </div>
-          <div className="text-subtitle font-normal">
-            Seoul.24.06.21.English
+          <div className="text-body1 font-semibold [overflow-wrap:anywhere]">{title}</div>
+          <div className="flex items-center text-subtitle font-normal space-x-[5px]">
+            <span>{location}</span>
+            <div className="size-[3px] bg-background rounded-full"></div>
+            <span>{dateInDotFormat.slice(2)}</span>
+            <div className="size-[3px] bg-background rounded-full"></div>
+            <span>{language}</span>
           </div>
         </div>
       </div>

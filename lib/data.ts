@@ -119,6 +119,7 @@ export async function fetchBookmarks() {
         "Content-Type": "application/json",
         Cookie: `token=${cookies().get("token")!.value}`,
       },
+      next: { tags: ["bookmarks"] },
     });
 
     console.log("bookmark status code:", response.status);

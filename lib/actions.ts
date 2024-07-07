@@ -95,7 +95,7 @@ export async function addBookmark(experienceId: string) {
     body: JSON.stringify({ experienceId: Number(experienceId) }),
   });
   console.log("add bookmark status", response.status);
-  revalidateTag("bookmark");
+  revalidateTag("bookmarks");
   return;
 }
 
@@ -110,6 +110,6 @@ export async function deleteBookmark(experienceId: string) {
     }
   });
   console.log("delete bookmark status", response.status);
-  revalidateTag("bookmark");
+  revalidateTag("bookmarks");
   return;
 }

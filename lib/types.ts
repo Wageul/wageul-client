@@ -67,5 +67,9 @@ export interface Bookmark {
   createdAt: string;
   experience: {
     id: number;
+    title: string;
+    location: string;
+    language: string;
+    datetime: string;
   }
 }

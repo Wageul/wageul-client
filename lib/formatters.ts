@@ -40,3 +40,15 @@ export const formatDateTime = (date: Date, hour: string, minute: string) => {
 
   return `${year}-${month}-${day}T${hour}:${minute}`;
 };
+
+export const dMinus = (scheduledDate: string) => {
+    const dDay = +new Date(scheduledDate);
+    const currentDate = +new Date();
+  
+    // Calculate the difference in time (in milliseconds)
+    const timeDifference = dDay - currentDate;
+    // Convert the difference in time to days
+    const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+  
+    return daysDifference;
+}
