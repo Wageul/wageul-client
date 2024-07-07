@@ -3,7 +3,7 @@ import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BackgroundLayout } from "@/components/BackgroundLayout";
 import Carousel from "@/components/Carousel";
-import { fetchExperienceById } from "@/lib/data";
+import { authenticateUserAndGetData, fetchExperienceById } from "@/lib/data";
 import { formatDateString, formatDuration } from "@/lib/formatters";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import BookmarkBorderRoundedIcon from "@mui/icons-material/BookmarkBorderRounded";
@@ -12,9 +12,8 @@ import { Button } from "@/components/ui/wageulButton";
 import Link from "next/link";
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const data = await fetchExperienceById(params.id);
-  // console.log(data);
-
+  const experienceData = await fetchExperienceById(params.id);
+  // console.log(experienceData);
   const {
     title,
     location,
@@ -26,12 +25,17 @@ export default async function Page({ params }: { params: { id: string } }) {
     limitMember,
     language,
     writer,
-  } = data;
+  } = experienceData;
 
-  let loggedIn = false;
-  let joined = false;
+  const { loggedIn, data: userData } = await authenticateUserAndGetData();
   let currentUserIsTheHost = false;
+  if(loggedIn && userData) {
+    currentUserIsTheHost = userData.id === writer.id ? true : false;
+  }
 
+  
+  let joined = false;
+  
   const { dateInDotFormat, timeInFormat } = formatDateString(datetime);
   const durationInHours = formatDuration(duration);
 
