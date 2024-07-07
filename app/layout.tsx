@@ -9,14 +9,14 @@ export const metadata: Metadata = {
   description: "Realize your dream in Korea",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body className={`${outfit.className} bg-grey-1 text-black`}>{children}</body>
+      <body className={`${outfit.className} bg-grey-2 text-black`}>{children}</body>
     </html>
   );
 }
