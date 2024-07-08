@@ -113,3 +113,20 @@ export async function deleteBookmark(experienceId: string) {
   revalidateTag("bookmarks");
   return;
 }
+
+export async function addParticipant(experienceId: string) {
+  console.log("experienceId", experienceId);
+  const url = apiUrl + "/participation";
+  console.log(url);
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      Cookie: `token=${cookies().get("token")?.value}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ experienceId: Number(experienceId) }),
+  });
+  console.log("add participant status", response.status);
+  revalidateTag("participants");
+  return;
+}

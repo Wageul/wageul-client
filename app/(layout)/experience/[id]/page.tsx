@@ -26,7 +26,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/custom-login-dialog";
 import Image from "next/image";
-import { addBookmark, deleteBookmark, deleteExperience } from "@/lib/actions";
+import { addBookmark, addParticipant, deleteBookmark, deleteExperience } from "@/lib/actions";
 
 const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
@@ -91,7 +91,7 @@ export default function Page({ params }: { params: { id: string } }) {
         throw new Error("Failed to fetch the bookmark.");
       }
     })();
-  }, []);
+  }, [params.id]);
 
   useEffect(() => {
     (async () => {
@@ -183,6 +183,7 @@ export default function Page({ params }: { params: { id: string } }) {
     // join 여부에 따라 다른 동작
     if (!joined) {
       // await join
+      await addParticipant(params.id);
       setRefetchParticipants((prev) => prev + 1);
       setDialogState("join-alert");
       handleDialogShow();
