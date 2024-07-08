@@ -109,5 +109,5 @@ jobs:
           script: |
             cd client/
             echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u "${{ env.DOCKERHUB_USERNAME }}" --password-stdin
-            docker compose up -f docker-compose.yml --build -d
+            docker compose up --build -d
             docker image prune -a -f
