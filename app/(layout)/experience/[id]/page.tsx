@@ -26,7 +26,12 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/custom-login-dialog";
 import Image from "next/image";
-import { addBookmark, addParticipant, deleteBookmark, deleteExperience } from "@/lib/actions";
+import {
+  addBookmark,
+  addParticipant,
+  deleteBookmark,
+  deleteExperience,
+} from "@/lib/actions";
 
 const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
@@ -78,7 +83,7 @@ export default function Page({ params }: { params: { id: string } }) {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-          }
+          },
         });
         const data: Bookmark[] = await response.json();
         console.log("bookmarkdata", data);
@@ -393,40 +398,41 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
             <div className="my-4 bg-grey-2 h-[1px] rounded-full"></div>
             <div className="pl-1 space-y-2.5">
-              <div className="flex gap-[14px] items-center">
-                <Avatar className="size-[46px]">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <div className="text-body2">Kelly Clarkson</div>
-              </div>
-              <div className="flex gap-[14px] items-center">
-                <Avatar className="size-[46px]">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <div className="text-body2">Kelly Clarkson</div>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex gap-[14px] items-center">
-                  <Avatar className="size-[46px]">
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                  <div className="text-body2">Kelly Clarkson</div>
+              {participantsData?.map((participant, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <div className="flex gap-[14px] items-center">
+                    <Avatar className="size-[46px]">
+                      <AvatarImage
+                        src={
+                          participant.profileImg
+                            ? participant.profileImg
+                            : "https://github.com/shadcn.png"
+                        }
+                      />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                    <div className="text-body2">{participant.name}</div>
+                  </div>
+                  {currentUserIsTheHost && (
+                    // mapping required
+                    <Button
+                      variant={"primaryRed"}
+                      textStyle={"subtitle2"}
+                      className="font-semibold"
+                      onClick={onDecline}
+                    >
+                      Decline
+                    </Button>
+                  )}
                 </div>
-                {currentUserIsTheHost && (
-                  // mapping required
-                  <Button
-                    variant={"primaryRed"}
-                    textStyle={"subtitle2"}
-                    className="font-semibold"
-                    onClick={onDecline}
-                  >
-                    Decline
-                  </Button>
-                )}
-              </div>
+              ))}
+              {/* <div className="flex gap-[14px] items-center">
+                <Avatar className="size-[46px]">
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+                <div className="text-body2">Kelly Clarkson</div>
+              </div> */}
             </div>
             <div className="mt-[28px] text-body1">Preferences</div>
             <div className="mt-3 space-y-1 text-body2">
