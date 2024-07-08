@@ -53,9 +53,17 @@ export default async function Page() {
         <div className="text-h2 font-semibold">Latest</div>
         <div className="mt-[11px] flex flex-col gap-2.5">
           {experienceListData.map((data, index) => {
-            const bookmarked = bookmarks?.some((bookmark) => bookmark.experience.id === data.id);
+            if (data.title === null) return <></>;
+            const bookmarked = bookmarks?.some(
+              (bookmark) => bookmark.experience.id === data.id
+            );
             return (
-              <ExperienceCard key={index} data={data} loggedIn={loggedIn} initialBookmark={bookmarked}/>
+              <ExperienceCard
+                key={index}
+                data={data}
+                loggedIn={loggedIn}
+                initialBookmark={bookmarked}
+              />
             );
           })}
         </div>

@@ -19,6 +19,9 @@ export default function ExperienceCard({
   loggedIn: boolean;
   initialBookmark?: boolean;
 }) {
+
+  console.log(data);
+
   const { dateInDotFormat, timeInFormat } = formatDateString(data.datetime);
   const [bookmarkLoading, setBookmarkLoading] = useState(false);
   const [bookmarked, setBookmarked] = useState(initialBookmark);

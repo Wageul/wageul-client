@@ -40,7 +40,7 @@ import { ACCEPTED_FILE_TYPES } from "@/lib/types";
 </Avatar> */
 }
 
-export const ProfileFormSchema = z.object({
+const ProfileFormSchema = z.object({
   profileImage: z
     .instanceof(File, { message: "Image is required" })
     .refine(

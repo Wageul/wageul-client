@@ -75,6 +75,10 @@ export default function Page({ params }: { params: { id: string } }) {
         const response = await fetch(url, {
           method: "GET",
           credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          }
         });
         const data: Bookmark[] = await response.json();
         console.log("bookmarkdata", data);
