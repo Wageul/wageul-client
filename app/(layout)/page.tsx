@@ -22,7 +22,7 @@ export default function Home() {
             <div>enjoy your trip to Korea</div>
           </div>
         </div>
-        <a href={`${process.env.LOCAL_API_URL}/login/oauth2/authorization/google`}>
+        <a href={`${process.env.NEXT_PUBLIC_DEPLOYED_API_URL}/login/oauth2/authorization/google`}>
           <Button
             variant={"white"}
             size={"xl"}
