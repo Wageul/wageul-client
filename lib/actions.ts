@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { CreateExperienceRequestBody, Experience, User } from "./types";
 import { revalidateTag } from "next/cache";
 
-const apiUrl = process.env.NEXT_PUBLIC_DEPLOYED_API_URL + "/api";
+const apiUrl = process.env.DEPLOYED_API_URL + "/api";
 
 export async function updateProfile(values: User) {
   console.log("profile action input", values);
