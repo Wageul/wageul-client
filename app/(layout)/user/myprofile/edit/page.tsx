@@ -18,9 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/customSelect";
-import { Input } from "@/components/ui/input";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import CountingTextArea from "@/components/CountingTextArea";
 import CountingTextAreaForForm from "@/components/CountingTextAreaForForm";
 import { Button } from "@/components/ui/wageulButton";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
@@ -30,15 +28,6 @@ import { BackgroundLayout } from "@/components/BackgroundLayout";
 import { updateProfile } from "@/lib/actions";
 import { countryList } from "@/lib/selectionData";
 import { ACCEPTED_FILE_TYPES } from "@/lib/types";
-
-// import { cookies } from "next/headers";
-
-{
-  /* <Avatar className="size-[40px]">
-<AvatarImage src="https://github.com/shadcn.png" />
-<AvatarFallback>CN</AvatarFallback>
-</Avatar> */
-}
 
 const ProfileFormSchema = z.object({
   profileImage: z
