@@ -42,7 +42,7 @@ const ProfileFormSchema = z.object({
     ),
   name: z.string().min(2).max(50),
   nationality: z.string().min(2).max(1000),
-  introduction: z.string().min(50).max(100),
+  introduce: z.string().min(50).max(100),
 });
 
 export default function Page({ params }: { params: { id: string } }) {
@@ -240,7 +240,7 @@ export default function Page({ params }: { params: { id: string } }) {
           />
           <FormField
             control={form.control}
-            name="introduction"
+            name="introduce"
             render={({ field }) => (
               <FormItem className="space-y-[11px] mt-[20px]">
                 <FormLabel className="text-body1 font-semibold">
