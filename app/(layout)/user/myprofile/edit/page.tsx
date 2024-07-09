@@ -28,6 +28,7 @@ import { BackgroundLayout } from "@/components/BackgroundLayout";
 import { updateProfile, uploadProfileImage } from "@/lib/actions";
 import { countryList } from "@/lib/selectionData";
 import { ACCEPTED_FILE_TYPES, User } from "@/lib/types";
+import { useRouter } from "next/navigation";
 
 const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
@@ -44,8 +45,8 @@ const ProfileFormSchema = z.object({
   introduction: z.string().min(50).max(100),
 });
 
-
 export default function Page({ params }: { params: { id: string } }) {
+  const router = useRouter();
 
   const [userData, setUserData] = useState<{
     loggedIn: boolean;
@@ -99,13 +100,17 @@ export default function Page({ params }: { params: { id: string } }) {
     if (values.profileImage) {
       formData.append("file", values.profileImage);
     }
-    if (userData.data){
+    if (userData.data) {
       formData.append("userId", String(userData.data.id));
-      await updateProfile(JSON.parse(JSON.stringify(values)), String(userData.data.id));
+      await updateProfile(
+        JSON.parse(JSON.stringify(values)),
+        String(userData.data.id)
+      );
       await uploadProfileImage(formData, String(userData.data.id));
       console.log("passed value to onSubmit", values);
-    }else{
-      console.log('no user data - onSubmit on profile edit')
+      router.push("/experience");
+    } else {
+      console.log("no user data - onSubmit on profile edit");
     }
   }
 
