@@ -31,6 +31,7 @@ import {
   addParticipant,
   deleteBookmark,
   deleteExperience,
+  deleteParticipant,
 } from "@/lib/actions";
 
 const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
@@ -47,6 +48,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const [bookmarkLoading, setBookmarkLoading] = useState(false);
   const [joined, setJoined] = useState(false);
   const [refetchParticipants, setRefetchParticipants] = useState(0);
+  const [participationId, setParticipationId] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -188,12 +190,15 @@ export default function Page({ params }: { params: { id: string } }) {
     // join 여부에 따라 다른 동작
     if (!joined) {
       // await join
-      await addParticipant(params.id);
+      const participantData = await addParticipant(params.id);
+      console.log('participantData', participantData);
+      setParticipationId(participantData.id);
       setRefetchParticipants((prev) => prev + 1);
       setDialogState("join-alert");
       handleDialogShow();
     } else {
       // await leave
+      await deleteParticipant(participationId);
       setRefetchParticipants((prev) => prev + 1);
       setDialogState("leave-alert");
       handleDialogShow();

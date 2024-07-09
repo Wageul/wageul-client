@@ -22,12 +22,15 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CountingTextAreaForForm from "@/components/CountingTextAreaForForm";
 import { Button } from "@/components/ui/wageulButton";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { BackgroundLayout } from "@/components/BackgroundLayout";
-import { updateProfile } from "@/lib/actions";
+import { updateProfile, uploadProfileImage } from "@/lib/actions";
 import { countryList } from "@/lib/selectionData";
-import { ACCEPTED_FILE_TYPES } from "@/lib/types";
+import { ACCEPTED_FILE_TYPES, User } from "@/lib/types";
+
+const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
+const TOKEN_INVALID_CODE = 401;
 
 const ProfileFormSchema = z.object({
   profileImage: z
@@ -41,7 +44,46 @@ const ProfileFormSchema = z.object({
   introduction: z.string().min(50).max(100),
 });
 
+
 export default function Page({ params }: { params: { id: string } }) {
+
+  const [userData, setUserData] = useState<{
+    loggedIn: boolean;
+    data: null | User;
+  }>({ loggedIn: false, data: null });
+
+  useEffect(() => {
+    (async () => {
+      try {
+        // console.log("token:", token);
+        const url = apiUrl + "/user";
+        console.log("url:", url);
+        const response = await fetch(url, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+
+        console.log("status code:", response.status);
+        if (response.status === TOKEN_INVALID_CODE) {
+          setUserData({ loggedIn: false, data: null });
+          return;
+        }
+
+        const data = await response.json();
+        console.log("data from client authenticateUserAndGetData", data);
+        setUserData({ loggedIn: true, data: data as User });
+        return;
+      } catch (err) {
+        console.error("Server Error:", err);
+        throw new Error("Failed to fetch the user.");
+      }
+    })();
+  }, []);
+
   // const userId = await fetchUserDataByToken()
   const form = useForm<z.infer<typeof ProfileFormSchema>>({
     resolver: zodResolver(ProfileFormSchema),
@@ -53,7 +95,16 @@ export default function Page({ params }: { params: { id: string } }) {
   async function onSubmit(values: z.infer<typeof ProfileFormSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    const formData = new FormData();
+    if (values.profileImage) {
+      formData.append("file", values.profileImage);
+    }
+    if (userData.data){
+      formData.append("userId", String(userData.data.id));
+    }
+
     await updateProfile(JSON.parse(JSON.stringify(values)));
+    await uploadProfileImage(formData);
     console.log("passed value to onSubmit", values);
   }
 

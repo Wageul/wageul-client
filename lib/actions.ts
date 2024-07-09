@@ -26,6 +26,26 @@ export async function updateProfile(values: User) {
   console.log("status", response.status);
 }
 
+export async function uploadProfileImage(values: FormData) {
+  console.log("upload profile image action input", values);
+  console.log(JSON.stringify(values));
+
+  const url = apiUrl + "/profile";
+  console.log(url);
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      Cookie: `token=${cookies().get("token")?.value}`,
+      // enctype: 'multipart/form-data',
+    },
+    body: values,
+  });
+  console.log("status", response.status);
+  const data = await response.json();
+  console.log("upload response", data);
+  return data;
+}
+
 export async function createExperience(values: CreateExperienceRequestBody) {
   console.log("experience action input", values);
   console.log(JSON.stringify(values));
@@ -127,6 +147,23 @@ export async function addParticipant(experienceId: string) {
     body: JSON.stringify({ experienceId: Number(experienceId) }),
   });
   console.log("add participant status", response.status);
+  const data = await response.json();
+  revalidateTag("participants");
+  return data;
+}
+
+export async function deleteParticipant(participationId: number) {
+  console.log("participationId", participationId);
+  const url = apiUrl + `/participation/${12}`;
+  console.log(url);
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      Cookie: `token=${cookies().get("token")?.value}`,
+      "Content-Type": "application/json",
+    },
+  });
+  console.log("delete participant status", response.status);
   revalidateTag("participants");
   return;
 }
