@@ -74,13 +74,16 @@ export interface Participant {
 
 export interface Bookmark {
   createdAt: string;
-  experience: {
-    id: number;
-    title: string;
-    location: string;
-    language: string;
-    datetime: string;
-    limitMember: number;
-    exImageList: CarouselImage[];
-  };
+  experience: SimpleExperience;
+}
+
+
+export interface SimpleExperience {
+  id: number;
+  title: string;
+  location: string;
+  language: string;
+  datetime: string;
+  limitMember: number;
+  exImageList: CarouselImage[];
 }

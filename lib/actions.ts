@@ -64,6 +64,7 @@ export async function createExperience(values: CreateExperienceRequestBody) {
   });
   console.log("status", response.status);
   const data = await response.json();
+  revalidateTag("participants");
   revalidateTag("experience-list");
   return data;
 }

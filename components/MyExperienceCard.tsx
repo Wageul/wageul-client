@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
-import { Bookmark } from "@/lib/types";
+import { Bookmark, Experience, SimpleExperience } from "@/lib/types";
 import { dMinus, formatDateString } from "@/lib/formatters";
 
 export default function MyExperienceCard({
@@ -9,16 +9,15 @@ export default function MyExperienceCard({
   variants,
   numMembers,
 }: {
-  cardData: Bookmark;
+  cardData: SimpleExperience;
   // cardData: Bookmark | Scheduled?;
   variants: "bookmark" | "scheduled";
   numMembers?: number;
 }) {
-  const {
-    experience: { title, location, language, datetime, id },
-  } = cardData;
+  const { title, location, language, datetime, id, limitMember, exImageList } =
+    cardData;
 
-  console.log('cardData', cardData);
+  console.log("cardData", cardData);
 
   const { dateInDotFormat } = formatDateString(datetime);
   const daysDifference = dMinus(dateInDotFormat);
@@ -28,11 +27,7 @@ export default function MyExperienceCard({
       <div className="relative px-[11px] py-[14px] rounded-[16px] border overflow-hidden">
         <div className="z-0">
           <Image
-            src={
-              cardData.experience.exImageList.length > 0
-                ? cardData.experience.exImageList[0].image
-                : "/main.avif"
-            }
+            src={exImageList.length > 0 ? exImageList[0].image : "/main.avif"}
             fill={true}
             alt={"experience"}
             objectFit="cover"
@@ -65,14 +60,14 @@ export default function MyExperienceCard({
             <div
               className={
                 "flex items-center gap-[9px] bg-background/30 px-1 rounded-[10px] " +
-                (numMembers && numMembers >= cardData.experience.limitMember
+                (numMembers && numMembers >= limitMember
                   ? "text-primary-red"
                   : "text-background")
               }
             >
               <GroupsRoundedIcon />
               <span>
-                {numMembers}/{cardData.experience.limitMember}
+                {numMembers}/{limitMember}
               </span>
             </div>
           )}

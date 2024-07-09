@@ -205,3 +205,33 @@ export async function fetchParticipations() {
     throw new Error("Failed to fetch the participations(schedules).");
   }
 }
+
+export async function fetchHosted() {
+  if (!cookies().has("token")) {
+    console.log("no token");
+    return;
+  }
+
+  try {
+    // console.log("token:", token);
+    const url = apiUrl + "/experience/my";
+    console.log("url:", url);
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Cookie: `token=${cookies().get("token")!.value}`,
+      },
+      next: { tags: ["participants"] },
+    });
+
+    console.log("hosted experience status code:", response.status);
+    const data = await response.json();
+    console.log("data from hosted experience(schedules)", data);
+    return data as Experience[];
+  } catch (err) {
+    console.error("Server Error:", err);
+    throw new Error("Failed to fetch the hosted experience(schedules).");
+  }
+}
