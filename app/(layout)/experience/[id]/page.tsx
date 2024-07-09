@@ -48,7 +48,6 @@ export default function Page({ params }: { params: { id: string } }) {
   const [bookmarkLoading, setBookmarkLoading] = useState(false);
   const [joined, setJoined] = useState(false);
   const [refetchParticipants, setRefetchParticipants] = useState(0);
-  const [participationId, setParticipationId] = useState(0);
 
   useEffect(() => {
     (async () => {
