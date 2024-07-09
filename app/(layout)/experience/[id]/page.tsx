@@ -118,12 +118,12 @@ export default function Page({ params }: { params: { id: string } }) {
           });
           const data = (await response.json()) as {
             experienceId: string;
-            userSimpleProflieList: Participant[];
+            userSimpleProfileList: Participant[];
           };
           console.log(data);
 
-          setParticipantsData(data.userSimpleProflieList);
-          const exists = data.userSimpleProflieList.some(
+          setParticipantsData(data.userSimpleProfileList);
+          const exists = data.userSimpleProfileList.some(
             (item) => item.userProfile.id === userData.data!.id
           );
           setJoined(exists);

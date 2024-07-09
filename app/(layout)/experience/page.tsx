@@ -7,6 +7,7 @@ import BottomNav from "@/components/BottomNav";
 import {
   authenticateUserAndGetData,
   fetchAllExperience,
+  fetchAllParticipants,
   fetchBookmarks,
   fetchUserDataByToken,
 } from "@/lib/data";
@@ -17,7 +18,9 @@ export default async function Page() {
   const { loggedIn, data: userData } = await authenticateUserAndGetData();
   const experienceListData = await fetchAllExperience();
   const bookmarks = await fetchBookmarks();
-
+  const allParticipantsData = await fetchAllParticipants();
+  console.log('top all participants', allParticipantsData);
+  console.log('top all experience list', experienceListData);
   return (
     <BackgroundLayout
       background={loggedIn ? "white" : "grey"}
@@ -57,12 +60,23 @@ export default async function Page() {
             const bookmarked = bookmarks?.some(
               (bookmark) => bookmark.experience.id === data.id
             );
+            console.log("allparticipants", allParticipantsData);
+            console.log(
+              "allparticipants id",
+              allParticipantsData[0].experienceId
+            );
+            console.log("experience data", data);
+            const participants = allParticipantsData.find(
+              (participantsData) => participantsData.experienceId === data.id
+            )!.userSimpleProfileList;
+            console.log("participants:", participants);
             return (
               <ExperienceCard
                 key={index}
                 data={data}
                 loggedIn={loggedIn}
                 initialBookmark={bookmarked}
+                participants={participants ? participants : []}
               />
             );
           })}

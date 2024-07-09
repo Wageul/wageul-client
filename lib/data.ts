@@ -1,7 +1,8 @@
 import { cookies } from "next/headers";
-import { Bookmark, Experience, User } from "./types";
+import { Bookmark, Experience, Participant, User } from "./types";
 
-const apiUrl = process.env.DEPLOYED_API_URL + "/api";
+// const apiUrl = process.env.DEPLOYED_API_URL + "/api";
+const apiUrl = process.env.LOCAL_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
 
 export async function fetchExperienceById(id: string) {
@@ -104,7 +105,7 @@ export async function fetchUserDataByToken(token: string) {
 
 export async function fetchBookmarks() {
   if (!cookies().has("token")) {
-    console.log('no token');
+    console.log("no token");
     return;
   }
 
@@ -129,5 +130,27 @@ export async function fetchBookmarks() {
   } catch (err) {
     console.error("Server Error:", err);
     throw new Error("Failed to fetch the bookmarks.");
+  }
+}
+
+export async function fetchAllParticipants() {
+  if (!apiUrl) {
+    throw new Error("API URL is not defined");
+  }
+  try {
+    const url = apiUrl + "/participation/experience";
+    console.log(url);
+    const response = await fetch(url, {
+      method: "GET",
+    });
+    const data = await response.json();
+    // console.log("data from fetchAllParticipants", data);
+    return data as {
+      experienceId: number;
+      userSimpleProfileList: Participant[];
+    }[];
+  } catch (err) {
+    console.error("Server Error:", err);
+    throw new Error("Failed to fetch the participants.");
   }
 }
