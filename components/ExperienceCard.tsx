@@ -75,8 +75,10 @@ export default function ExperienceCard({
         <div className="mt-[15px] text-subtitle flex gap-[17px]">
           <div className="rounded-[12px] overflow-hidden relative w-[95px] h-[93px]">
             <Image
-              src={"/main.avif"}
+              priority={true}
+              src={data.exImageList[0] ? data.exImageList[0].image : '/main.avif'}
               fill={true}
+              sizes="width: 95px"
               alt={"experience"}
               objectFit="cover"
             />
