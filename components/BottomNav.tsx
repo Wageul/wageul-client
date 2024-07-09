@@ -59,7 +59,7 @@ export default function BottomNav({ loggedIn }: { loggedIn: boolean }) {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed flex px-[26px] pt-[14px] left-1/2 -translate-x-1/2 bottom-0 max-w-[600px] w-full h-[83px] rounded-t-[20px] bg-background shadow-[0_-4px_10px_0px_rgba(0,0,0,0.05)]">
+    <nav className="z-50 fixed flex px-[26px] pt-[14px] left-1/2 -translate-x-1/2 bottom-0 max-w-[600px] w-full h-[83px] rounded-t-[20px] bg-background shadow-[0_-4px_10px_0px_rgba(0,0,0,0.05)]">
       {links.map(({ name, href, activeColor, activeIcon, icon }, index) =>
         name !== "experience" && !loggedIn ? (
           <AlertDialog key={name}>
