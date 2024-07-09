@@ -7,10 +7,12 @@ import { dMinus, formatDateString } from "@/lib/formatters";
 export default function MyExperienceCard({
   cardData,
   variants,
+  numMembers,
 }: {
   cardData: Bookmark;
   // cardData: Bookmark | Scheduled?;
   variants: "bookmark" | "scheduled";
+  numMembers: number;
 }) {
   const {
     experience: { title, location, language, datetime, id },
@@ -54,14 +56,25 @@ export default function MyExperienceCard({
             </span>
           </div>
           {variants === "bookmark" && (
-            <div className="flex items-center gap-[9px] text-background bg-background/30 px-1 rounded-[10px]">
+            <div
+              className={
+                "flex items-center gap-[9px] bg-background/30 px-1 rounded-[10px] " +
+                (numMembers >= cardData.experience.limitMember
+                  ? "text-primary-red"
+                  : "text-background")
+              }
+            >
               <GroupsRoundedIcon />
-              <span>4/6</span>
+              <span>
+                {numMembers}/{cardData.experience.limitMember}
+              </span>
             </div>
           )}
         </div>
         <div className="relative mt-[32px] z-10 text-background">
-          <div className="text-body1 font-semibold [overflow-wrap:anywhere]">{title}</div>
+          <div className="text-body1 font-semibold [overflow-wrap:anywhere]">
+            {title}
+          </div>
           <div className="flex items-center text-subtitle font-normal space-x-[5px]">
             <span>{location}</span>
             <div className="size-[3px] bg-background rounded-full"></div>

@@ -80,5 +80,6 @@ export interface Bookmark {
     location: string;
     language: string;
     datetime: string;
+    limitMember: number;
   };
 }
