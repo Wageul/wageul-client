@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { Bookmark, Experience, User } from "./types";
 
-const apiUrl = process.env.NEXT_PUBLIC_DEPLOYED_API_URL + "/api";
+const apiUrl = process.env.DEPLOYED_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
 
 export async function fetchExperienceById(id: string) {
