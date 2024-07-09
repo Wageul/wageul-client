@@ -103,6 +103,27 @@ export async function fetchUserDataByToken(token: string) {
   }
 }
 
+export async function fetchOtherUserData(userId: string) {
+  if (!apiUrl) {
+    throw new Error("API URL is not defined");
+  }
+  try {
+    // console.log("token:", token);
+    const url = apiUrl + `/user/${userId}`;
+    console.log("url:", url);
+    const response = await fetch(url, {
+      method: "GET",
+    });
+    console.log("status code:", response.status);
+    const data = await response.json();
+    console.log(data);
+    return data;
+  } catch (err) {
+    console.error("Server Error:", err);
+    throw new Error("Failed to fetch the other user.");
+  }
+}
+
 export async function fetchBookmarks() {
   if (!cookies().has("token")) {
     console.log("no token");

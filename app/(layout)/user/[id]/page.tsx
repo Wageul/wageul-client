@@ -4,12 +4,16 @@ import { Button } from "@/components/ui/wageulButton";
 import CountingTextArea from "@/components/CountingTextArea";
 import { AboutMe, ProfileHeader, ReviewList } from "@/components/Profile";
 import { BackgroundLayout } from "@/components/BackgroundLayout";
+import { fetchOtherUserData } from "@/lib/data";
 
 export default async function Page({ params }: { params: { id: string } }) {
+
+  const otherUserData = await fetchOtherUserData(params.id);
+
   return (
     <BackgroundLayout>
-      <ProfileHeader />
-      <AboutMe />
+      <ProfileHeader userData={otherUserData}/>
+      <AboutMe userData={otherUserData} />
       <section className="mt-[30px]">
         <div className="px-[27px] py-[23px] rounded-[16px] bg-grey-1">
           <div className="text-body2 font-semibold">Create a review</div>
