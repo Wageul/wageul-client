@@ -58,9 +58,9 @@ export const ACCEPTED_FILE_TYPES = [
   "image/jpg",
   "image/jpeg",
   "image/png",
-  "image/avif",
-  "image/gif",
-  "image/webp",
+  "image/JPG",
+  "image/JPEG",
+  "image/PNG",
 ];
 
 export interface Participant {

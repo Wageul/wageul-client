@@ -172,7 +172,7 @@ export default function Page({ params }: { params: { id: string } }) {
                     {...fieldProps}
                     type="file"
                     id="profileImage"
-                    accept="image/*"
+                    accept="image/png, image/jpg, image/jpeg"
                     onChange={(e) => {
                       handleProfileImageChange(e, onChange);
                     }}

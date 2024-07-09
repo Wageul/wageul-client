@@ -483,7 +483,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                       {...fieldProps}
                                       type="file"
                                       id={`imageFile${index}`}
-                                      accept="image/*"
+                                      accept="image/png, image/jpg, image/jpeg"
                                       onChange={(e) => {
                                         // appendImage(e);
                                         appendImage(e, onChange);
