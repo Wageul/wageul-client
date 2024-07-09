@@ -82,4 +82,5 @@ export interface Bookmark {
     datetime: string;
     limitMember: number;
   };
+  exImageList: CarouselImage[];
 }

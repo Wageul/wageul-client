@@ -154,3 +154,33 @@ export async function fetchAllParticipants() {
     throw new Error("Failed to fetch the participants.");
   }
 }
+
+export async function fetchParticipations() {
+  if (!cookies().has("token")) {
+    console.log("no token");
+    return;
+  }
+
+  try {
+    // console.log("token:", token);
+    const url = apiUrl + "/participation";
+    console.log("url:", url);
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Cookie: `token=${cookies().get("token")!.value}`,
+      },
+      next: { tags: ["participants"] },
+    });
+
+    console.log("bookmark status code:", response.status);
+    const data = await response.json();
+    console.log("data from fetchparticipations(schedules)", data);
+    return data as Bookmark[];
+  } catch (err) {
+    console.error("Server Error:", err);
+    throw new Error("Failed to fetch the participations(schedules).");
+  }
+}

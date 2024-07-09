@@ -17,23 +17,25 @@ export default async function Page() {
 
   const bookmarks = await fetchBookmarks();
   const participantsList = await fetchAllParticipants();
-
+  
   return (
     <BackgroundLayout background={"grey"} bottomNav={"yes"}>
       <div className="text-h2 text-center font-semibold">Saved</div>
       <section className="flex flex-col gap-2.5 mt-[30px]">
         {bookmarks?.map((bookmark, index) => {
-          const numMembers =
+          const experience =
             participantsList.find(
               (participants) =>
                 participants.experienceId === bookmark.experience.id
-            )!.userSimpleProfileList.length + 1;
-
+            )!;
+          const numMembers = experience.userSimpleProfileList.length + 1
+          // const thumbnailUrl = experience
           return (
             <MyExperienceCard
               key={index}
               variants="bookmark"
               cardData={bookmark}
+              // thumbnailUrl={}
               numMembers={numMembers}
             />
           );

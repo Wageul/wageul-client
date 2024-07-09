@@ -12,11 +12,13 @@ export default function MyExperienceCard({
   cardData: Bookmark;
   // cardData: Bookmark | Scheduled?;
   variants: "bookmark" | "scheduled";
-  numMembers: number;
+  numMembers?: number;
 }) {
   const {
     experience: { title, location, language, datetime, id },
   } = cardData;
+
+  console.log('cardData', cardData);
 
   const { dateInDotFormat } = formatDateString(datetime);
   const daysDifference = dMinus(dateInDotFormat);
@@ -26,7 +28,11 @@ export default function MyExperienceCard({
       <div className="relative px-[11px] py-[14px] rounded-[16px] border overflow-hidden">
         <div className="z-0">
           <Image
-            src={"/main.avif"}
+            src={
+              cardData.exImageList
+                ? cardData.exImageList[0].image
+                : "/main.avif"
+            }
             fill={true}
             alt={"experience"}
             objectFit="cover"
@@ -59,7 +65,7 @@ export default function MyExperienceCard({
             <div
               className={
                 "flex items-center gap-[9px] bg-background/30 px-1 rounded-[10px] " +
-                (numMembers >= cardData.experience.limitMember
+                (numMembers && numMembers >= cardData.experience.limitMember
                   ? "text-primary-red"
                   : "text-background")
               }
