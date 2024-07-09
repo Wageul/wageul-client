@@ -1,3 +1,8 @@
+export interface CarouselImage {
+  id: number;
+  image: string;
+}
+
 export interface Experience {
   id: number;
   title: string;
@@ -9,6 +14,7 @@ export interface Experience {
   contact: string;
   limitMember: number;
   language: string;
+  exImageList: CarouselImage[];
   writer: {
     id: number;
     email: string;

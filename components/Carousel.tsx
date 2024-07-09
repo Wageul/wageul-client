@@ -10,8 +10,9 @@ import {
 } from "@/components/ui/carousel";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { CarouselImage } from "@/lib/types";
 
-export default function Carousel({ thumbnails }: { thumbnails?: string[] }) {
+export default function Carousel({ thumbnails }: { thumbnails: CarouselImage[] }) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -32,11 +33,12 @@ export default function Carousel({ thumbnails }: { thumbnails?: string[] }) {
   return (
     <C setApi={setApi} className="relative w-full h-[309px]">
       <CarouselContent>
-        {Array.from({ length: 3 }).map((_, index) => (
+        {thumbnails.map((image, index) => (
           <CarouselItem key={index}>
             <div className="relative flex h-[309px] items-center justify-center p-6 rounded-[20px] overflow-hidden">
               <Image
-                src="/main.avif"
+                priority={true}
+                src={image.image}
                 fill={true}
                 alt="thumbnail"
                 style={{

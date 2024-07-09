@@ -352,7 +352,7 @@ export default function Page({ params }: { params: { id: string } }) {
         ) : (
           <></>
         )}
-        <Carousel />
+        <Carousel thumbnails={experienceData.exImageList} />
         <section className="mt-2.5">
           <div className="px-[22px] py-[16px] bg-background rounded-[16px] text-h2 text-center [overflow-wrap:anywhere]">
             {title}
