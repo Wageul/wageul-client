@@ -6,11 +6,11 @@ import { revalidateTag } from "next/cache";
 
 const apiUrl = process.env.DEPLOYED_API_URL + "/api";
 
-export async function updateProfile(values: User) {
+export async function updateProfile(values: User, userId: string) {
   console.log("profile action input", values);
   console.log(JSON.stringify(values));
 
-  const url = apiUrl + `/user/${2}`;
+  const url = apiUrl + `/user/${userId}`;
   console.log(url);
   const response = await fetch(url, {
     method: "PUT",
@@ -23,10 +23,11 @@ export async function updateProfile(values: User) {
       profileImage: "https://test1.jpg",
     }),
   });
+  revalidateTag(`profile-${values.id}`);
   console.log("status", response.status);
 }
 
-export async function uploadProfileImage(values: FormData) {
+export async function uploadProfileImage(values: FormData, userId: string) {
   console.log("upload profile image action input", values);
   console.log(JSON.stringify(values));
 
@@ -43,6 +44,7 @@ export async function uploadProfileImage(values: FormData) {
   console.log("status", response.status);
   const data = await response.json();
   console.log("upload response", data);
+  revalidateTag(`profile-${userId}`);
   return data;
 }
 

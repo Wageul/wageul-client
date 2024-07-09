@@ -101,11 +101,12 @@ export default function Page({ params }: { params: { id: string } }) {
     }
     if (userData.data){
       formData.append("userId", String(userData.data.id));
+      await updateProfile(JSON.parse(JSON.stringify(values)), String(userData.data.id));
+      await uploadProfileImage(formData, String(userData.data.id));
+      console.log("passed value to onSubmit", values);
+    }else{
+      console.log('no user data - onSubmit on profile edit')
     }
-
-    await updateProfile(JSON.parse(JSON.stringify(values)));
-    await uploadProfileImage(formData);
-    console.log("passed value to onSubmit", values);
   }
 
   const [profileImageUrl, setProfileImageUrl] = useState("");
