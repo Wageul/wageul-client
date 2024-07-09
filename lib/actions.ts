@@ -154,7 +154,7 @@ export async function addParticipant(experienceId: string) {
 
 export async function deleteParticipant(participationId: number) {
   console.log("participationId", participationId);
-  const url = apiUrl + `/participation/${12}`;
+  const url = apiUrl + `/participation/${participationId}`;
   console.log(url);
   const response = await fetch(url, {
     method: "DELETE",

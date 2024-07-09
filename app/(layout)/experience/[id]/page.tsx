@@ -191,17 +191,23 @@ export default function Page({ params }: { params: { id: string } }) {
     if (!joined) {
       // await join
       const participantData = await addParticipant(params.id);
-      console.log('participantData', participantData);
-      setParticipationId(participantData.id);
+      console.log("participantData", participantData);
       setRefetchParticipants((prev) => prev + 1);
       setDialogState("join-alert");
       handleDialogShow();
     } else {
       // await leave
-      await deleteParticipant(participationId);
-      setRefetchParticipants((prev) => prev + 1);
-      setDialogState("leave-alert");
-      handleDialogShow();
+      if (participantsData) {
+        const participant = participantsData.find(
+          (participant) => participant.userProfile.id === userData.data?.id
+        );
+        if (participant) {
+          await deleteParticipant(participant.participationId);
+          setRefetchParticipants((prev) => prev + 1);
+          setDialogState("leave-alert");
+          handleDialogShow();
+        }
+      }
     }
     console.log("submit");
   };
@@ -416,7 +422,9 @@ export default function Page({ params }: { params: { id: string } }) {
                       />
                       <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
-                    <div className="text-body2">{participant.userProfile.name}</div>
+                    <div className="text-body2">
+                      {participant.userProfile.name}
+                    </div>
                   </div>
                   {currentUserIsTheHost && (
                     // mapping required
