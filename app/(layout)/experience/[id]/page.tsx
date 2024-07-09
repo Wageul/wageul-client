@@ -32,6 +32,7 @@ import {
   deleteBookmark,
   deleteExperience,
   deleteParticipant,
+  deleteParticipantByHost,
 } from "@/lib/actions";
 
 const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
@@ -48,6 +49,10 @@ export default function Page({ params }: { params: { id: string } }) {
   const [bookmarkLoading, setBookmarkLoading] = useState(false);
   const [joined, setJoined] = useState(false);
   const [refetchParticipants, setRefetchParticipants] = useState(0);
+  const [memberToBeDeclined, setMemberToBeDeclined] = useState<{
+    participationId: number;
+    participantName: string;
+  }>();
 
   useEffect(() => {
     (async () => {
@@ -211,11 +216,22 @@ export default function Page({ params }: { params: { id: string } }) {
     console.log("submit");
   };
 
-  const onDecline = async () => {
-    // "use server";
+  const onDecline = () => {
     // 멤버 추방
     setDialogState("decline-confirmation");
     handleDialogShow();
+  };
+
+  const handleDecline = async () => {
+    if (memberToBeDeclined && userData.data) {
+      await deleteParticipantByHost(
+        memberToBeDeclined?.participationId,
+        userData.data?.id
+      );
+      setRefetchParticipants((prev) => prev + 1);
+    }else{
+      console.log('no participationId or userId')
+    }
   };
 
   const onBookmark = async () => {
@@ -290,16 +306,17 @@ export default function Page({ params }: { params: { id: string } }) {
       },
       "decline-confirmation": {
         content: (attendant?: string) =>
-          `Will you decline ${attendant}'s attendance?`,
+          `Will you decline ${memberToBeDeclined?.participantName}'s attendance?`,
         twoButtons: true,
         buttonContent1: "NO",
         handler1: () => {
           handleDialogHide();
         },
         buttonContent2: "YES",
-        handler2: () => {
+        handler2: async () => {
           // submit decline
           handleDialogHide();
+          await handleDecline();
         },
       },
       "join-alert": {
@@ -398,7 +415,13 @@ export default function Page({ params }: { params: { id: string } }) {
             <div className="text-body1">Members</div>
             <div className="mt-3 flex gap-2.5 items-center">
               <Avatar className="size-[54px]">
-                <AvatarImage src={writer.profileImg ? writer.profileImg : "https://github.com/shadcn.png"} />
+                <AvatarImage
+                  src={
+                    writer.profileImg
+                      ? writer.profileImg
+                      : "https://github.com/shadcn.png"
+                  }
+                />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <div className="text-body2">
@@ -431,7 +454,13 @@ export default function Page({ params }: { params: { id: string } }) {
                       variant={"primaryRed"}
                       textStyle={"subtitle2"}
                       className="font-semibold"
-                      onClick={onDecline}
+                      onClick={() => {
+                        setMemberToBeDeclined({
+                          participationId: participant.participationId,
+                          participantName: participant.userProfile.name,
+                        });
+                        onDecline();
+                      }}
                     >
                       Decline
                     </Button>

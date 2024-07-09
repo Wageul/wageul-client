@@ -127,7 +127,7 @@ export async function deleteBookmark(experienceId: string) {
     method: "DELETE",
     headers: {
       Cookie: `token=${cookies().get("token")?.value}`,
-    }
+    },
   });
   console.log("delete bookmark status", response.status);
   revalidateTag("bookmarks");
@@ -164,6 +164,25 @@ export async function deleteParticipant(participationId: number) {
     },
   });
   console.log("delete participant status", response.status);
+  revalidateTag("participants");
+  return;
+}
+
+export async function deleteParticipantByHost(
+  participationId: number,
+  userId: number
+) {
+  console.log("participationId", participationId);
+  const url = apiUrl + `/participation/decline/${participationId}/${userId}`;
+  console.log(url);
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      Cookie: `token=${cookies().get("token")?.value}`,
+      "Content-Type": "application/json",
+    },
+  });
+  console.log("decline participant status", response.status);
   revalidateTag("participants");
   return;
 }
