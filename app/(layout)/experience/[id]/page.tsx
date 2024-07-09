@@ -120,7 +120,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
           setParticipantsData(data.userSimpleProflieList);
           const exists = data.userSimpleProflieList.some(
-            (item) => item.id === userData.data!.id
+            (item) => item.userProfile.id === userData.data!.id
           );
           setJoined(exists);
         } catch (err) {
@@ -409,14 +409,14 @@ export default function Page({ params }: { params: { id: string } }) {
                     <Avatar className="size-[46px]">
                       <AvatarImage
                         src={
-                          participant.profileImg
-                            ? participant.profileImg
+                          participant.userProfile.profileImg
+                            ? participant.userProfile.profileImg
                             : "https://github.com/shadcn.png"
                         }
                       />
                       <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
-                    <div className="text-body2">{participant.name}</div>
+                    <div className="text-body2">{participant.userProfile.name}</div>
                   </div>
                   {currentUserIsTheHost && (
                     // mapping required

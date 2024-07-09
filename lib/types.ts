@@ -58,10 +58,13 @@ export const ACCEPTED_FILE_TYPES = [
 ];
 
 export interface Participant {
-  id: number;
-  profileImg: null | string;
-  name: string;
-};
+  participationId: number;
+  userProfile: {
+    id: number;
+    profileImg: null | string;
+    name: string;
+  };
+}
 
 export interface Bookmark {
   createdAt: string;
@@ -71,5 +74,5 @@ export interface Bookmark {
     location: string;
     language: string;
     datetime: string;
-  }
+  };
 }
