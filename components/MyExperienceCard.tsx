@@ -29,8 +29,8 @@ export default function MyExperienceCard({
         <div className="z-0">
           <Image
             src={
-              cardData.exImageList
-                ? cardData.exImageList[0].image
+              cardData.experience.exImageList.length > 0
+                ? cardData.experience.exImageList[0].image
                 : "/main.avif"
             }
             fill={true}

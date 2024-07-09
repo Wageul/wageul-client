@@ -81,6 +81,6 @@ export interface Bookmark {
     language: string;
     datetime: string;
     limitMember: number;
+    exImageList: CarouselImage[];
   };
-  exImageList: CarouselImage[];
 }

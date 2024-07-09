@@ -2,7 +2,6 @@ import { BackgroundLayout } from "@/components/BackgroundLayout";
 import BottomNav from "@/components/BottomNav";
 import {
   authenticateUserAndGetData,
-  fetchAllExperience,
   fetchAllParticipants,
 } from "@/lib/data";
 import { redirect } from "next/navigation";
@@ -23,19 +22,16 @@ export default async function Page() {
       <div className="text-h2 text-center font-semibold">Saved</div>
       <section className="flex flex-col gap-2.5 mt-[30px]">
         {bookmarks?.map((bookmark, index) => {
-          const experience =
+          const numMembers =
             participantsList.find(
               (participants) =>
                 participants.experienceId === bookmark.experience.id
-            )!;
-          const numMembers = experience.userSimpleProfileList.length + 1
-          // const thumbnailUrl = experience
+            )!.userSimpleProfileList.length + 1;
           return (
             <MyExperienceCard
               key={index}
               variants="bookmark"
               cardData={bookmark}
-              // thumbnailUrl={}
               numMembers={numMembers}
             />
           );
