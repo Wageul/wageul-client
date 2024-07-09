@@ -27,7 +27,7 @@ export default function MyExperienceCard({
       <div className="relative px-[11px] py-[14px] rounded-[16px] border overflow-hidden">
         <div className="z-0">
           <Image
-            src={exImageList.length > 0 ? exImageList[0].image : "/main.avif"}
+            src={exImageList && exImageList.length > 0 ? exImageList[0].image : "/main.avif"}
             fill={true}
             alt={"experience"}
             objectFit="cover"

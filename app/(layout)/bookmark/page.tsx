@@ -31,7 +31,7 @@ export default async function Page() {
             <MyExperienceCard
               key={index}
               variants="bookmark"
-              cardData={bookmark}
+              cardData={bookmark.experience}
               numMembers={numMembers}
             />
           );

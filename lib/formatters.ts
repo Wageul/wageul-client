@@ -1,5 +1,8 @@
 // input and output example: "2024-05-01T15:00:00" => { "2024.05.29", "03:00 am" }
 export const formatDateString = (dateString: string) => {
+  if (!dateString) {
+    return { dateInDotFormat: "", timeInFormat: "" };
+  }
   let [date, time] = dateString.split("T");
   let dateInDotFormat = date.replaceAll(
     "-",
@@ -22,7 +25,9 @@ export const formatDateString = (dateString: string) => {
     period = "pm";
   }
 
-  const timeInFormat = `${String(timeIn12!).padStart(2, '0')}:${String(minute).padStart(2, '0')} ${period!}`
+  const timeInFormat = `${String(timeIn12!).padStart(2, "0")}:${String(
+    minute
+  ).padStart(2, "0")} ${period!}`;
 
   return { dateInDotFormat, timeInFormat };
 };
@@ -42,13 +47,13 @@ export const formatDateTime = (date: Date, hour: string, minute: string) => {
 };
 
 export const dMinus = (scheduledDate: string) => {
-    const dDay = +new Date(scheduledDate);
-    const currentDate = +new Date();
-  
-    // Calculate the difference in time (in milliseconds)
-    const timeDifference = dDay - currentDate;
-    // Convert the difference in time to days
-    const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-  
-    return daysDifference;
-}
+  const dDay = +new Date(scheduledDate);
+  const currentDate = +new Date();
+
+  // Calculate the difference in time (in milliseconds)
+  const timeDifference = dDay - currentDate;
+  // Convert the difference in time to days
+  const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+  return daysDifference;
+};
