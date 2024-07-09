@@ -2,7 +2,7 @@ name: production Deploy
 on:
   push:
     branches:
-      - feature/1-git-action-cicd
+      - main
 env:
   DOCKERHUB_USERNAME: ywonchae1
   DOCKERHUB_IMAGE_NAME: wageul79-client
