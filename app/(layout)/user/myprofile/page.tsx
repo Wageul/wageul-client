@@ -14,7 +14,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <BackgroundLayout bottomNav={"yes"}>
-      <ProfileHeader />
+      <ProfileHeader userData={data} />
       <div className="mt-[35px] flex justify-center">
         <Link href={'/user/myprofile/edit'}>
           <Button variant={"white"} size={"xl"}>
@@ -22,7 +22,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           </Button>
         </Link>
       </div>
-      <AboutMe />
+      <AboutMe userData={data} />
       <ReviewList />
       {/* <section className="mt-[35px] flex justify-center">
         <div className="text-primary-red">Leave Membership</div>

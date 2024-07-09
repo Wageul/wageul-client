@@ -1,17 +1,18 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import StarRoundedIcon from "@mui/icons-material/StarRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
+import { User } from "@/lib/types";
 
-export async function ProfileHeader() {
+export async function ProfileHeader({ userData } : { userData: User | null }) {
   return (
     <section className="flex flex-col items-center">
       <Avatar className="size-[73px]">
-        <AvatarImage src="https://github.com/shadcn.png" />
+        <AvatarImage src={userData && userData.profileImg ? userData.profileImg! : "https://github.com/shadcn.png"} />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
-      <div className="mt-[15px] text-h2 font-semibold">Kelly Clarkson</div>
+      <div className="mt-[15px] text-h2 font-semibold">{userData?.name}</div>
       <div className="mt-[2px] text-body2 font-semibold text-grey-4">
-        Los Anageles, CA
+        {userData?.nationality}
       </div>
       <div className="mt-[21px] flex gap-2.5 text-h3">
         <div className="px-3 py-2 flex gap-2.5 rounded-full bg-primary-yellow/25 items-center">
@@ -31,20 +32,17 @@ export async function ProfileHeader() {
   );
 }
 
-export async function AboutMe() {
+export async function AboutMe({ userData } : { userData: User | null }) {
   return (
     <section className="mt-[35px]">
       <div className="pl-2 text-h3 font-semibold">About me</div>
       <div className="mt-3 text-subtitle">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptas illum
-        asperiores veniam voluptates. Suscipit quas aut, minus eveniet ut
-        placeat mollitia adipisci et tenetur deserunt minima enim magni labore
-        cumque!
+        {userData?.introduce}
       </div>
-      <div className="mt-[9px] flex gap-4">
+      {/* <div className="mt-[9px] flex gap-4">
         <div className="text-body2 text-grey-4">Language</div>
         <div className="text-body2">English, Korean</div>
-      </div>
+      </div> */}
     </section>
   );
 }
