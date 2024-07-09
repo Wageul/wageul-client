@@ -398,7 +398,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <div className="text-body1">Members</div>
             <div className="mt-3 flex gap-2.5 items-center">
               <Avatar className="size-[54px]">
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage src={writer.profileImg ? writer.profileImg : "https://github.com/shadcn.png"} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <div className="text-body2">
