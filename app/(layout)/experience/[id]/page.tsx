@@ -28,7 +28,7 @@ import {
 import Image from "next/image";
 import { addBookmark, deleteBookmark, deleteExperience } from "@/lib/actions";
 
-const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
+const apiUrl = process.env.NEXT_PUBLIC_DEPLOYED_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
 
 export default function Page({ params }: { params: { id: string } }) {
