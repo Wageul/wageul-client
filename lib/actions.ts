@@ -5,6 +5,7 @@ import { CreateExperienceRequestBody, Experience, User } from "./types";
 import { revalidateTag } from "next/cache";
 
 const apiUrl = process.env.DEPLOYED_API_URL + "/api";
+const TOKEN_INVALID_CODE = 401;
 
 export async function updateProfile(values: User, userId: string) {
   console.log("profile action input", values);
@@ -148,6 +149,9 @@ export async function addParticipant(experienceId: string) {
     body: JSON.stringify({ experienceId: Number(experienceId) }),
   });
   console.log("add participant status", response.status);
+  if(response.status === TOKEN_INVALID_CODE){
+    return;
+  }
   const data = await response.json();
   revalidateTag("participants");
   return data;

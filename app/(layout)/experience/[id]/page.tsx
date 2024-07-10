@@ -66,7 +66,7 @@ export default function Page({ params }: { params: { id: string } }) {
           method: "GET",
         });
         const data = (await response.json()) as Experience;
-        console.log(data);
+        console.log(url, data);
         setExperienceData(data);
       } catch (err) {
         console.error("Server Error:", err);
@@ -176,6 +176,7 @@ export default function Page({ params }: { params: { id: string } }) {
     | "decline-confirmation"
     | "join-alert"
     | "leave-alert"
+    | "full-alert"
   >("delete-confirmation");
   const [dialogIsVisible, setDialogIsVisible] = useState(false);
   const [dialogAnimationClass, setDialogAnimationClass] = useState("");
@@ -192,15 +193,21 @@ export default function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
 
   const handleJoin = async () => {
-    // "use server";
-    // join 여부에 따라 다른 동작
     if (!joined) {
-      // await join
-      const participantData = await addParticipant(params.id);
-      console.log("participantData", participantData);
-      setRefetchParticipants((prev) => prev + 1);
-      setDialogState("join-alert");
-      handleDialogShow();
+      if(participantsData && experienceData){
+        if (participantsData.length+1 < experienceData.limitMember) {
+          const participantData = await addParticipant(params.id);
+          console.log("participantData", participantData);
+          setRefetchParticipants((prev) => prev + 1);
+          setDialogState("join-alert");
+          handleDialogShow();
+        }else{
+          setDialogState("full-alert");
+          handleDialogShow();
+        }
+      }else{
+        console.log('missing required data')
+      }
     } else {
       // await leave
       if (participantsData) {
@@ -280,8 +287,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
     const dialogs = {
       "delete-confirmation": {
-        content: (attendant?: string) =>
-          "Are you sure you want to permenantly delete the experience?",
+        content: "Are you sure you want to permenantly delete the experience?",
         twoButtons: true,
         buttonContent1: "NO",
         handler1: () => {
@@ -296,7 +302,7 @@ export default function Page({ params }: { params: { id: string } }) {
         },
       },
       "delete-alert": {
-        content: (attendant?: string) => "Experience has been deleted.",
+        content: "Experience has been deleted.",
         twoButtons: false,
         buttonContent1: "OK",
         handler1: () => {
@@ -307,8 +313,7 @@ export default function Page({ params }: { params: { id: string } }) {
         handler2: () => {},
       },
       "decline-confirmation": {
-        content: (attendant?: string) =>
-          `Will you decline ${memberToBeDeclined?.participantName}'s attendance?`,
+        content: `Will you decline ${memberToBeDeclined?.participantName}'s attendance?`,
         twoButtons: true,
         buttonContent1: "NO",
         handler1: () => {
@@ -322,7 +327,7 @@ export default function Page({ params }: { params: { id: string } }) {
         },
       },
       "join-alert": {
-        content: (attendant?: string) => "You have joined the group!",
+        content: "You have joined the group!",
         twoButtons: false,
         buttonContent1: "OK",
         handler1: () => {
@@ -332,7 +337,18 @@ export default function Page({ params }: { params: { id: string } }) {
         handler2: () => {},
       },
       "leave-alert": {
-        content: (attendant?: string) => "You have left the group.",
+        content: "You have left the group.",
+        twoButtons: false,
+        buttonContent1: "OK",
+        handler1: () => {
+          handleDialogHide();
+        },
+        buttonContent2: "",
+        handler2: () => {},
+      },
+      "full-alert": {
+        content:
+          "Sorry, this activity is full. Please check back later or try another activity. Thanks for understanding!",
         twoButtons: false,
         buttonContent1: "OK",
         handler1: () => {
@@ -531,6 +547,12 @@ export default function Page({ params }: { params: { id: string } }) {
                   size={"lg"}
                   textStyle={"body1"}
                   onClick={handleJoin}
+                  disabled={
+                    participantsData &&
+                    limitMember <= participantsData.length + 1
+                      ? true
+                      : false
+                  }
                 >
                   Join
                 </Button>
@@ -543,6 +565,12 @@ export default function Page({ params }: { params: { id: string } }) {
                       size={"lg"}
                       textStyle={"body1"}
                       type="button"
+                      disabled={
+                        participantsData &&
+                        limitMember <= participantsData.length + 1
+                          ? true
+                          : false
+                      }
                     >
                       Join
                     </Button>
@@ -597,7 +625,7 @@ export default function Page({ params }: { params: { id: string } }) {
             >
               <div className="fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%] w-[275px] rounded-[20px] flex flex-col bg-background overflow-hidden break-words">
                 <div className="px-[24.5px] py-[35px] text-body1 font-semibold text-center">
-                  {dialogs[dialogState].content()}
+                  {dialogs[dialogState].content}
                 </div>
                 <div className="flex divide-x divide-grey-3">
                   <button
@@ -624,6 +652,5 @@ export default function Page({ params }: { params: { id: string } }) {
       </BackgroundLayout>
     );
   }
-
   return <BackgroundLayout background={"grey"}></BackgroundLayout>;
 }
