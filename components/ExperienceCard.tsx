@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import CustomAvatar from "@/components/CustomAvatar";
 import { formatDateString } from "@/lib/formatters";
 import { Experience, Participant } from "@/lib/types";
 import Image from "next/image";
@@ -9,6 +9,7 @@ import BookmarkBorderRoundedIcon from "@mui/icons-material/BookmarkBorderRounded
 import BookmarkRoundedIcon from "@mui/icons-material/BookmarkRounded";
 import { addBookmark, deleteBookmark } from "@/lib/actions";
 import { useState } from "react";
+import defaultProfilePic from "@/public/defaultprofile.png";
 
 export default function ExperienceCard({
   data,
@@ -52,16 +53,14 @@ export default function ExperienceCard({
         )}
         <div className="flex justify-between">
           <div className="flex gap-2.5 items-center">
-            <Avatar className="size-[32px]">
-              <AvatarImage
-                src={
-                  data.writer.profileImg
-                    ? data.writer.profileImg
-                    : "https://github.com/shadcn.png"
-                }
-              />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+            <CustomAvatar
+              sizeInPx={32}
+              src={
+                data.writer.profileImg
+                  ? data.writer.profileImg
+                  : defaultProfilePic
+              }
+            />
             <div className="text-body1 [overflow-wrap:anywhere]">
               {data.title}
             </div>
@@ -117,16 +116,16 @@ export default function ExperienceCard({
                       return index > 2 ? (
                         <></>
                       ) : (
-                        <Avatar key={index} className="size-[18px] -ml-[8px]">
-                          <AvatarImage
-                            src={
-                              participant.userProfile.profileImg
-                                ? participant.userProfile.profileImg
-                                : "https://github.com/shadcn.png"
-                            }
-                          />
-                          <AvatarFallback>CN</AvatarFallback>
-                        </Avatar>
+                        <CustomAvatar
+                          key={index}
+                          sizeInPx={18}
+                          src={
+                            participant.userProfile.profileImg
+                              ? participant.userProfile.profileImg
+                              : defaultProfilePic
+                          }
+                          className="-ml-[8px]"
+                        />
                       );
                     })}
                 </div>
