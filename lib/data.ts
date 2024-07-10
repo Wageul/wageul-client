@@ -145,6 +145,10 @@ export async function fetchBookmarks() {
     });
 
     console.log("bookmark status code:", response.status);
+    if(response.status === TOKEN_INVALID_CODE){
+      return [] as Bookmark[];
+    }
+
     const data = await response.json();
     console.log("data from fetchBookmarks", data);
     return data as Bookmark[];

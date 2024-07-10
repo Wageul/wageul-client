@@ -19,8 +19,8 @@ export default async function Page() {
   const experienceListData = await fetchAllExperience();
   const bookmarks = await fetchBookmarks();
   const allParticipantsData = await fetchAllParticipants();
-  console.log('top all participants', allParticipantsData);
-  console.log('top all experience list', experienceListData);
+  console.log("top all participants", allParticipantsData);
+  console.log("top all experience list", experienceListData);
   return (
     <BackgroundLayout
       background={loggedIn ? "white" : "grey"}

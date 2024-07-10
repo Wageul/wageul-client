@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/wageulButton";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
 
   return (
     <BackgroundLayout>
@@ -22,7 +22,9 @@ export default function Home() {
             <div>enjoy your trip to Korea</div>
           </div>
         </div>
-        <a href={`${process.env.LOCAL_API_URL}/login/oauth2/authorization/google`}>
+        <a
+          href={`${process.env.LOCAL_API_URL}/login/oauth2/authorization/google`}
+        >
           <Button
             variant={"white"}
             size={"xl"}

@@ -80,26 +80,28 @@ export default function Page({ params }: { params: { id: string } }) {
       if (!apiUrl) {
         throw new Error("API URL is not defined");
       }
-      try {
-        const url = apiUrl + "/bookmark";
-        console.log(url);
-        const response = await fetch(url, {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        });
-        const data: Bookmark[] = await response.json();
-        console.log("bookmarkdata", data);
-        const bookmarkExists = data.some(
-          (item) => item.experience.id === Number(params.id)
-        );
-        setBookmarked(bookmarkExists);
-      } catch (err) {
-        console.error("Server Error:", err);
-        throw new Error("Failed to fetch the bookmark.");
+      if (userData.loggedIn) {
+        try {
+          const url = apiUrl + "/bookmark";
+          console.log(url);
+          const response = await fetch(url, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          });
+          const data: Bookmark[] = await response.json();
+          console.log("bookmarkdata", data);
+          const bookmarkExists = data.some(
+            (item) => item.experience.id === Number(params.id)
+          );
+          setBookmarked(bookmarkExists);
+        } catch (err) {
+          console.error("Server Error:", err);
+          throw new Error("Failed to fetch the bookmark.");
+        }
       }
     })();
   }, [params.id]);
@@ -229,8 +231,8 @@ export default function Page({ params }: { params: { id: string } }) {
         userData.data?.id
       );
       setRefetchParticipants((prev) => prev + 1);
-    }else{
-      console.log('no participationId or userId')
+    } else {
+      console.log("no participationId or userId");
     }
   };
 
