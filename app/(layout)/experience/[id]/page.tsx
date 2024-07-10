@@ -34,6 +34,7 @@ import {
   deleteParticipant,
   deleteParticipantByHost,
 } from "@/lib/actions";
+import { dateIsPassed } from "@/lib/utils";
 
 const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
@@ -194,19 +195,19 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const handleJoin = async () => {
     if (!joined) {
-      if(participantsData && experienceData){
-        if (participantsData.length+1 < experienceData.limitMember) {
+      if (participantsData && experienceData) {
+        if (participantsData.length + 1 < experienceData.limitMember) {
           const participantData = await addParticipant(params.id);
           console.log("participantData", participantData);
           setRefetchParticipants((prev) => prev + 1);
           setDialogState("join-alert");
           handleDialogShow();
-        }else{
+        } else {
           setDialogState("full-alert");
           handleDialogShow();
         }
-      }else{
-        console.log('missing required data')
+      } else {
+        console.log("missing required data");
       }
     } else {
       // await leave
@@ -548,8 +549,9 @@ export default function Page({ params }: { params: { id: string } }) {
                   textStyle={"body1"}
                   onClick={handleJoin}
                   disabled={
-                    participantsData &&
-                    limitMember <= participantsData.length + 1
+                    dateIsPassed(datetime) ||
+                    (participantsData &&
+                      limitMember <= participantsData.length + 1)
                       ? true
                       : false
                   }
