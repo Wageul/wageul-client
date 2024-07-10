@@ -127,7 +127,7 @@ export async function fetchOtherUserData(userId: string) {
 export async function fetchBookmarks() {
   if (!cookies().has("token")) {
     console.log("no token");
-    return;
+    return [] as Bookmark[];
   }
 
   try {
@@ -183,7 +183,7 @@ export async function fetchAllParticipants() {
 export async function fetchParticipations() {
   if (!cookies().has("token")) {
     console.log("no token");
-    return;
+    return [] as Bookmark[];
   }
 
   try {
@@ -213,7 +213,7 @@ export async function fetchParticipations() {
 export async function fetchHosted() {
   if (!cookies().has("token")) {
     console.log("no token");
-    return;
+    return [] as Experience[];
   }
 
   try {
