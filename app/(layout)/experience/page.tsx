@@ -28,13 +28,17 @@ export default async function Page() {
       className="relative"
     >
       {!loggedIn ? (
-        <Button
-          variant={"white"}
-          className="w-[302px] fixed left-1/2 transform -translate-x-1/2 px-[18px] py-[10px] flex justify-between text-primary-red font-normal z-10"
+        <a
+          href={`${process.env.LOCAL_API_URL}/login/oauth2/authorization/google`}
         >
-          <div className="text-body2">Join with google</div>
-          <EastRoundedIcon fontSize="small" />
-        </Button>
+          <Button
+            variant={"white"}
+            className="w-[302px] fixed left-1/2 transform -translate-x-1/2 px-[18px] py-[10px] flex justify-between text-primary-red font-normal z-10"
+          >
+            <div className="text-body2">Join with google</div>
+            <EastRoundedIcon fontSize="small" />
+          </Button>
+        </a>
       ) : (
         <></>
       )}
