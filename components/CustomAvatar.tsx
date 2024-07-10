@@ -17,7 +17,13 @@ export default function CustomAvatar({
   }
   return (
     <div className={style}>
-      <Image unoptimized src={src === null ? defaultProfilePic : src} alt="profile" fill={true} objectFit="cover" />
+      <Image
+        unoptimized
+        src={src === null ? defaultProfilePic : src}
+        alt="profile"
+        fill={true}
+        style={{ objectFit: "cover" }}
+      />
     </div>
   );
 }
