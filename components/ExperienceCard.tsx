@@ -9,7 +9,6 @@ import BookmarkBorderRoundedIcon from "@mui/icons-material/BookmarkBorderRounded
 import BookmarkRoundedIcon from "@mui/icons-material/BookmarkRounded";
 import { addBookmark, deleteBookmark } from "@/lib/actions";
 import { useState } from "react";
-import defaultProfilePic from "@/public/defaultprofile.png";
 
 export default function ExperienceCard({
   data,
