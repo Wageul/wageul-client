@@ -2,7 +2,6 @@
 
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BackgroundLayout } from "@/components/BackgroundLayout";
 import Carousel from "@/components/Carousel";
 import { formatDateString, formatDuration } from "@/lib/formatters";
@@ -35,6 +34,7 @@ import {
   deleteParticipantByHost,
 } from "@/lib/actions";
 import { dateIsPassed } from "@/lib/utils";
+import CustomAvatar from "@/components/CustomAvatar";
 
 const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
@@ -433,16 +433,7 @@ export default function Page({ params }: { params: { id: string } }) {
           <div className="px-[22px] py-[16px] bg-background rounded-[16px]">
             <div className="text-body1">Members</div>
             <div className="mt-3 flex gap-2.5 items-center">
-              <Avatar className="size-[54px]">
-                <AvatarImage
-                  src={
-                    writer.profileImg
-                      ? writer.profileImg
-                      : "https://github.com/shadcn.png"
-                  }
-                />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
+              <CustomAvatar sizeInPx={54} src={writer.profileImg} />
               <div className="text-body2">
                 <div className="font-medium">Host</div>
                 <div className="">{writer.name}</div>
@@ -453,16 +444,10 @@ export default function Page({ params }: { params: { id: string } }) {
               {participantsData?.map((participant, index) => (
                 <div key={index} className="flex items-center justify-between">
                   <div className="flex gap-[14px] items-center">
-                    <Avatar className="size-[46px]">
-                      <AvatarImage
-                        src={
-                          participant.userProfile.profileImg
-                            ? participant.userProfile.profileImg
-                            : "https://github.com/shadcn.png"
-                        }
-                      />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
+                    <CustomAvatar
+                      sizeInPx={46}
+                      src={participant.userProfile.profileImg}
+                    />
                     <div className="text-body2">
                       {participant.userProfile.name}
                     </div>
@@ -486,13 +471,6 @@ export default function Page({ params }: { params: { id: string } }) {
                   )}
                 </div>
               ))}
-              {/* <div className="flex gap-[14px] items-center">
-                <Avatar className="size-[46px]">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <div className="text-body2">Kelly Clarkson</div>
-              </div> */}
             </div>
             <div className="mt-[28px] text-body1">Preferences</div>
             <div className="mt-3 space-y-1 text-body2">

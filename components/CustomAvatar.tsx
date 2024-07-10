@@ -1,5 +1,6 @@
 import type { ImageProps } from "next/image";
 import Image from "next/image";
+import defaultProfilePic from "@/public/defaultprofile.png";
 
 export default function CustomAvatar({
   sizeInPx,
@@ -7,7 +8,7 @@ export default function CustomAvatar({
   className,
 }: {
   sizeInPx: number;
-  src: ImageProps["src"];
+  src: null | ImageProps["src"];
   className?: string;
 }) {
   let style = `size-[${sizeInPx}px] rounded-full overflow-hidden relative `;
@@ -16,7 +17,7 @@ export default function CustomAvatar({
   }
   return (
     <div className={style}>
-      <Image src={src} alt="profile" fill={true} objectFit="cover" />
+      <Image src={src ? src : defaultProfilePic} alt="profile" fill={true} objectFit="cover" />
     </div>
   );
 }

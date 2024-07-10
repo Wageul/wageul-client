@@ -1,10 +1,10 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import StarRoundedIcon from "@mui/icons-material/StarRounded";
 import { Button } from "@/components/ui/wageulButton";
 import CountingTextArea from "@/components/CountingTextArea";
 import { AboutMe, ProfileHeader, ReviewList } from "@/components/Profile";
 import { BackgroundLayout } from "@/components/BackgroundLayout";
 import { fetchOtherUserData } from "@/lib/data";
+import CustomAvatar from "@/components/CustomAvatar";
 
 export default async function Page({ params }: { params: { id: string } }) {
 
@@ -30,10 +30,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             </Button>
           </div>
           <div className="mt-[16px] flex gap-[15px]">
-            <Avatar className="size-[40px]">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+            <CustomAvatar sizeInPx={40} src={null}/>
             <CountingTextArea className="flex-grow" />
           </div>
         </div>
