@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/customSelect";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CountingTextAreaForForm from "@/components/CountingTextAreaForForm";
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import { Button } from "@/components/ui/wageulButton";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import { useEffect, useState } from "react";
@@ -30,6 +31,7 @@ import { countryList } from "@/lib/selectionData";
 import { ACCEPTED_FILE_TYPES, User } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import defaultProfilePic from "@/public/defaultprofile.png";
+import Link from "next/link";
 
 const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
@@ -167,6 +169,11 @@ export default function Page({ params }: { params: { id: string } }) {
 
   return (
     <BackgroundLayout>
+      <Link href={"/user/myprofile"}>
+        <div className="absolute flex items-center justify-center z-10 top-0 size-[40px] rounded-full bg-background shadow-light">
+          <ArrowBackIosNewRoundedIcon fontSize="medium" />
+        </div>
+      </Link>
       <div className="w-full text-center text-h3 font-semibold">
         Edit profile
       </div>
