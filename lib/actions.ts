@@ -18,11 +18,9 @@ export async function updateProfile(values: User, userId: string) {
       Cookie: `token=${cookies().get("token")?.value}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      ...values,
-      profileImage: "https://test1.jpg",
-    }),
+    body: JSON.stringify(values),
   });
+  console.log('body', JSON.stringify(values));
   revalidateTag(`profile-${values.id}`);
   console.log("status", response.status);
 }

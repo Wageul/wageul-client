@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { isDirty, z } from "zod";
 import {
   Form,
   FormControl,
@@ -23,12 +23,13 @@ import CountingTextAreaForForm from "@/components/CountingTextAreaForForm";
 import { Button } from "@/components/ui/wageulButton";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { BackgroundLayout } from "@/components/BackgroundLayout";
 import { updateProfile, uploadProfileImage } from "@/lib/actions";
 import { countryList } from "@/lib/selectionData";
 import { ACCEPTED_FILE_TYPES, User } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import defaultProfilePic from "@/public/defaultprofile.png";
 
 const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
@@ -38,8 +39,9 @@ const ProfileFormSchema = z.object({
     .instanceof(File, { message: "Image is required" })
     .refine(
       (file) => ACCEPTED_FILE_TYPES.includes(file.type),
-      "File must be an image."
-    ),
+      "Image must be a jpg, jpeg, or png."
+    )
+    .optional(),
   name: z.string().min(2).max(50),
   nationality: z.string().min(2).max(1000),
   introduce: z.string().min(50).max(100),
@@ -93,6 +95,26 @@ export default function Page({ params }: { params: { id: string } }) {
     },
   });
 
+  useEffect(() => {
+    if (userData.data) {
+      if (userData.data.profileImg) {
+        setProfileImageUrl(userData.data.profileImg);
+      } else {
+        setProfileImageUrl(defaultProfilePic);
+      }
+      form.reset({
+        // profileImage: ,
+        name: userData.data.name,
+        nationality: userData.data.nationality
+          ? userData.data.nationality
+          : undefined,
+        introduce: userData.data.introduce
+          ? userData.data.introduce
+          : undefined,
+      });
+    }
+  }, [userData, form]);
+
   async function onSubmit(values: z.infer<typeof ProfileFormSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
@@ -103,10 +125,20 @@ export default function Page({ params }: { params: { id: string } }) {
     if (userData.data) {
       formData.append("userId", String(userData.data.id));
       await updateProfile(
-        JSON.parse(JSON.stringify(values)),
+        JSON.parse(
+          JSON.stringify({
+            name: values.name,
+            nationality: values.nationality,
+            introduce: values.introduce,
+          })
+        ),
         String(userData.data.id)
       );
-      await uploadProfileImage(formData, String(userData.data.id));
+      if (profileIsDirty) {
+        await uploadProfileImage(formData, String(userData.data.id));
+      } else {
+        console.log("no image upload, because not dirty.");
+      }
       console.log("passed value to onSubmit", values);
       router.push("/experience");
     } else {
@@ -114,7 +146,10 @@ export default function Page({ params }: { params: { id: string } }) {
     }
   }
 
-  const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [profileImageUrl, setProfileImageUrl] = useState<
+    string | StaticImageData
+  >("");
+  const [profileIsDirty, setProfileIsDirty] = useState(false);
 
   const handleProfileImageChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -126,6 +161,7 @@ export default function Page({ params }: { params: { id: string } }) {
     if (file) {
       let image = window.URL.createObjectURL(file);
       setProfileImageUrl(image);
+      setProfileIsDirty(true);
     }
   };
 
@@ -213,10 +249,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 <FormLabel className="text-body2 font-normal">
                   Nationality
                 </FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger className="focus:ring-primary-yellow focus:ring-offset-0 focus:ring-1 rounded-[12px]">
                       <SelectValue placeholder="Select a country" />
