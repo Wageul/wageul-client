@@ -112,28 +112,29 @@ export default function Page({ params }: { params: { id: string } }) {
       if (!apiUrl) {
         throw new Error("API URL is not defined");
       }
-      if (userData && userData.data !== null)
-        try {
-          const url = apiUrl + `/participation/experience/${params.id}`;
-          console.log(url);
-          const response = await fetch(url, {
-            method: "GET",
-          });
-          const data = (await response.json()) as {
-            experienceId: string;
-            userSimpleProfileList: Participant[];
-          };
-          console.log(data);
+      try {
+        const url = apiUrl + `/participation/experience/${params.id}`;
+        console.log(url);
+        const response = await fetch(url, {
+          method: "GET",
+        });
+        const data = (await response.json()) as {
+          experienceId: string;
+          userSimpleProfileList: Participant[];
+        };
+        console.log(data);
 
-          setParticipantsData(data.userSimpleProfileList);
+        setParticipantsData(data.userSimpleProfileList);
+        if (userData && userData.data !== null) {
           const exists = data.userSimpleProfileList.some(
             (item) => item.userProfile.id === userData.data!.id
           );
           setJoined(exists);
-        } catch (err) {
-          console.error("Server Error:", err);
-          throw new Error("Failed to fetch the participants.");
         }
+      } catch (err) {
+        console.error("Server Error:", err);
+        throw new Error("Failed to fetch the participants.");
+      }
     })();
   }, [params.id, userData, refetchParticipants]);
 
@@ -451,7 +452,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex gap-[14px] items-center">
-                      <CustomAvatar                        
+                      <CustomAvatar
                         className="size-[46px]"
                         src={participant.userProfile.profileImg}
                       />

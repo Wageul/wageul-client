@@ -81,7 +81,7 @@ export default function BottomNav({ loggedIn }: { loggedIn: boolean }) {
               <AlertDialogFooter className="flex flex-col space-y-2 items-center">
                 <AlertDialogAction asChild>
                   <a
-                    href={`${process.env.NEXT_PUBLIC_DEPLOYED_API_URL}/login/oauth2/authorization/google`}
+                    href={`${process.env.NEXT_PUBLIC_LOCAL_API_URL}/login/oauth2/authorization/google`}
                   >
                     <Button
                       variant={"white"}
