@@ -21,7 +21,7 @@ export default function TheMagpie({
     <section className="mt-[124px] flex flex-col items-center">
       <div className="flex items-end gap-[21px]">
         <div className="w-[110px]">
-          <Image src={magpiePic} alt="the magpie" objectFit="true" />
+          <Image src={magpiePic} alt="the magpie" />
         </div>
         <div className="flex space-x-[20px] pb-[8px]">
           <div className="size-[5px] rounded-full bg-foreground"></div>

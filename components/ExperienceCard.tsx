@@ -52,7 +52,10 @@ export default function ExperienceCard({
         )}
         <div className="flex justify-between">
           <div className="flex gap-2.5 items-center">
-            <CustomAvatar className="size-[32px]" src={data.writer.profileImg} />
+            <CustomAvatar
+              className="size-[32px]"
+              src={data.writer.profileImg}
+            />
             <div className="text-body1 [overflow-wrap:anywhere]">
               {data.title}
             </div>
@@ -83,7 +86,7 @@ export default function ExperienceCard({
               fill={true}
               sizes="width: 95px"
               alt={"experience"}
-              objectFit="cover"
+              style={{ objectFit: "cover" }}
             />
           </div>
           <div>

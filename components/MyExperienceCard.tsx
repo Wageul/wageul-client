@@ -30,7 +30,7 @@ export default function MyExperienceCard({
             src={exImageList && exImageList.length > 0 ? exImageList[0].image : "/main.avif"}
             fill={true}
             alt={"experience"}
-            objectFit="cover"
+            style={{ objectFit: "cover" }}
             objectPosition="center"
             className="z-0"
           />

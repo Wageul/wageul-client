@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
-
   return (
     <BackgroundLayout>
       <div className="relative flex flex-col gap-2.5 items-center">
@@ -14,7 +13,7 @@ export default async function Home() {
               src="/main.avif"
               alt="main image"
               layout="fill"
-              objectFit="cover"
+              style={{ objectFit: "cover" }}
             />
           </div>
           <div className="absolute w-[216px] top-[44px] left-[20px] z-10 text-h1 text-primary-foreground font-extrabold">
