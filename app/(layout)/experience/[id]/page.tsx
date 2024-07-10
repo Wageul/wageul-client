@@ -434,7 +434,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <div className="text-body1">Members</div>
             <Link href={`/user/${writer.id}`} className="block">
               <div className="mt-3 flex gap-2.5 items-center">
-                <CustomAvatar sizeInPx={54} src={writer.profileImg} />
+                <CustomAvatar className="size-[54px]" src={writer.profileImg} />
                 <div className="text-body2">
                   <div className="font-medium">Host</div>
                   <div className="">{writer.name}</div>
@@ -451,8 +451,8 @@ export default function Page({ params }: { params: { id: string } }) {
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex gap-[14px] items-center">
-                      <CustomAvatar
-                        sizeInPx={46}
+                      <CustomAvatar                        
+                        className="size-[46px]"
                         src={participant.userProfile.profileImg}
                       />
                       <div className="text-body2">

@@ -30,7 +30,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             </Button>
           </div>
           <div className="mt-[16px] flex gap-[15px]">
-            <CustomAvatar sizeInPx={40} src={null}/>
+            <CustomAvatar className="size-[40px]" src={null}/>
             <CountingTextArea className="flex-grow" />
           </div>
         </div>

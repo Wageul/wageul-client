@@ -52,7 +52,7 @@ export default function ExperienceCard({
         )}
         <div className="flex justify-between">
           <div className="flex gap-2.5 items-center">
-            <CustomAvatar sizeInPx={32} src={data.writer.profileImg} />
+            <CustomAvatar className="size-[32px]" src={data.writer.profileImg} />
             <div className="text-body1 [overflow-wrap:anywhere]">
               {data.title}
             </div>
@@ -110,9 +110,8 @@ export default function ExperienceCard({
                       ) : (
                         <CustomAvatar
                           key={index}
-                          sizeInPx={18}
                           src={participant.userProfile.profileImg}
-                          className="-ml-[8px]"
+                          className="size-[18px] -ml-[8px]"
                         />
                       );
                     })}

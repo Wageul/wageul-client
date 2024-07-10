@@ -1,22 +1,18 @@
 import type { ImageProps } from "next/image";
 import Image from "next/image";
 import defaultProfilePic from "@/public/defaultprofile.png";
+import { cn } from "@/lib/utils";
 
 export default function CustomAvatar({
-  sizeInPx,
   src,
   className,
 }: {
-  sizeInPx: number;
   src: null | ImageProps["src"];
   className?: string;
 }) {
-  let style = `size-[${sizeInPx}px] rounded-full overflow-hidden relative `;
-  if (className) {
-    style = style + className;
-  }
+  let style = "rounded-full overflow-hidden relative ";
   return (
-    <div className={style}>
+    <div className={cn(style, className)}>
       <Image
         unoptimized
         src={src === null ? defaultProfilePic : src}

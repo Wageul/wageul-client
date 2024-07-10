@@ -7,7 +7,7 @@ export async function ProfileHeader({ userData }: { userData: User | null }) {
   return (
     <section className="flex flex-col items-center">
       <CustomAvatar
-        sizeInPx={73}
+        className="size-[73px]"
         src={userData && userData.profileImg ? userData.profileImg : null}
       />
       <div className="mt-[15px] text-h2 font-semibold">{userData?.name}</div>
@@ -52,7 +52,7 @@ export async function ReviewList() {
       <div className="mt-3 flex flex-col gap-2">
         <div className="px-[16px] py-[14px] bg-grey-1 rounded-[16px]">
           <div className="flex gap-2.5 items-center">
-            <CustomAvatar sizeInPx={40} src={null} />
+            <CustomAvatar className="size-[40px]" src={null} />
             <div className="text-body2">Kelly Clarkson</div>
           </div>
           <div className="mt-[12px] text-subtitle">
