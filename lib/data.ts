@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { Bookmark, Experience, Participant, User } from "./types";
 
-// const apiUrl = process.env.DEPLOYED_API_URL + "/api";
-const apiUrl = process.env.LOCAL_API_URL + "/api";
+const apiUrl = process.env.DEPLOYED_API_URL + "/api";
+// const apiUrl = process.env.LOCAL_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
 
 export async function fetchExperienceById(id: string) {
@@ -33,7 +33,7 @@ export async function fetchAllExperience() {
       next: { tags: ["experience-list"] },
     });
     const data = await response.json();
-    console.log("data from fetchAllExperience", data);
+    // console.log("data from fetchAllExperience", data);
     return data as Experience[];
   } catch (err) {
     console.error("Server Error:", err);

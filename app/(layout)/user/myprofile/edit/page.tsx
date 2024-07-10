@@ -32,6 +32,7 @@ import { ACCEPTED_FILE_TYPES, User } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import defaultProfilePic from "@/public/defaultprofile.png";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
 
 const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
@@ -51,6 +52,8 @@ const ProfileFormSchema = z.object({
 
 export default function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [userData, setUserData] = useState<{
     loggedIn: boolean;
@@ -120,6 +123,7 @@ export default function Page({ params }: { params: { id: string } }) {
   async function onSubmit(values: z.infer<typeof ProfileFormSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    setIsLoading(true);
     const formData = new FormData();
     if (values.profileImage) {
       formData.append("file", values.profileImage);
@@ -146,6 +150,7 @@ export default function Page({ params }: { params: { id: string } }) {
     } else {
       console.log("no user data - onSubmit on profile edit");
     }
+    setIsLoading(false);
   }
 
   const [profileImageUrl, setProfileImageUrl] = useState<
@@ -305,7 +310,9 @@ export default function Page({ params }: { params: { id: string } }) {
             size={"lg"}
             textStyle={"body1"}
             className="mt-[32px] self-center"
+            disabled={isLoading}
           >
+            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             complete
           </Button>
         </form>
