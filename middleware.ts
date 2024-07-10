@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Redirect to login page if not authenticated
-  return NextResponse.redirect(new URL("/bookmark", request.url));
+  return NextResponse.redirect(new URL("/experience", request.url));
 }
 
 export const config = {
