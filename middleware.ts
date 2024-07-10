@@ -4,6 +4,19 @@ import { authenticateUserAndGetData } from "./lib/data";
 export async function middleware(request: NextRequest) {
   const { loggedIn, data } = await authenticateUserAndGetData();
 
+  // for /user/:id
+  // redirect user page to myProfile if the userId matches the current user
+  const match = request.nextUrl.pathname.match(/^\/user\/([^\/]+)$/);
+  if(match) {
+    const userId = match[1];
+    console.log('userId', userId);
+    if(loggedIn && String(data!.id) === userId) {
+      return NextResponse.redirect(new URL("/user/myprofile", request.url));
+    }
+    return NextResponse.next();
+  }
+
+  // for /
   // If the user is authenticated, continue as normal
   if (!loggedIn) {
     return NextResponse.next();
@@ -14,5 +27,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: "/",
+  matcher: ["/", "/user/:id*"]
 };
