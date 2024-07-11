@@ -364,7 +364,7 @@ export default function Page({ params }: { params: { id: string } }) {
     return (
       <BackgroundLayout background={"grey"}>
         <Link href={"/experience"}>
-          <div className="absolute flex items-center justify-center z-10 top-0 size-[40px] rounded-full bg-background shadow-light">
+          <div className="absolute flex items-center justify-center z-10 top-[12px] size-[40px] rounded-full bg-background shadow-light">
             <ArrowBackIosNewRoundedIcon fontSize="medium" />
           </div>
         </Link>

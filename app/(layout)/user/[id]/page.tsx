@@ -7,6 +7,8 @@ import {
 } from "@/lib/data";
 import { MyReviewList, UserReview } from "@/components/UserReview";
 import { Review } from "@/lib/types";
+import Link from "next/link";
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { loggedIn, data: userData } = await authenticateUserAndGetData();
@@ -25,10 +27,19 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <BackgroundLayout>
+      <Link href={"/experience"}>
+        <div className="absolute flex items-center justify-center z-10 top-[12px] size-[40px] rounded-full bg-background shadow-light">
+          <ArrowBackIosNewRoundedIcon fontSize="medium" />
+        </div>
+      </Link>
       <ProfileHeader userData={otherUserData} reviewData={reviewData} />
       <AboutMe userData={otherUserData} />
       <section className="mt-[30px]">
-        <UserReview targetId={params.id} loggedIn={loggedIn} userData={userData} />
+        <UserReview
+          targetId={params.id}
+          loggedIn={loggedIn}
+          userData={userData}
+        />
         <MyReviewList myReviews={myReview} userData={userData} />
       </section>
       <OthersReviewList othersReview={othersReview} />

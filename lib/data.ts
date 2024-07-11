@@ -255,7 +255,7 @@ export async function fetchReviews(userId: number) {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Cookie: `token=${cookies().get("token")!.value}`,
+        // Cookie: `token=${cookies().get("token")!.value}`,
       },
       next: { tags: ["reviews"] },
     });
