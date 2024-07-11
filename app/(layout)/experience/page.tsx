@@ -1,15 +1,12 @@
 import { BackgroundLayout } from "@/components/BackgroundLayout";
-import ExperienceCard from "@/components/ExperienceCard";
 import { Button } from "@/components/ui/wageulButton";
 import EastRoundedIcon from "@mui/icons-material/EastRounded";
-import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import BottomNav from "@/components/BottomNav";
 import {
   authenticateUserAndGetData,
   fetchAllExperience,
   fetchAllParticipants,
   fetchBookmarks,
-  fetchUserDataByToken,
 } from "@/lib/data";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Link from "next/link";
