@@ -11,6 +11,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createReview, deleteReview } from "@/lib/actions";
 import { Review, User } from "@/lib/types";
 import { formatDateString } from "@/lib/formatters";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/custom-login-dialog";
+import Image from "next/image";
 
 const ReviewFormSchema = z.object({
   content: z.string().min(0).max(100),
@@ -115,7 +127,72 @@ export function UserReview({
           </form>
         </div>
       ) : (
-        <></>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <div className="px-[27px] py-[23px] rounded-[16px] bg-grey-1">
+              <div className="text-body2 font-semibold">Create a review</div>
+              <div className="mt-[14px] flex justify-between items-center">
+                <div className="flex">
+                  {Array.from({ length: 5 }).map((_, index) => {
+                    let style =
+                      "text-grey-3 text-[40px] mx-[-2px] text-primary-yellow";
+                    return <StarRoundedIcon key={index} className={style} />;
+                  })}
+                </div>
+                <Button
+                  variant={"primaryBlue"}
+                  size={"sm"}
+                  className="text-[12px]"
+                >
+                  Register
+                </Button>
+              </div>
+              <div className="mt-[16px] flex gap-[15px]">
+                <CustomAvatar className="size-[40px]" src={null} />
+                <CountingTextArea className="flex-grow" value={''}/>
+              </div>
+            </div>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-h2 text-center">
+                Join us for the authentic Korean culture.
+              </AlertDialogTitle>
+            </AlertDialogHeader>
+            <AlertDialogFooter className="flex flex-col space-y-2 items-center">
+              <AlertDialogAction asChild>
+                <a
+                  href={`${process.env.NEXT_PUBLIC_LOCAL_API_URL}/login/oauth2/authorization/google`}
+                >
+                  <Button
+                    variant={"white"}
+                    size={"dialog"}
+                    className="text-body1 font-normal border border-primary-yellow py-2 flex gap-0.5"
+                  >
+                    <Image
+                      src={"/web_light_rd_na.svg"}
+                      width={34}
+                      height={34}
+                      alt="google"
+                    />
+                    <span className="text-foreground">Sign in with google</span>
+                  </Button>
+                </a>
+              </AlertDialogAction>
+              <AlertDialogCancel asChild>
+                <div>
+                  <Button
+                    variant={"white"}
+                    size={"dialog"}
+                    className="text-body1 font-normal"
+                  >
+                    No, I&apos;ll do it later
+                  </Button>
+                </div>
+              </AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       )}
     </>
   );

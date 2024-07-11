@@ -42,7 +42,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         />
         <MyReviewList myReviews={myReview} userData={userData} />
       </section>
-      <OthersReviewList othersReview={othersReview} />
+      <OthersReviewList othersReview={loggedIn ? othersReview : reviewData.reviews} />
     </BackgroundLayout>
   );
 }
