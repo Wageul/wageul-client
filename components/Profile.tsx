@@ -26,7 +26,7 @@ export async function ProfileHeader({
           <div className="rounded-full size-[36px] bg-background flex justify-center items-center">
             <StarRoundedIcon className="text-primary-yellow text-[30px]" />
           </div>
-          <div>4</div>
+          <div>{reviewData?.avg && Math.floor(reviewData.avg * 10) / 10}</div>
         </div>
         <div className="px-3 py-2 flex gap-2.5 rounded-full bg-primary-red/25 items-center">
           <div className="rounded-full size-[36px] bg-primary-red flex justify-center items-center">
