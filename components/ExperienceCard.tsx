@@ -45,7 +45,7 @@ export default function ExperienceCard({
   return (
     <Link href={"/experience/" + data.id}>
       <div className="relative p-[15px] rounded-[20px] border border-grey-2 bg-background hover:brightness-[0.98]">
-        {participants && data.limitMember > participants.length ? (
+        {participants && data.limitMember > participants.length + 1 ? (
           <div className="absolute size-[20px] -top-[5px] left-0 bg-secondary-green rounded-full shadow-green"></div>
         ) : (
           <div className="absolute size-[20px] -top-[5px] left-0 bg-primary-red rounded-full shadow-red"></div>
