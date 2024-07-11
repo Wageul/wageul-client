@@ -105,7 +105,7 @@ export default function Page({ params }: { params: { id: string } }) {
         }
       }
     })();
-  }, [params.id]);
+  }, [params.id, userData.loggedIn]);
 
   useEffect(() => {
     (async () => {
