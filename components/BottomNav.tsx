@@ -65,7 +65,7 @@ export default function BottomNav({ loggedIn }: { loggedIn: boolean }) {
           <AlertDialog key={name}>
             <AlertDialogTrigger asChild>
               <div
-                className={`cursor-pointer flex flex-1 justify-center ${
+                className={`cursor-pointer flex flex-1 justify-center hover:text-primary-red ${
                   pathname === href ? activeColor : "text-foreground"
                 }`}
               >
@@ -118,7 +118,7 @@ export default function BottomNav({ loggedIn }: { loggedIn: boolean }) {
           <Link
             key={name}
             href={href}
-            className={`flex flex-1 justify-center ${
+            className={`flex flex-1 justify-center hover:text-primary-red ${
               pathname === href ? activeColor : "text-foreground"
             }`}
           >
