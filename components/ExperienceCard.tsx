@@ -92,7 +92,10 @@ export default function ExperienceCard({
           <div>
             <div className="flex gap-2">
               <div className="text-grey-4 w-[40px]">where</div>
-              <div>{data.location}</div>
+              <div>
+                {data.location?.slice(0, 7)}
+                {data.location && data.location.length > 7 ? "..." : ""}
+              </div>
             </div>
             <div className="flex gap-2">
               <div className="text-grey-4 w-[40px]">when</div>
