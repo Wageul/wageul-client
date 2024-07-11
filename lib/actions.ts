@@ -198,7 +198,7 @@ export async function createReview(
   rate: number
 ) {
   console.log("targetId, content, rate", targetId, content, rate);
-  console.log('in json format', JSON.stringify({ targetId, content, rate }));
+  console.log("in json format", JSON.stringify({ targetId, content, rate }));
   const url = apiUrl + "/review";
   console.log(url);
   const response = await fetch(url, {
@@ -217,4 +217,20 @@ export async function createReview(
   revalidateTag("reviews");
   console.log("create review response", data);
   return data;
+}
+
+export async function deleteReview(reviewId: number) {
+  console.log("reviewId", reviewId);
+
+  const url = apiUrl + `/review/${reviewId}`;
+  console.log(url);
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      Cookie: `token=${cookies().get("token")?.value}`,
+    },
+  });
+  console.log("delete review status", response.status);
+  revalidateTag("reviews");
+  return;
 }
