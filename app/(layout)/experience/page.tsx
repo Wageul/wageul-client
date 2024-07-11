@@ -21,15 +21,19 @@ export default async function Page({
   };
 }) {
   const { loggedIn, data: userData } = await authenticateUserAndGetData();
-  const experienceListData = await fetchAllExperience();
+  const experienceListDataSorted = (await fetchAllExperience()).sort((a, b) => {
+    const aDate = new Date(a.createdAt);
+    const bDate = new Date(b.createdAt);
+    return +bDate - +aDate;
+  });
   const bookmarks = await fetchBookmarks();
   const allParticipantsData = await fetchAllParticipants();
   // console.log("top all participants", allParticipantsData);
-  // console.log("top all experience list", experienceListData);
+  // console.log("top all experience list", experienceListDataSorted);
   console.log("query", searchParams?.query);
   let filteredExperienceListData;
   if (searchParams && searchParams.query) {
-    filteredExperienceListData = experienceListData.filter((data) =>
+    filteredExperienceListData = experienceListDataSorted.filter((data) =>
       data.title.toLowerCase().includes(searchParams.query!.toLowerCase())
     );
   } else {
@@ -83,7 +87,7 @@ export default async function Page({
               loggedIn={loggedIn}
               bookmarks={bookmarks}
               allParticipantsData={allParticipantsData}
-              experienceListData={experienceListData}
+              experienceListData={experienceListDataSorted}
             />
           )}
         </div>
