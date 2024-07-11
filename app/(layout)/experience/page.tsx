@@ -13,14 +13,31 @@ import {
 } from "@/lib/data";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Link from "next/link";
+import Search from "@/components/Search";
+import ExperienceList from "@/components/ExperienceList";
 
-export default async function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+  };
+}) {
   const { loggedIn, data: userData } = await authenticateUserAndGetData();
   const experienceListData = await fetchAllExperience();
   const bookmarks = await fetchBookmarks();
   const allParticipantsData = await fetchAllParticipants();
   // console.log("top all participants", allParticipantsData);
   // console.log("top all experience list", experienceListData);
+  console.log("query", searchParams?.query);
+  let filteredExperienceListData;
+  if (searchParams && searchParams.query) {
+    filteredExperienceListData = experienceListData.filter((data) =>
+      data.title.toLowerCase().includes(searchParams.query!.toLowerCase())
+    );
+  } else {
+    filteredExperienceListData = null;
+  }
   return (
     <BackgroundLayout
       background={loggedIn ? "white" : "grey"}
@@ -48,42 +65,30 @@ export default async function Page() {
             <span className="text-primary-red">HELLO</span>, {userData.name}!
           </div>
         )}
-        <div className="flex gap-2.5 px-[18px] py-[10px] w-[302px] rounded-full mx-auto shadow-light items-center bg-background">
-          <SearchRoundedIcon fontSize="small" />
-          <input
-            className="w-full outline-none placeholder-grey-3"
-            placeholder="Search experience"
-          />
-        </div>
+        <Search placeholder="Search experience" />
       </section>
       <section className="mt-[35px]">
-        <div className="text-h2 font-semibold">Latest</div>
+        <div className="text-h2 font-semibold">
+          {searchParams && searchParams.query && filteredExperienceListData
+            ? "Searched"
+            : "Latest"}
+        </div>
         <div className="mt-[11px] flex flex-col gap-2.5">
-          {experienceListData.map((data, index) => {
-            if (data.title === null) return <></>;
-            const bookmarked = bookmarks?.some(
-              (bookmark) => bookmark.experience.id === data.id
-            );
-            // console.log("allparticipants", allParticipantsData);
-            // console.log(
-            //   "allparticipants id",
-            //   allParticipantsData[0].experienceId
-            // );
-            // console.log("experience data", data);
-            const participants = allParticipantsData.find(
-              (participantsData) => participantsData.experienceId === data.id
-            )!.userSimpleProfileList;
-            // console.log("participants:", participants);
-            return (
-              <ExperienceCard
-                key={index}
-                data={data}
-                loggedIn={loggedIn}
-                initialBookmark={bookmarked}
-                participants={participants ? participants : []}
-              />
-            );
-          })}
+          {searchParams && searchParams.query && filteredExperienceListData ? (
+            <ExperienceList
+              loggedIn={loggedIn}
+              bookmarks={bookmarks}
+              allParticipantsData={allParticipantsData}
+              experienceListData={filteredExperienceListData}
+            />
+          ) : (
+            <ExperienceList
+              loggedIn={loggedIn}
+              bookmarks={bookmarks}
+              allParticipantsData={allParticipantsData}
+              experienceListData={experienceListData}
+            />
+          )}
         </div>
       </section>
       {loggedIn ? (
