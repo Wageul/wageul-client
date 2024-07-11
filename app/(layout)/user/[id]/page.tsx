@@ -25,7 +25,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <BackgroundLayout>
-      <ProfileHeader userData={otherUserData} />
+      <ProfileHeader userData={otherUserData} reviewData={reviewData} />
       <AboutMe userData={otherUserData} />
       <section className="mt-[30px]">
         <UserReview targetId={params.id} loggedIn={loggedIn} userData={userData} />

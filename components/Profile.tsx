@@ -4,7 +4,13 @@ import { Review, ReviewResponse, User } from "@/lib/types";
 import CustomAvatar from "./CustomAvatar";
 import { formatDateString } from "@/lib/formatters";
 
-export async function ProfileHeader({ userData }: { userData: User | null }) {
+export async function ProfileHeader({
+  userData,
+  reviewData,
+}: {
+  userData: User | null;
+  reviewData: ReviewResponse | null;
+}) {
   return (
     <section className="flex flex-col items-center">
       <CustomAvatar
@@ -56,42 +62,48 @@ export async function OthersReviewList({
   return (
     <section className="pb-[60px]">
       <div className="mt-[30px] pl-2 text-h3 font-semibold">Review</div>
-      {othersReview.map((review, index) => (
-        <div key={index} className="mt-3 flex flex-col gap-2">
-          <div className="flex flex-col px-[16px] py-[14px] bg-grey-1 rounded-[16px] gap-2">
-            <div className="flex gap-2.5 items-center">
-              <CustomAvatar
-                className="size-[40px]"
-                src={review.writer.profileImg}
-              />
-              <div className="text-body2">{review.writer.name}</div>
-            </div>
-            <div className="flex gap-1.5 items-center">
-              <div>
-                {Array.from({ length: 5 }).map((_, index) => {
-                  let style = "text-grey-3 text-[24px] mx-[-2px] ";
-                  if (index < review.rate) {
-                    style = style + "text-primary-yellow";
-                  }
-                  return <StarRoundedIcon key={index} className={style}/>;
-                })}
+      {othersReview
+        .sort((a, b) => {
+          const aDate = new Date(a.createdAt);
+          const bDate = new Date(b.createdAt);
+          return +bDate - +aDate;
+        })
+        .map((review, index) => (
+          <div key={index} className="mt-3 flex flex-col gap-2">
+            <div className="flex flex-col px-[16px] py-[14px] bg-grey-1 rounded-[16px] gap-2">
+              <div className="flex gap-2.5 items-center">
+                <CustomAvatar
+                  className="size-[40px]"
+                  src={review.writer.profileImg}
+                />
+                <div className="text-body2">{review.writer.name}</div>
               </div>
-              <div className="text-subtitle">{review.rate}</div>
-            </div>
-            <div className="text-subtitle pl-0.5">
-              <p>{review.content}</p>
-            </div>
-            <div className="mt-[4px] text-subtitle2 text-grey-4 text-end">
-              {(() => {
-                const { dateInDotFormat, timeInFormat } = formatDateString(
-                  review.createdAt
-                );
-                return dateInDotFormat;
-              })()}
+              <div className="flex gap-1.5 items-center">
+                <div>
+                  {Array.from({ length: 5 }).map((_, index) => {
+                    let style = "text-grey-3 text-[24px] mx-[-2px] ";
+                    if (index < review.rate) {
+                      style = style + "text-primary-yellow";
+                    }
+                    return <StarRoundedIcon key={index} className={style} />;
+                  })}
+                </div>
+                <div className="text-subtitle">{review.rate}</div>
+              </div>
+              <div className="text-subtitle pl-0.5">
+                <p>{review.content}</p>
+              </div>
+              <div className="mt-[4px] text-subtitle2 text-grey-4 text-end">
+                {(() => {
+                  const { dateInDotFormat, timeInFormat } = formatDateString(
+                    review.createdAt
+                  );
+                  return dateInDotFormat;
+                })()}
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
     </section>
   );
 }

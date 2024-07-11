@@ -5,21 +5,21 @@ import { BackgroundLayout } from "@/components/BackgroundLayout";
 import BottomNav from "@/components/BottomNav";
 import { authenticateUserAndGetData, fetchReviews } from "@/lib/data";
 import { redirect } from "next/navigation";
-import { Review } from "@/lib/types";
+import { Review, ReviewResponse } from "@/lib/types";
 
 export default async function Page() {
   const { loggedIn, data } = await authenticateUserAndGetData();
   if (!loggedIn) {
     redirect("/");
   }
-  let othersReview: Review[] = [];
+  let reviewData: ReviewResponse | null = null;
   if (loggedIn) {
-    othersReview = (await fetchReviews(Number(data?.id))).reviews;
+    reviewData = await fetchReviews(Number(data?.id));
   }
 
   return (
     <BackgroundLayout bottomNav={"yes"}>
-      <ProfileHeader userData={data} />
+      <ProfileHeader userData={data} reviewData={reviewData} />
       <div className="mt-[35px] flex justify-center">
         <Link href={"/user/myprofile/edit"}>
           <Button variant={"white"} size={"xl"}>
@@ -28,7 +28,11 @@ export default async function Page() {
         </Link>
       </div>
       <AboutMe userData={data} />
-      {loggedIn && othersReview && <OthersReviewList othersReview={othersReview} />}
+      {loggedIn && reviewData ? (
+        <OthersReviewList othersReview={reviewData.reviews} />
+      ) : (
+        <></>
+      )}
       {/* <section className="mt-[35px] flex justify-center">
         <div className="text-primary-red">Leave Membership</div>
       </section> */}

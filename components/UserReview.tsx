@@ -45,8 +45,8 @@ export function UserReview({
       determinedScore
     );
     form.reset({
-      content: ""
-    })
+      content: "",
+    });
     console.log("create review response", response);
   };
 
@@ -130,55 +130,61 @@ export function MyReviewList({
 }) {
   return (
     <section>
-      {myReviews.map((review, index) => {
-        return (
-          <div
-            key={index}
-            className="mt-[10px] bg-grey-1 rounded-[16px] py-[23px] px-[27px]"
-          >
-            <div className="text-body2 font-semibold">My review</div>
-            <div className="mt-[14px] flex justify-between items-center">
-              <div>
-                {Array.from({ length: 5 }).map((_, index) => {
-                  let style = "text-grey-3 text-[40px] mx-[-2px] ";
-                  if (index < review.rate) {
-                    style = style + "text-primary-yellow";
-                  }
-                  return <StarRoundedIcon key={index} className={style} />;
-                })}
+      {myReviews
+        .sort((a, b) => {
+          const aDate = new Date(a.createdAt);
+          const bDate = new Date(b.createdAt);
+          return +bDate - +aDate;
+        })
+        .map((review, index) => {
+          return (
+            <div
+              key={index}
+              className="mt-[10px] bg-grey-1 rounded-[16px] py-[23px] px-[27px]"
+            >
+              <div className="text-body2 font-semibold">My review</div>
+              <div className="mt-[14px] flex justify-between items-center">
+                <div>
+                  {Array.from({ length: 5 }).map((_, index) => {
+                    let style = "text-grey-3 text-[40px] mx-[-2px] ";
+                    if (index < review.rate) {
+                      style = style + "text-primary-yellow";
+                    }
+                    return <StarRoundedIcon key={index} className={style} />;
+                  })}
+                </div>
+                <div
+                  className="cursor-pointer text-subtitle font-semibold text-primary-red border-b border-primary-red w-fit h-fit"
+                  onClick={async () => {
+                    await deleteReview(review.id);
+                  }}
+                >
+                  delete
+                </div>
               </div>
-              <div
-                className="cursor-pointer text-subtitle font-semibold text-primary-red border-b border-primary-red w-fit h-fit"
-                onClick={async () => {
-                  await deleteReview(review.id);
-                }}
-              >
-                delete
+              <div className="mt-[16px]">
+                <div className="flex gap-2.5 items-center">
+                  <CustomAvatar
+                    className="size-[40px]"
+                    src={userData ? userData.profileImg : null}
+                  />
+                  <div className="text-body2">{userData && userData.name}</div>
+                </div>
+                <div className="text-subtitle pl-0.5 mt-[12px]">
+                  <p>{review.content}</p>
+                </div>
+                <div className="mt-[4px] text-subtitle2 text-grey-4 text-end">
+                  {(() => {
+                    const { dateInDotFormat, timeInFormat } = formatDateString(
+                      review.createdAt
+                    );
+                    return dateInDotFormat;
+                  })()}
+                </div>
               </div>
             </div>
-            <div className="mt-[16px]">
-              <div className="flex gap-2.5 items-center">
-                <CustomAvatar
-                  className="size-[40px]"
-                  src={userData ? userData.profileImg : null}
-                />
-                <div className="text-body2">{userData && userData.name}</div>
-              </div>
-              <div className="text-subtitle pl-0.5 mt-[12px]">
-                <p>{review.content}</p>
-              </div>
-              <div className="mt-[4px] text-subtitle2 text-grey-4 text-end">
-                {(() => {
-                  const { dateInDotFormat, timeInFormat } = formatDateString(
-                    review.createdAt
-                  );
-                  return dateInDotFormat;
-                })()}
-              </div>
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
     </section>
   );
 }
