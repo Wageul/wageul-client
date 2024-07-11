@@ -21,7 +21,7 @@ export async function updateProfile(values: User, userId: string) {
     },
     body: JSON.stringify(values),
   });
-  console.log('body', JSON.stringify(values));
+  console.log("body", JSON.stringify(values));
   revalidateTag(`profile-${values.id}`);
   console.log("status", response.status);
 }
@@ -149,7 +149,7 @@ export async function addParticipant(experienceId: string) {
     body: JSON.stringify({ experienceId: Number(experienceId) }),
   });
   console.log("add participant status", response.status);
-  if(response.status === TOKEN_INVALID_CODE){
+  if (response.status === TOKEN_INVALID_CODE) {
     return;
   }
   const data = await response.json();
@@ -190,4 +190,31 @@ export async function deleteParticipantByHost(
   console.log("decline participant status", response.status);
   revalidateTag("participants");
   return;
+}
+
+export async function createReview(
+  targetId: number,
+  content: string,
+  rate: number
+) {
+  console.log("targetId, content, rate", targetId, content, rate);
+  console.log('in json format', JSON.stringify({ targetId, content, rate }));
+  const url = apiUrl + "/review";
+  console.log(url);
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      Cookie: `token=${cookies().get("token")?.value}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ targetId, content, rate }),
+  });
+  console.log("create review response status", response.status);
+  if (response.status === TOKEN_INVALID_CODE) {
+    return;
+  }
+  const data = await response.json();
+  revalidateTag("reviews");
+  console.log("create review response", data);
+  return data;
 }
