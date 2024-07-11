@@ -1,7 +1,8 @@
 import StarRoundedIcon from "@mui/icons-material/StarRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
-import { User } from "@/lib/types";
+import { Review, ReviewResponse, User } from "@/lib/types";
 import CustomAvatar from "./CustomAvatar";
+import { formatDateString } from "@/lib/formatters";
 
 export async function ProfileHeader({ userData }: { userData: User | null }) {
   return (
@@ -45,29 +46,52 @@ export async function AboutMe({ userData }: { userData: User | null }) {
   );
 }
 
-export async function ReviewList() {
+export async function OthersReviewList({
+  othersReview,
+}: {
+  othersReview: Review[];
+}) {
+  console.log("reviewDat akjalkj", othersReview);
+
   return (
-    <section>
+    <section className="pb-[60px]">
       <div className="mt-[30px] pl-2 text-h3 font-semibold">Review</div>
-      <div className="mt-3 flex flex-col gap-2">
-        <div className="px-[16px] py-[14px] bg-grey-1 rounded-[16px]">
-          <div className="flex gap-2.5 items-center">
-            <CustomAvatar className="size-[40px]" src={null} />
-            <div className="text-body2">Kelly Clarkson</div>
-          </div>
-          <div className="mt-[12px] text-subtitle">
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deleniti
-              harum doloremque magni, sapiente est nostrum consequuntur libero
-              delectus reiciendis quo, quod, quis temporibus soluta ab rerum
-              animi perspiciatis totam! Ab?
-            </p>
-          </div>
-          <div className="mt-[4px] text-subtitle2 text-grey-4 text-end">
-            2024.06.22
+      {othersReview.map((review, index) => (
+        <div key={index} className="mt-3 flex flex-col gap-2">
+          <div className="flex flex-col px-[16px] py-[14px] bg-grey-1 rounded-[16px] gap-2">
+            <div className="flex gap-2.5 items-center">
+              <CustomAvatar
+                className="size-[40px]"
+                src={review.writer.profileImg}
+              />
+              <div className="text-body2">{review.writer.name}</div>
+            </div>
+            <div className="flex gap-1.5 items-center">
+              <div>
+                {Array.from({ length: 5 }).map((_, index) => {
+                  let style = "text-grey-3 text-[24px] mx-[-2px] ";
+                  if (index < review.rate) {
+                    style = style + "text-primary-yellow";
+                  }
+                  return <StarRoundedIcon key={index} className={style}/>;
+                })}
+              </div>
+              <div className="text-subtitle">{review.rate}</div>
+            </div>
+            <div className="text-subtitle pl-0.5">
+              <p>{review.content}</p>
+            </div>
+            <div className="mt-[4px] text-subtitle2 text-grey-4 text-end">
+              {(() => {
+                const { dateInDotFormat, timeInFormat } = formatDateString(
+                  review.createdAt
+                );
+                return dateInDotFormat;
+              })()}
+            </div>
           </div>
         </div>
-      </div>
+      ))}
     </section>
   );
 }

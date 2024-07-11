@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { Bookmark, Experience, Participant, User } from "./types";
+import { Bookmark, Experience, Participant, ReviewResponse, User } from "./types";
 
 const apiUrl = process.env.DEPLOYED_API_URL + "/api";
 // const apiUrl = process.env.LOCAL_API_URL + "/api";
@@ -237,5 +237,35 @@ export async function fetchHosted() {
   } catch (err) {
     console.error("Server Error:", err);
     throw new Error("Failed to fetch the hosted experience(schedules).");
+  }
+}
+
+export async function fetchReviews(userId: number) {
+  if (!cookies().has("token")) {
+    console.log("no token");
+    return {} as ReviewResponse;
+  }
+
+  try {
+    // console.log("token:", token);
+    const url = apiUrl + `/review/user/${userId}`;
+    console.log("url:", url);
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Cookie: `token=${cookies().get("token")!.value}`,
+      },
+      next: { tags: ["reviews"] },
+    });
+
+    console.log("user review status code:", response.status);
+    const data = await response.json();
+    console.log("data from user review", data);
+    return data as ReviewResponse;
+  } catch (err) {
+    console.error("Server Error:", err);
+    throw new Error("Failed to fetch the user review.");
   }
 }

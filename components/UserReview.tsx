@@ -9,6 +9,8 @@ import { z } from "zod";
 import { Controller, ControllerRenderProps, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createReview } from "@/lib/actions";
+import { Review, User } from "@/lib/types";
+import { formatDateString } from "@/lib/formatters";
 
 const ReviewFormSchema = z.object({
   content: z.string().min(0).max(100),
@@ -16,7 +18,13 @@ const ReviewFormSchema = z.object({
 
 type ReviewFormData = z.infer<typeof ReviewFormSchema>;
 
-export default function UserReview({ targetId }: { targetId: string }) {
+export function UserReview({
+  targetId,
+  userData,
+}: {
+  targetId: string;
+  userData: User | null;
+}) {
   const [determinedScore, setDeterminedScore] = useState(5);
   const [realtimeScore, setRealtimeScore] = useState(0);
   const [isScoring, setIsScoring] = useState(false);
@@ -94,5 +102,57 @@ export default function UserReview({ targetId }: { targetId: string }) {
         </div>
       </form>
     </div>
+  );
+}
+
+export function MyReviewList({
+  myReviews,
+  userData,
+}: {
+  myReviews: Review[];
+  userData: User | null;
+}) {
+  return (
+    <section>
+      {myReviews.map((review, index) => {
+        return (
+          <div
+            key={index}
+            className="mt-[10px] bg-grey-1 rounded-[16px] py-[23px] px-[27px]"
+          >
+            <div className="text-body2 font-semibold">My review</div>
+            <div className="mt-[14px]">
+              {Array.from({ length: 5 }).map((_, index) => {
+                let style = "text-grey-3 text-[40px] mx-[-2px] ";
+                if (index < review.rate) {
+                  style = style + "text-primary-yellow";
+                }
+                return <StarRoundedIcon key={index} className={style} />;
+              })}
+            </div>
+            <div className="mt-[16px]">
+              <div className="flex gap-2.5 items-center">
+                <CustomAvatar
+                  className="size-[40px]"
+                  src={userData ? userData.profileImg : null}
+                />
+                <div className="text-body2">{userData && userData.name}</div>
+              </div>
+              <div className="text-subtitle pl-0.5 mt-[12px]">
+                <p>{review.content}</p>
+              </div>
+              <div className="mt-[4px] text-subtitle2 text-grey-4 text-end">
+                {(() => {
+                  const { dateInDotFormat, timeInFormat } = formatDateString(
+                    review.createdAt
+                  );
+                  return dateInDotFormat;
+                })()}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </section>
   );
 }

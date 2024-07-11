@@ -77,7 +77,6 @@ export interface Bookmark {
   experience: SimpleExperience;
 }
 
-
 export interface SimpleExperience {
   id: number;
   title: string;
@@ -86,4 +85,23 @@ export interface SimpleExperience {
   datetime: string;
   limitMember: number;
   exImageList: CarouselImage[];
+}
+
+export interface Review {
+  id: number;
+  writer: {
+    id: number;
+    profileImg: string | null;
+    name: string;
+  };
+  targetId: number;
+  content: string;
+  rate: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ReviewResponse {
+  avg: number;
+  reviews: Review[]
 }
