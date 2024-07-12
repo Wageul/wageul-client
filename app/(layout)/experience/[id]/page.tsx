@@ -436,24 +436,29 @@ export default function Page({ params }: { params: { id: string } }) {
           </div>
           <div className="px-[22px] py-[16px] bg-background rounded-[16px]">
             <div className="text-body1">Members</div>
-            <Link href={`/user/${writer.id}`} className="block">
-              <div className="mt-3 flex gap-2.5 items-center">
-                <CustomAvatar className="size-[54px]" src={writer.profileImg} />
-                <div className="text-body2">
-                  <div className="font-medium">Host</div>
-                  <div className="">{writer.name}</div>
+            <div className="flex justify-between">
+              <Link href={`/user/${writer.id}`} className="block">
+                <div className="mt-3 flex gap-2.5 items-center">
+                  <CustomAvatar
+                    className="size-[54px]"
+                    src={writer.profileImg}
+                  />
+                  <div className="text-body2">
+                    <div className="font-medium">Host</div>
+                    <div className="">{writer.name}</div>
+                  </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+              <div></div>
+            </div>
             <div className="my-4 bg-grey-2 h-[1px] rounded-full"></div>
             <div className="pl-1 space-y-2.5">
               {participantsData?.map((participant, index) => (
-                <Link
-                  key={index}
-                  href={`/user/${participant.userProfile.id}`}
-                  className="block"
-                >
-                  <div className="flex items-center justify-between">
+                <div key={index} className="flex items-center justify-between">
+                  <Link
+                    href={`/user/${participant.userProfile.id}`}
+                    className="block"
+                  >
                     <div className="flex gap-[14px] items-center">
                       <CustomAvatar
                         className="size-[46px]"
@@ -463,24 +468,25 @@ export default function Page({ params }: { params: { id: string } }) {
                         {participant.userProfile.name}
                       </div>
                     </div>
-                    {currentUserIsTheHost && (
-                      <Button
-                        variant={"primaryRed"}
-                        textStyle={"subtitle2"}
-                        className="font-semibold"
-                        onClick={() => {
-                          setMemberToBeDeclined({
-                            participationId: participant.participationId,
-                            participantName: participant.userProfile.name,
-                          });
-                          onDecline();
-                        }}
-                      >
-                        Decline
-                      </Button>
-                    )}
-                  </div>
-                </Link>
+                  </Link>
+
+                  {currentUserIsTheHost && (
+                    <Button
+                      variant={"primaryRed"}
+                      textStyle={"subtitle2"}
+                      className="font-semibold"
+                      onClick={() => {
+                        setMemberToBeDeclined({
+                          participationId: participant.participationId,
+                          participantName: participant.userProfile.name,
+                        });
+                        onDecline();
+                      }}
+                    >
+                      Decline
+                    </Button>
+                  )}
+                </div>
               ))}
             </div>
             <div className="mt-[28px] text-body1">Preferences</div>
