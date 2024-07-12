@@ -62,7 +62,7 @@ export default function ExperienceCard({
           </div>
           {loggedIn && (
             <button
-              className="hover:cursor-pointer hover:text-primary-red flex justify-center items-center"
+              className="hover:cursor-pointer hover:text-primary-green flex justify-center items-center"
               onClick={(e) => {
                 e.preventDefault();
                 onBookmark();
