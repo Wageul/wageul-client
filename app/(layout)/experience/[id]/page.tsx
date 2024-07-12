@@ -186,11 +186,14 @@ export default function Page({ params }: { params: { id: string } }) {
     setDialogIsVisible(true);
     setDialogAnimationClass("animate-in fade-in-0");
   };
-  const handleDialogHide = () => {
+  const handleDialogHide = async () => {
     setDialogAnimationClass("animate-out fade-out-0");
     setTimeout(() => {
       setDialogIsVisible(false);
     }, 140); // Match the animation-duration
+    return new Promise((resolveInner) => {
+      setTimeout(resolveInner, 140);
+    });
   };
   const router = useRouter();
 
@@ -299,7 +302,7 @@ export default function Page({ params }: { params: { id: string } }) {
         handler2: async () => {
           // submit deletion (should include setDialog to alert)
           // and
-          handleDialogHide();
+          await handleDialogHide();
           await handleDelete();
         },
       },
