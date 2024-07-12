@@ -15,7 +15,6 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -31,6 +30,7 @@ const links = [
     activeIcon: <HomeIcon fontSize="large" />,
     icon: <HomeOutlinedIcon fontSize="large" />,
     activeColor: "text-primary-red",
+    hoverColor: "hover:text-primary-red",
   },
   {
     name: "bookmark",
@@ -38,6 +38,7 @@ const links = [
     activeIcon: <BookmarkIcon fontSize="large" />,
     icon: <BookmarkBorderOutlinedIcon fontSize="large" />,
     activeColor: "text-primary-green",
+    hoverColor: "hover:text-primary-green",
   },
   {
     name: "scheduled",
@@ -45,6 +46,7 @@ const links = [
     activeIcon: <PeopleAltIcon fontSize="large" />,
     icon: <PeopleAltOutlinedIcon fontSize="large" />,
     activeColor: "text-primary-blue",
+    hoverColor: "hover:text-primary-blue",
   },
   {
     name: "myprofile",
@@ -52,6 +54,7 @@ const links = [
     activeIcon: <AccountCircleIcon fontSize="large" />,
     icon: <AccountCircleOutlinedIcon fontSize="large" />,
     activeColor: "text-primary-yellow",
+    hoverColor: "hover:text-primary-yellow",
   },
 ];
 
@@ -60,12 +63,12 @@ export default function BottomNav({ loggedIn }: { loggedIn: boolean }) {
 
   return (
     <nav className="z-50 fixed flex px-[26px] pt-[14px] left-1/2 -translate-x-1/2 bottom-0 max-w-[600px] w-full h-[83px] rounded-t-[20px] bg-background shadow-[0_-4px_10px_0px_rgba(0,0,0,0.05)]">
-      {links.map(({ name, href, activeColor, activeIcon, icon }, index) =>
+      {links.map(({ name, href, activeColor, hoverColor, activeIcon, icon }, index) =>
         name !== "experience" && !loggedIn ? (
           <AlertDialog key={name}>
             <AlertDialogTrigger asChild>
               <div
-                className={`cursor-pointer flex flex-1 justify-center hover:text-primary-red ${
+                className={`cursor-pointer flex flex-1 justify-center ${hoverColor} ${
                   pathname === href ? activeColor : "text-foreground"
                 }`}
               >
@@ -118,7 +121,7 @@ export default function BottomNav({ loggedIn }: { loggedIn: boolean }) {
           <Link
             key={name}
             href={href}
-            className={`flex flex-1 justify-center hover:text-primary-red ${
+            className={`flex flex-1 justify-center ${hoverColor} ${
               pathname === href ? activeColor : "text-foreground"
             }`}
           >
