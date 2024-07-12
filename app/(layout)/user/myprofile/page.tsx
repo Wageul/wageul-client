@@ -6,7 +6,7 @@ import BottomNav from "@/components/BottomNav";
 import { authenticateUserAndGetData, fetchReviews } from "@/lib/data";
 import { redirect } from "next/navigation";
 import { Review, ReviewResponse } from "@/lib/types";
-import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
+import GoBackButton from "@/components/GoBackButton";
 
 export default async function Page() {
   const { loggedIn, data } = await authenticateUserAndGetData();
@@ -20,11 +20,7 @@ export default async function Page() {
 
   return (
     <BackgroundLayout bottomNav={"yes"}>
-      <Link href={"/experience"}>
-        <div className="absolute flex items-center justify-center z-10 top-[12px] size-[40px] rounded-full bg-background shadow-light">
-          <ArrowBackIosNewRoundedIcon fontSize="medium" />
-        </div>
-      </Link>
+      <GoBackButton href="/experience" />
       <ProfileHeader userData={data} reviewData={reviewData} />
       <div className="mt-[35px] flex justify-center">
         <Link href={"/user/myprofile/edit"}>

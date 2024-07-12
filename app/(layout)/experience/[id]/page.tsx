@@ -18,7 +18,6 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -35,6 +34,7 @@ import {
 } from "@/lib/actions";
 import { dateIsPassed } from "@/lib/utils";
 import CustomAvatar from "@/components/CustomAvatar";
+import GoBackButton from "@/components/GoBackButton";
 
 const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
@@ -366,11 +366,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
     return (
       <BackgroundLayout background={"grey"}>
-        <Link href={"/experience"}>
-          <div className="absolute flex items-center justify-center z-10 top-[12px] size-[40px] rounded-full bg-background shadow-light">
-            <ArrowBackIosNewRoundedIcon fontSize="medium" />
-          </div>
-        </Link>
+        <GoBackButton href="/experience" />
         {userData && userData.loggedIn ? (
           <div className="relative">
             <form
