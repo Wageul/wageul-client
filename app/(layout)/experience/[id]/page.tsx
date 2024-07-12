@@ -327,7 +327,7 @@ export default function Page({ params }: { params: { id: string } }) {
         buttonContent2: "YES",
         handler2: async () => {
           // submit decline
-          handleDialogHide();
+          await handleDialogHide();
           await handleDecline();
         },
       },
