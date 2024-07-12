@@ -374,7 +374,7 @@ export default function Page({ params }: { params: { id: string } }) {
               action={onBookmark}
             >
               <button
-                className="text-background hover:text-primary-green flex justify-center items-center"
+                className="text-background flex justify-center items-center"
                 type="submit"
               >
                 {bookmarked ? (
