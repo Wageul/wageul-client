@@ -13,7 +13,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
     if (term) {
       params.set("query", term);
     } else {
-      params.delete("query");
+      params.set("query", "");
     }
     replace(`${pathname}?${params.toString()}`);
   }

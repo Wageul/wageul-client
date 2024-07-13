@@ -21,7 +21,7 @@ export default async function Page({
   };
 }) {
   const { loggedIn, data: userData } = await authenticateUserAndGetData();
-  const experienceListDataSorted = (await fetchAllExperience()).sort((a, b) => {
+  const experienceListDataSorted = (await fetchAllExperience()).toSorted((a, b) => {
     const aDate = new Date(a.createdAt);
     const bDate = new Date(b.createdAt);
     return +bDate - +aDate;
