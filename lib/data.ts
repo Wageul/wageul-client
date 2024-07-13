@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { Bookmark, Experience, Participant, ReviewResponse, User } from "./types";
 
-const apiUrl = process.env.DEPLOYED_API_URL + "/api";
+const apiUrl = process.env.LOCAL_API_URL + "/api";
 // const apiUrl = process.env.LOCAL_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
 
@@ -15,8 +15,9 @@ export async function fetchExperienceById(id: string) {
     const response = await fetch(url, {
       method: "GET",
     });
+    console.log(`data.ts fetchExperienceById ${url} status code:`, response.status);
     const data = await response.json();
-    console.log("data from fetchExperienceById", data);
+    // console.log("data from fetchExperienceById", data);
     return data as Experience;
   } catch (err) {
     console.error("Server Error:", err);
@@ -32,6 +33,7 @@ export async function fetchAllExperience() {
     const response = await fetch(apiUrl + "/experience", {
       next: { tags: ["experience-list"] },
     });
+    console.log(`data.ts fetchAllExperience ${apiUrl+"/experience"} status code:`, response.status);
     const data = await response.json();
     // console.log("data from fetchAllExperience", data);
     return data as Experience[];
@@ -60,7 +62,7 @@ export async function authenticateUserAndGetData() {
       },
     });
 
-    console.log("status code:", response.status);
+    console.log(`data.ts authenticateUserAndGetData ${url} status code:`, response.status);
     if (response.status === TOKEN_INVALID_CODE) {
       return { loggedIn: false, data: null };
     }
@@ -93,7 +95,7 @@ export async function fetchUserDataByToken(token: string) {
         // Authorization: token,
       },
     });
-    console.log("status code:", response.status);
+    console.log(`data.ts fetchUserDataByToken ${url} status code:`, response.status);
     const data = await response.json();
     console.log(data);
     return data;
@@ -114,7 +116,8 @@ export async function fetchOtherUserData(userId: string) {
     const response = await fetch(url, {
       method: "GET",
     });
-    console.log("status code:", response.status);
+    console.log(`data.ts fetchOtherUserData ${url} status code:`, response.status);
+
     const data = await response.json();
     console.log(data);
     return data;
@@ -145,12 +148,14 @@ export async function fetchBookmarks() {
     });
 
     console.log("bookmark status code:", response.status);
+    console.log(`data.ts fetchBookmarks ${url} status code:`, response.status);
+
     if(response.status === TOKEN_INVALID_CODE){
       return [] as Bookmark[];
     }
 
     const data = await response.json();
-    console.log("data from fetchBookmarks", data);
+    // console.log("data from fetchBookmarks", data);
     return data as Bookmark[];
   } catch (err) {
     console.error("Server Error:", err);
@@ -168,6 +173,8 @@ export async function fetchAllParticipants() {
     const response = await fetch(url, {
       method: "GET",
     });
+    console.log(`data.ts fetchAllParticipants ${url} status code:`, response.status);
+
     const data = await response.json();
     // console.log("data from fetchAllParticipants", data);
     return data as {
@@ -200,9 +207,10 @@ export async function fetchParticipations() {
       next: { tags: ["participants"] },
     });
 
-    console.log("bookmark status code:", response.status);
+    console.log(`data.ts fetchParticipations ${url} status code:`, response.status);
+    
     const data = await response.json();
-    console.log("data from fetchparticipations(schedules)", data);
+    // console.log("data from fetchparticipations(schedules)", data);
     return data as Bookmark[];
   } catch (err) {
     console.error("Server Error:", err);
@@ -230,9 +238,10 @@ export async function fetchHosted() {
       next: { tags: ["participants"] },
     });
 
-    console.log("hosted experience status code:", response.status);
+    console.log(`data.ts fetchHosted ${url} status code:`, response.status);
+
     const data = await response.json();
-    console.log("data from hosted experience(schedules)", data);
+    // console.log("data from hosted experience(schedules)", data);
     return data as Experience[];
   } catch (err) {
     console.error("Server Error:", err);
@@ -260,9 +269,10 @@ export async function fetchReviews(userId: number) {
       next: { tags: ["reviews"] },
     });
 
-    console.log("user review status code:", response.status);
+    console.log(`data.ts fetchReviews ${url} status code:`, response.status);
+
     const data = await response.json();
-    console.log("data from user review", data);
+    // console.log("data from user review", data);
     return data as ReviewResponse;
   } catch (err) {
     console.error("Server Error:", err);
