@@ -284,11 +284,6 @@ export async function fetchHosted() {
 }
 
 export async function fetchReviews(userId: number) {
-  if (!cookies().has("token")) {
-    console.log("no token");
-    return {} as ReviewResponse;
-  }
-
   try {
     // console.log("token:", token);
     const url = apiUrl + `/review/user/${userId}`;

@@ -15,7 +15,7 @@ export async function ProfileHeader({
   if(userWithCountsData) {
     userData = userWithCountsData.user;
   }
-  
+  console.log('reviewData', reviewData);
   return (
     <section className="flex flex-col items-center">
       <CustomAvatar
@@ -31,13 +31,13 @@ export async function ProfileHeader({
           <div className="rounded-full size-[36px] bg-background flex justify-center items-center">
             <StarRoundedIcon className="text-primary-yellow text-[30px]" />
           </div>
-          <div>{reviewData?.avg && Math.floor(reviewData.avg * 10) / 10}</div>
+          <div>{reviewData && reviewData.avg ? reviewData?.avg && Math.floor(reviewData.avg * 10) / 10 : 0}</div>
         </div>
         <div className="px-3 py-2 flex gap-2.5 rounded-full bg-primary-red/25 items-center">
           <div className="rounded-full size-[36px] bg-primary-red flex justify-center items-center">
             <CheckRoundedIcon className="text-primary-foreground text-[24px]" />
           </div>
-          <div>6</div>
+          <div>{userWithCountsData ? userWithCountsData?.joinedPtCnt + userWithCountsData?.createdExCnt : 0}</div>
         </div>
       </div>
     </section>
@@ -67,7 +67,7 @@ export async function OthersReviewList({
   return (
     <section className="pb-[60px]">
       <div className="mt-[30px] pl-2 text-h3 font-semibold">Review</div>
-      {othersReview
+      {othersReview && othersReview
         .sort((a, b) => {
           const aDate = new Date(a.createdAt);
           const bDate = new Date(b.createdAt);
