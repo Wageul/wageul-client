@@ -17,25 +17,25 @@ export default async function Page({ params }: { params: { id: string } }) {
   let othersReview = [] as Review[];
   if (loggedIn) {
     myReview = reviewData.reviews.filter(
-      (review) => review.writer.id === userData!.id
+      (review) => review.writer.id === userData!.user.id
     );
     othersReview = reviewData.reviews.filter(
-      (review) => review.writer.id !== userData!.id
+      (review) => review.writer.id !== userData!.user.id
     );
   }
 
   return (
     <BackgroundLayout>
       <GoBackButton href="/experience" />
-      <ProfileHeader userData={otherUserData} reviewData={reviewData} />
+      <ProfileHeader userWithCountsData={otherUserData} reviewData={reviewData} />
       <AboutMe userData={otherUserData} />
       <section className="mt-[30px]">
         <UserReview
           targetId={params.id}
           loggedIn={loggedIn}
-          userData={userData}
+          userData={userData ? userData.user : null}
         />
-        <MyReviewList myReviews={myReview} userData={userData} />
+        <MyReviewList myReviews={myReview} userData={userData ? userData.user : null} />
       </section>
       <OthersReviewList
         othersReview={loggedIn ? othersReview : reviewData.reviews}

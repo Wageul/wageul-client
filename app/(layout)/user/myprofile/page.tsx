@@ -15,13 +15,13 @@ export default async function Page() {
   }
   let reviewData: ReviewResponse | null = null;
   if (loggedIn) {
-    reviewData = await fetchReviews(Number(data?.id));
+    reviewData = await fetchReviews(Number(data?.user.id));
   }
 
   return (
     <BackgroundLayout bottomNav={"yes"}>
       <GoBackButton href="/experience" />
-      <ProfileHeader userData={data} reviewData={reviewData} />
+      <ProfileHeader userWithCountsData={data} reviewData={reviewData} />
       <div className="mt-[35px] flex justify-center">
         <Link href={"/user/myprofile/edit"}>
           <Button variant={"white"} size={"xl"}>
@@ -29,7 +29,7 @@ export default async function Page() {
           </Button>
         </Link>
       </div>
-      <AboutMe userData={data} />
+      <AboutMe userData={data ? data.user : null} />
       {loggedIn && reviewData ? (
         <OthersReviewList othersReview={reviewData.reviews} />
       ) : (

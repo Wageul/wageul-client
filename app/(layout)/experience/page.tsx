@@ -63,7 +63,7 @@ export default async function Page({
       <section className={loggedIn ? "pt-[17px]" : "pt-[57px]"}>
         {loggedIn && userData && (
           <div className="text-h2 font-semibold text-center mb-[17px]">
-            <span className="text-primary-red">HELLO</span>, {userData.name}!
+            <span className="text-primary-red">HELLO</span>, {userData.user.name}!
           </div>
         )}
         <Search placeholder="Search experience" />

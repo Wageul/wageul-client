@@ -1,16 +1,21 @@
 import StarRoundedIcon from "@mui/icons-material/StarRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
-import { Review, ReviewResponse, User } from "@/lib/types";
+import { Review, ReviewResponse, User, UserWithCounts } from "@/lib/types";
 import CustomAvatar from "./CustomAvatar";
 import { formatDateString } from "@/lib/formatters";
 
 export async function ProfileHeader({
-  userData,
+  userWithCountsData,
   reviewData,
 }: {
-  userData: User | null;
+  userWithCountsData: UserWithCounts | null;
   reviewData: ReviewResponse | null;
 }) {
+  let userData = null;
+  if(userWithCountsData) {
+    userData = userWithCountsData.user;
+  }
+  
   return (
     <section className="flex flex-col items-center">
       <CustomAvatar

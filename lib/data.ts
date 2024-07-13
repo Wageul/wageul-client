@@ -1,8 +1,14 @@
 import { cookies } from "next/headers";
-import { Bookmark, Experience, Participant, ReviewResponse, User } from "./types";
+import {
+  Bookmark,
+  Experience,
+  Participant,
+  ReviewResponse,
+  User,
+} from "./types";
 
+// const apiUrl = process.env.DEPLOYED_API_URL + "/api";
 const apiUrl = process.env.LOCAL_API_URL + "/api";
-// const apiUrl = process.env.LOCAL_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
 
 export async function fetchExperienceById(id: string) {
@@ -15,7 +21,10 @@ export async function fetchExperienceById(id: string) {
     const response = await fetch(url, {
       method: "GET",
     });
-    console.log(`data.ts fetchExperienceById ${url} status code:`, response.status);
+    console.log(
+      `data.ts fetchExperienceById ${url} status code:`,
+      response.status
+    );
     const data = await response.json();
     // console.log("data from fetchExperienceById", data);
     return data as Experience;
@@ -33,7 +42,10 @@ export async function fetchAllExperience() {
     const response = await fetch(apiUrl + "/experience", {
       next: { tags: ["experience-list"] },
     });
-    console.log(`data.ts fetchAllExperience ${apiUrl+"/experience"} status code:`, response.status);
+    console.log(
+      `data.ts fetchAllExperience ${apiUrl + "/experience"} status code:`,
+      response.status
+    );
     const data = await response.json();
     // console.log("data from fetchAllExperience", data);
     return data as Experience[];
@@ -50,6 +62,10 @@ export async function authenticateUserAndGetData() {
 
   try {
     // console.log("token:", token);
+    // console.log(
+    //   'data.ts authenticateUserAndGetData cookies().get("token").value',
+    //   cookies().get("token")?.value
+    // );
     const url = apiUrl + "/user";
     console.log("url:", url);
     const response = await fetch(url, {
@@ -62,14 +78,21 @@ export async function authenticateUserAndGetData() {
       },
     });
 
-    console.log(`data.ts authenticateUserAndGetData ${url} status code:`, response.status);
+    console.log(
+      `data.ts authenticateUserAndGetData ${url} status code:`,
+      response.status
+    );
     if (response.status === TOKEN_INVALID_CODE) {
       return { loggedIn: false, data: null };
     }
 
-    const data = await response.json();
-    console.log("data from authenticateUserAndGetData", data);
-    return { loggedIn: true, data: data as User };
+    const data = await response.json() as {
+      user: User;
+      createdExCnt: number;
+      joinedPtCnt: number;
+    };
+    // console.log("data from authenticateUserAndGetData", data);
+    return { loggedIn: true, data };
   } catch (err) {
     console.error("Server Error:", err);
     throw new Error("Failed to fetch the user.");
@@ -95,7 +118,10 @@ export async function fetchUserDataByToken(token: string) {
         // Authorization: token,
       },
     });
-    console.log(`data.ts fetchUserDataByToken ${url} status code:`, response.status);
+    console.log(
+      `data.ts fetchUserDataByToken ${url} status code:`,
+      response.status
+    );
     const data = await response.json();
     console.log(data);
     return data;
@@ -116,7 +142,10 @@ export async function fetchOtherUserData(userId: string) {
     const response = await fetch(url, {
       method: "GET",
     });
-    console.log(`data.ts fetchOtherUserData ${url} status code:`, response.status);
+    console.log(
+      `data.ts fetchOtherUserData ${url} status code:`,
+      response.status
+    );
 
     const data = await response.json();
     console.log(data);
@@ -147,10 +176,9 @@ export async function fetchBookmarks() {
       next: { tags: ["bookmarks"] },
     });
 
-    console.log("bookmark status code:", response.status);
     console.log(`data.ts fetchBookmarks ${url} status code:`, response.status);
 
-    if(response.status === TOKEN_INVALID_CODE){
+    if (response.status === TOKEN_INVALID_CODE) {
       return [] as Bookmark[];
     }
 
@@ -173,7 +201,10 @@ export async function fetchAllParticipants() {
     const response = await fetch(url, {
       method: "GET",
     });
-    console.log(`data.ts fetchAllParticipants ${url} status code:`, response.status);
+    console.log(
+      `data.ts fetchAllParticipants ${url} status code:`,
+      response.status
+    );
 
     const data = await response.json();
     // console.log("data from fetchAllParticipants", data);
@@ -207,8 +238,11 @@ export async function fetchParticipations() {
       next: { tags: ["participants"] },
     });
 
-    console.log(`data.ts fetchParticipations ${url} status code:`, response.status);
-    
+    console.log(
+      `data.ts fetchParticipations ${url} status code:`,
+      response.status
+    );
+
     const data = await response.json();
     // console.log("data from fetchparticipations(schedules)", data);
     return data as Bookmark[];

@@ -83,7 +83,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
         const data = await response.json();
         console.log("data from client authenticateUserAndGetData", data);
-        setUserData({ loggedIn: true, data: data as User });
+        setUserData({ loggedIn: true, data: data.user as User });
         return;
       } catch (err) {
         console.error("Server Error:", err);

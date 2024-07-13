@@ -54,6 +54,12 @@ export interface User {
   updatedAt: string;
 }
 
+export interface UserWithCounts {
+  user: User;
+  createdExCnt: number;
+  joinedPtCnt: number;
+}
+
 export const ACCEPTED_FILE_TYPES = [
   "image/jpg",
   "image/jpeg",

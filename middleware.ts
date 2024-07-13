@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
     console.log("pathname", request.nextUrl.pathname);
     const userId = match[1];
     console.log("userId", userId);
-    if (loggedIn && String(data!.id) === userId) {
+    if (loggedIn && String(data!.user.id) === userId) {
       return NextResponse.redirect(new URL("/user/myprofile", request.url));
     }
     return NextResponse.next();
