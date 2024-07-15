@@ -234,3 +234,20 @@ export async function deleteReview(reviewId: number) {
   revalidateTag("reviews");
   return;
 }
+
+export async function deleteUser(userId: number | undefined) {
+  console.log("deleteUser userId", userId);
+  if (userId === undefined) {
+    return;
+  }
+  const url = apiUrl + `/user/${userId}`;
+  console.log(url);
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      Cookie: `token=${cookies().get("token")?.value}`,
+    },
+  });
+  console.log("action.ts deleteUser status", response.status);
+  return;
+}

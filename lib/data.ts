@@ -7,8 +7,8 @@ import {
   User,
 } from "./types";
 
-// const apiUrl = process.env.DEPLOYED_API_URL + "/api";
-const apiUrl = process.env.LOCAL_API_URL + "/api";
+const apiUrl = process.env.DEPLOYED_API_URL + "/api";
+// const apiUrl = process.env.LOCAL_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
 
 export async function fetchExperienceById(id: string) {
@@ -86,7 +86,7 @@ export async function authenticateUserAndGetData() {
       return { loggedIn: false, data: null };
     }
 
-    const data = await response.json() as {
+    const data = (await response.json()) as {
       user: User;
       createdExCnt: number;
       joinedPtCnt: number;

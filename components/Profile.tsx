@@ -15,7 +15,7 @@ export async function ProfileHeader({
   if(userWithCountsData) {
     userData = userWithCountsData.user;
   }
-  console.log('reviewData', reviewData);
+  // console.log('reviewData', reviewData);
   return (
     <section className="flex flex-col items-center">
       <CustomAvatar
@@ -62,7 +62,7 @@ export async function OthersReviewList({
 }: {
   othersReview: Review[];
 }) {
-  console.log("reviewDat akjalkj", othersReview);
+  // console.log("reviewDat", othersReview);
 
   return (
     <section className="pb-[60px]">
