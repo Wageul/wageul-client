@@ -249,5 +249,5 @@ export async function deleteUser(userId: number | undefined) {
     },
   });
   console.log("action.ts deleteUser status", response.status);
-  return;
+  return response.status;
 }

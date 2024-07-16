@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
 
 export default function LogoutButton() {
+  const router = useRouter();
   const [dialogState, setDialogState] = useState<"logout-confirmation">(
     "logout-confirmation"
   );
@@ -40,8 +42,8 @@ export default function LogoutButton() {
         `LogoutButton.tsx client logOut ${url} status code:`,
         response.status
       );
-      console.log('resoponse', response);
-      return;
+      // console.log('resoponse', response);
+      return response.status;
     } catch (err) {
       console.error("Server Error:", err);
       throw new Error("Failed to logout.");
@@ -61,7 +63,10 @@ export default function LogoutButton() {
         // submit deletion (should include setDialog to alert)
         // and
         await handleDialogHide();
-        await handleSignOut();
+        const status = await handleSignOut();
+        if (status === 200) {
+          router.push("/");
+        }
       },
     },
   };

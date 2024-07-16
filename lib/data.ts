@@ -92,6 +92,7 @@ export async function authenticateUserAndGetData() {
       joinedPtCnt: number;
     };
     // console.log("data from authenticateUserAndGetData", data);
+    console.log('userId:', data.user.id);
     return { loggedIn: true, data };
   } catch (err) {
     console.error("Server Error:", err);

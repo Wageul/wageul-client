@@ -1,13 +1,18 @@
 "use client";
 
 import { deleteUser } from "@/lib/actions";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
 
 export default function LeaveButton({
   userId,
 }: {
   userId: number | undefined;
 }) {
+  const router = useRouter();
+
   const [dialogState, setDialogState] =
     useState<"leave-confirmation">("leave-confirmation");
 
@@ -27,6 +32,21 @@ export default function LeaveButton({
     });
   };
 
+  const handleDelete = async (userId: number | undefined) => {
+    console.log("handleDelete userId", userId);
+    if (userId === undefined) {
+      return;
+    }
+    const url = apiUrl + `/user/${userId}`;
+    console.log(url);
+    const response = await fetch(url, {
+      method: "DELETE",
+      credentials: "include",
+    });
+    console.log("LeaveMembership handleDelete status", response.status);
+    return response.status;
+  }
+
   const dialogs = {
     "leave-confirmation": {
       content: "Are you sure you want to leave the membership? ",
@@ -40,7 +60,10 @@ export default function LeaveButton({
         // submit deletion (should include setDialog to alert)
         // and
         await handleDialogHide();
-        await deleteUser(userId);
+        const status = await handleDelete(userId);
+        if (status === 200) {
+          router.push("/");
+        }
       },
     },
   };
