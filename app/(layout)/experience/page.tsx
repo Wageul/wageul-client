@@ -12,6 +12,8 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Link from "next/link";
 import Search from "@/components/Search";
 import ExperienceList from "@/components/ExperienceList";
+import { Suspense } from "react";
+import { ExperienceCardListSkeleton } from "@/components/Skeletons";
 
 export default async function Page({
   searchParams,
@@ -21,15 +23,13 @@ export default async function Page({
   };
 }) {
   const { loggedIn, data: userData } = await authenticateUserAndGetData();
-  const experienceListDataSorted = (await fetchAllExperience()).toSorted((a, b) => {
-    const aDate = new Date(a.createdAt);
-    const bDate = new Date(b.createdAt);
-    return +bDate - +aDate;
-  });
-  const bookmarks = await fetchBookmarks();
-  const allParticipantsData = await fetchAllParticipants();
-  // console.log("top all participants", allParticipantsData);
-  // console.log("top all experience list", experienceListDataSorted);
+  const experienceListDataSorted = (await fetchAllExperience()).toSorted(
+    (a, b) => {
+      const aDate = new Date(a.createdAt);
+      const bDate = new Date(b.createdAt);
+      return +bDate - +aDate;
+    }
+  );
   console.log("query", searchParams?.query);
   let filteredExperienceListData;
   if (searchParams && searchParams.query) {
@@ -39,6 +39,9 @@ export default async function Page({
   } else {
     filteredExperienceListData = null;
   }
+
+  const query = searchParams?.query || "";
+
   return (
     <BackgroundLayout
       background={loggedIn ? "white" : "grey"}
@@ -63,7 +66,8 @@ export default async function Page({
       <section className={loggedIn ? "pt-[17px]" : "pt-[57px]"}>
         {loggedIn && userData && (
           <div className="text-h2 font-semibold text-center mb-[17px]">
-            <span className="text-primary-red">HELLO</span>, {userData.user.name}!
+            <span className="text-primary-red">HELLO</span>,{" "}
+            {userData.user.name}!
           </div>
         )}
         <Search placeholder="Search experience" />
@@ -75,21 +79,9 @@ export default async function Page({
             : "Latest"}
         </div>
         <div className="mt-[11px] flex flex-col gap-2.5">
-          {searchParams && searchParams.query && filteredExperienceListData ? (
-            <ExperienceList
-              loggedIn={loggedIn}
-              bookmarks={bookmarks}
-              allParticipantsData={allParticipantsData}
-              experienceListData={filteredExperienceListData}
-            />
-          ) : (
-            <ExperienceList
-              loggedIn={loggedIn}
-              bookmarks={bookmarks}
-              allParticipantsData={allParticipantsData}
-              experienceListData={experienceListDataSorted}
-            />
-          )}
+          <Suspense fallback={<ExperienceCardListSkeleton />}>
+            <ExperienceList query={query} />
+          </Suspense>
         </div>
       </section>
       {loggedIn ? (

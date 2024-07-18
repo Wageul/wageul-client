@@ -1,37 +1,53 @@
 import { Bookmark, Experience, Participant } from "@/lib/types";
 import ExperienceCard from "./ExperienceCard";
+import {
+  authenticateUserAndGetData,
+  fetchAllExperience,
+  fetchAllParticipants,
+  fetchBookmarks,
+} from "@/lib/data";
+import { ExperienceCardSkeleton } from "./Skeletons";
 
-export default function ExperienceList({
-  loggedIn,
-  experienceListData,
-  bookmarks,
-  allParticipantsData,
-}: {
-  loggedIn: boolean;
-  experienceListData: Experience[];
-  bookmarks: Bookmark[];
-  allParticipantsData: {
-    experienceId: number;
-    userSimpleProfileList: Participant[];
-  }[];
-}) {
+export default async function ExperienceList({ query }: { query: string }) {
+  const { loggedIn } = await authenticateUserAndGetData();
+  const [experienceListData, bookmarks, allParticipantsData] =
+    await Promise.all([
+      fetchAllExperience(),
+      fetchBookmarks(),
+      fetchAllParticipants(),
+    ]);
+
+  const experienceListDataSorted = experienceListData.toSorted((a, b) => {
+    const aDate = new Date(a.createdAt);
+    const bDate = new Date(b.createdAt);
+    return +bDate - +aDate;
+  });
+
+  // console.log("top all participants", allParticipantsData);
+  // console.log("top all experience list", experienceListDataSorted);
+  console.log("query", query);
+  let experienceList;
+  let filteredExperienceListData;
+  if (query) {
+    filteredExperienceListData = experienceListDataSorted.filter((data) =>
+      data.title.toLowerCase().includes(query.toLowerCase())
+    );
+    experienceList = filteredExperienceListData;
+  } else {
+    experienceList = experienceListDataSorted;
+  }
+
   return (
     <>
-      {experienceListData.map((data, index) => {
+      {experienceList!.map((data, index) => {
         if (data.title === null) return <></>;
         const bookmarked = bookmarks?.some(
           (bookmark) => bookmark.experience.id === data.id
         );
-        // console.log("allparticipants", allParticipantsData);
-        // console.log(
-        //   "allparticipants id",
-        //   allParticipantsData[0].experienceId
-        // );
-        // console.log("experience data", data);
+
         const participants = allParticipantsData.find(
           (participantsData) => participantsData.experienceId === data.id
         )!.userSimpleProfileList;
-        // console.log("participants:", participants);
         return (
           <ExperienceCard
             key={index}
@@ -40,6 +56,7 @@ export default function ExperienceList({
             initialBookmark={bookmarked}
             participants={participants ? participants : []}
           />
+          // <ExperienceCardSkeleton key={index}/>
         );
       })}
     </>
