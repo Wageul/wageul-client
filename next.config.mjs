@@ -8,8 +8,8 @@ const nextConfig = {
     NEXT_PUBLIC_LOCAL_API_URL: process.env.NEXT_PUBLIC_LOCAL_API_URL,
   },
   images: {
-    deviceSizes: [640, 750, 828, 1080, 1200],
     imageSizes: [16, 32, 48, 64, 96],
+    deviceSizes: [640, 750, 828, 1080, 1200],
     remotePatterns: [
       {
         protocol: "https",
