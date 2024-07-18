@@ -65,7 +65,8 @@ export default function LogoutButton() {
         await handleDialogHide();
         const status = await handleSignOut();
         if (status === 200) {
-          router.push("/");
+          router.refresh();
+          // router.push("/");
         }
       },
     },

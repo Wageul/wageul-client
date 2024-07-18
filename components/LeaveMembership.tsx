@@ -62,7 +62,8 @@ export default function LeaveButton({
         await handleDialogHide();
         const status = await handleDelete(userId);
         if (status === 200) {
-          router.push("/");
+          router.refresh();
+          // router.push("/");
         }
       },
     },
