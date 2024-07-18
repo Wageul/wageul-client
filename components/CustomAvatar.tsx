@@ -14,7 +14,6 @@ export default function CustomAvatar({
   return (
     <div className={cn(style, className)}>
       <Image
-        unoptimized
         src={src === null ? defaultProfilePic : src}
         alt="profile"
         fill={true}

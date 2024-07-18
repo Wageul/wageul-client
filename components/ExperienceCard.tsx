@@ -9,6 +9,7 @@ import BookmarkBorderRoundedIcon from "@mui/icons-material/BookmarkBorderRounded
 import BookmarkRoundedIcon from "@mui/icons-material/BookmarkRounded";
 import { addBookmark, deleteBookmark } from "@/lib/actions";
 import { useState } from "react";
+import defaultImage from "@/public/main.avif";
 
 export default function ExperienceCard({
   data,
@@ -81,7 +82,7 @@ export default function ExperienceCard({
             <Image
               priority={true}
               src={
-                data.exImageList[0] ? data.exImageList[0].image : "/main.avif"
+                data.exImageList[0] ? data.exImageList[0].image : defaultImage
               }
               fill={true}
               sizes="width: 95px"
