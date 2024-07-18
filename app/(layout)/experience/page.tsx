@@ -5,8 +5,6 @@ import BottomNav from "@/components/BottomNav";
 import {
   authenticateUserAndGetData,
   fetchAllExperience,
-  fetchAllParticipants,
-  fetchBookmarks,
 } from "@/lib/data";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Link from "next/link";

@@ -1,4 +1,3 @@
-import { Bookmark, Experience, Participant } from "@/lib/types";
 import ExperienceCard from "./ExperienceCard";
 import {
   authenticateUserAndGetData,
@@ -6,7 +5,6 @@ import {
   fetchAllParticipants,
   fetchBookmarks,
 } from "@/lib/data";
-import { ExperienceCardSkeleton } from "./Skeletons";
 
 export default async function ExperienceList({ query }: { query: string }) {
   const { loggedIn } = await authenticateUserAndGetData();
