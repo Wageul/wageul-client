@@ -5,7 +5,6 @@ import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined
 import { BackgroundLayout } from "@/components/BackgroundLayout";
 import Carousel from "@/components/Carousel";
 import { formatDateString, formatDuration } from "@/lib/formatters";
-import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import BookmarkBorderRoundedIcon from "@mui/icons-material/BookmarkBorderRounded";
 import BookmarkRoundedIcon from "@mui/icons-material/BookmarkRounded";
 import { Button } from "@/components/ui/wageulButton";
@@ -35,6 +34,8 @@ import {
 import { dateIsPassed } from "@/lib/utils";
 import CustomAvatar from "@/components/CustomAvatar";
 import GoBackButton from "@/components/GoBackButton";
+import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
+import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 
 const apiUrl = process.env.NEXT_PUBLIC_LOCAL_API_URL + "/api";
 const TOKEN_INVALID_CODE = 401;
@@ -54,6 +55,13 @@ export default function Page({ params }: { params: { id: string } }) {
     participationId: number;
     participantName: string;
   }>();
+  const [copied, setCopied] = useState<boolean>(false);
+  const handleCopyClick = () => {
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 1000);
+  };
 
   useEffect(() => {
     (async () => {
@@ -500,7 +508,20 @@ export default function Page({ params }: { params: { id: string } }) {
               </div>
               <div className="flex gap-[14px]">
                 <div className="text-grey-4">Contact</div>
-                <div className="[overflow-wrap:anywhere]">{contact}</div>
+                <div
+                  className="[overflow-wrap:anywhere] cursor-pointer"
+                  onClick={() => {
+                    handleCopyClick();
+                    navigator.clipboard.writeText(contact);
+                  }}
+                >
+                  {copied ? (
+                    <CheckRoundedIcon fontSize="inherit" />
+                  ) : (
+                    <ContentCopyRoundedIcon fontSize="inherit" />
+                  )}{" "}
+                  {contact}
+                </div>
               </div>
             </div>
           </div>
